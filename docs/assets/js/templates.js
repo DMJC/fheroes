@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2025                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,8 +22,8 @@
  * HTML templates for the heading-copy and code-copy functionality
  */
 
-// Create the fheroes2 namespace if it doesn't exist
-window.fheroes2 = window.fheroes2 || {};
+// Create the fheroes namespace if it doesn't exist
+window.fheroes = window.fheroes || {};
 
 // Template for the live region
 const liveRegionTemplate = `
@@ -40,13 +40,13 @@ const codeCopyButtonTemplate = `
 <button class="btn btn-primary copy-btn" aria-label="Copy code to clipboard" title="Copy code to clipboard" tabindex="0">Copy</button>
 `;
 
-// Export the templates to the fheroes2 namespace
-window.fheroes2.HeadingCopyTemplates = {
+// Export the templates to the fheroes namespace
+window.fheroes.HeadingCopyTemplates = {
     liveRegionTemplate,
     headingAnchorTemplate
 };
 
-window.fheroes2.CodeCopyTemplates = {
+window.fheroes.CodeCopyTemplates = {
     liveRegionTemplate,
     codeCopyButtonTemplate
 };

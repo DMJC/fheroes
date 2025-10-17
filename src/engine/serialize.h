@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2025                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2012 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2012 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -188,7 +188,7 @@ public:
     IStreamBase & operator>>( uint32_t & v );
     IStreamBase & operator>>( std::string & v );
 
-    IStreamBase & operator>>( fheroes2::Point & v );
+    IStreamBase & operator>>( fheroes::Point & v );
 
     template <typename Type, std::enable_if_t<std::is_enum_v<Type>, bool> = true>
     IStreamBase & operator>>( Type & v )
@@ -322,7 +322,7 @@ public:
     OStreamBase & operator<<( const uint32_t v );
     OStreamBase & operator<<( const std::string_view v );
 
-    OStreamBase & operator<<( const fheroes2::Point & v );
+    OStreamBase & operator<<( const fheroes::Point & v );
 
     template <typename Type, std::enable_if_t<std::is_enum_v<Type>, bool> = true>
     OStreamBase & operator<<( const Type v )
@@ -707,7 +707,7 @@ private:
     std::unique_ptr<std::FILE, int ( * )( std::FILE * )> _file{ nullptr, closeFile };
 };
 
-namespace fheroes2
+namespace fheroes
 {
     // Get a value of type T in the system byte order from the buffer in which it was originally stored in the little-endian byte order
     template <typename T, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T>, bool> = true>

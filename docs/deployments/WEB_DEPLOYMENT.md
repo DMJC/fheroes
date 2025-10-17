@@ -1,11 +1,11 @@
 # Website Build and Deployment
 
-This document describes the end-to-end deployment strategy for the fheroes2 site deployment.
+This document describes the end-to-end deployment strategy for the fheroes site deployment.
 We target Github Pages for hosting and leverage GitHub Actions for automation.
 
 ## Functionality
 
-* Builds the documentation site for the fheroes2 project
+* Builds the documentation site for the fheroes project
 * Deploys the site, along with WebAssembly build, to Github Pages on push.
 * Allows end users to view the documentation via the web.
 * Allows end users to click a link and launch the game via the web.
@@ -42,7 +42,7 @@ sequenceDiagram
 
 ### Build Process (Upstream)
 
-* Compiles the FHeroes2 WebAssembly bundle using Emscripten.
+* Compiles the FHeroes WebAssembly bundle using Emscripten.
 * Packages assets and build artifacts into a ZIP file.
 * Publishes the ZIP as a GitHub Release asset using `ncipollo/release-action`.
 

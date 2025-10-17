@@ -1,4 +1,4 @@
-# Nintendo Switch Port of [fheroes2](README.md) Project
+# Nintendo Switch Port of [fheroes](README.md) Project
 
 It's a homebrew app, so you need to be running custom firmware for it to work.
 
@@ -16,8 +16,8 @@ After installation run `make -f Makefile.switch -j 2` command to build the packa
 
 You will need a copy of the official game to run this port.
 
-fheroes2 root directory is hardcoded as `/switch/fheroes2`. Put the game files there (specifically `ANIM`, `DATA`, `MAPS`
-and `MUSIC` folders), then copy over the `files` directory, as well as `fheroes2.nro`. If you have a Russian version from
+fheroes root directory is hardcoded as `/switch/fheroes`. Put the game files there (specifically `ANIM`, `DATA`, `MAPS`
+and `MUSIC` folders), then copy over the `files` directory, as well as `fheroes.nro`. If you have a Russian version from
 Buka Entertainment, you'll likely have `Anim2` folder instead. Rename it to `ANIM` if you wish to use the Buka game data with
 this port.
 
@@ -27,23 +27,23 @@ At the end you should have the following directory tree on your SD card:
 switch
  |
  +-- ...
- +-- fheroes2  <--- this is the game directory
+ +-- fheroes  <--- this is the game directory
      |
      +--- anim         <--- HoMM2 game data
      +--- data         <--- HoMM2 game data
-     +--- files        <--- Part of fheroes2 release
+     +--- files        <--- Part of fheroes release
      +--- maps         <--- HoMM2 game data
      +--- music        <--- HoMM2 game data
-     +--- fheroes2.nro <--- Part of fheroes2 release
+     +--- fheroes.nro <--- Part of fheroes release
  ```
 
-Generally, you will need game resources from the localized version of HoMM2 in order to use translations in fheroes2. During
+Generally, you will need game resources from the localized version of HoMM2 in order to use translations in fheroes. During
 the first run, the game should auto-detect the game data you have and offer to choose a language you'd like to use. English
 is always available.
 
 ## Running
 
-This build of fheroes2 was tested on 12.0.3|AMS M.19.4|S (FAT32). exFAT is not recommended.
+This build of fheroes was tested on 12.0.3|AMS M.19.4|S (FAT32). exFAT is not recommended.
 USB mice and keyboards connected via an OTG adapter are supported.
 
 Working controls are:

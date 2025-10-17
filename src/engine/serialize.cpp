@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2025                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2012 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2012 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -141,7 +141,7 @@ IStreamBase & IStreamBase::operator>>( std::string & v )
     return *this;
 }
 
-IStreamBase & IStreamBase::operator>>( fheroes2::Point & v )
+IStreamBase & IStreamBase::operator>>( fheroes::Point & v )
 {
     return *this >> v.x >> v.y;
 }
@@ -222,7 +222,7 @@ OStreamBase & OStreamBase::operator<<( const std::string_view v )
     return *this;
 }
 
-OStreamBase & OStreamBase::operator<<( const fheroes2::Point & v )
+OStreamBase & OStreamBase::operator<<( const fheroes::Point & v )
 {
     return *this << v.x << v.y;
 }

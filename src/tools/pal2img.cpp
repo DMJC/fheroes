@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2023 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -62,10 +62,10 @@ int main( int argc, char ** argv )
             return EXIT_FAILURE;
         }
 
-        fheroes2::setGamePalette( palette );
+        fheroes::setGamePalette( palette );
     }
 
-    fheroes2::Image image( 256, 256 );
+    fheroes::Image image( 256, 256 );
     image.reset();
     // We do not need to care about the transform layer.
     image._disableTransformLayer();
@@ -75,15 +75,15 @@ int main( int argc, char ** argv )
 
     for ( uint8_t y = 0; y < 16; ++y ) {
         for ( uint8_t x = 0; x < 16; ++x ) {
-            fheroes2::Fill( image, x * 16, y * 16, 16, 16, x + y * 16 );
+            fheroes::Fill( image, x * 16, y * 16, 16, 16, x + y * 16 );
 
             if ( cyclingColors.count( x + y * 16 ) > 0 ) {
-                fheroes2::Fill( image, x * 16, y * 16, 4, 4, 0 );
+                fheroes::Fill( image, x * 16, y * 16, 4, 4, 0 );
             }
         }
     }
 
-    if ( !fheroes2::Save( image, outputFileName ) ) {
+    if ( !fheroes::Save( image, outputFileName ) ) {
         std::cerr << "Error writing to file " << outputFileName << std::endl;
         return EXIT_FAILURE;
     }

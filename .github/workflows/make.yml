@@ -16,14 +16,14 @@ jobs:
           os: ubuntu-22.04
           dependencies: libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev gettext
           env:
-            FHEROES2_STRICT_COMPILATION: ON
-            FHEROES2_WITH_TOOLS: ON
-            FHEROES2_WITH_IMAGE: ON
-          package_name: fheroes2_ubuntu_x86-64_SDL2.zip
+            FHEROES_STRICT_COMPILATION: ON
+            FHEROES_WITH_TOOLS: ON
+            FHEROES_WITH_IMAGE: ON
+          package_name: fheroes_ubuntu_x86-64_SDL2.zip
           package_files: >-
             LICENSE
             changelog.txt
-            fheroes2
+            fheroes
             ./docs/README.txt
             files/data/*.h2d
             files/lang/*.mo
@@ -31,7 +31,7 @@ jobs:
             ./script/demo/download_demo_version.sh
             ./script/homm2/extract_homm2_resources.sh
             script/linux/install_sdl2.sh
-          tools_package_name: fheroes2_tools_ubuntu_x86-64_SDL2.zip
+          tools_package_name: fheroes_tools_ubuntu_x86-64_SDL2.zip
           tools_package_files: >-
             LICENSE
             ./docs/GRAPHICAL_ASSETS.md
@@ -45,30 +45,30 @@ jobs:
             ./src/dist/tools/til2img
             ./src/dist/tools/xmi2midi
           release_name: Ubuntu x86-64 (Linux) build with SDL2 (latest commit)
-          release_tag: fheroes2-linux-sdl2_dev
+          release_tag: fheroes-linux-sdl2_dev
         - name: Linux x86-64 SDL2 Debug
           on: [ 'pull_request' ]
           os: ubuntu-latest
           dependencies: libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev gettext
           env:
-            FHEROES2_STRICT_COMPILATION: ON
-            FHEROES2_WITH_TOOLS: ON
-            FHEROES2_WITH_IMAGE: ON
-            FHEROES2_WITH_DEBUG: ON
-            FHEROES2_WITH_ASAN: ON
+            FHEROES_STRICT_COMPILATION: ON
+            FHEROES_WITH_TOOLS: ON
+            FHEROES_WITH_IMAGE: ON
+            FHEROES_WITH_DEBUG: ON
+            FHEROES_WITH_ASAN: ON
         - name: Linux ARM64 SDL2 Release
           on: [ 'pull_request', 'push' ]
           os: ubuntu-22.04-arm
           dependencies: libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev gettext
           env:
-            FHEROES2_STRICT_COMPILATION: ON
-            FHEROES2_WITH_TOOLS: ON
-            FHEROES2_WITH_IMAGE: ON
-          package_name: fheroes2_ubuntu_arm64_SDL2.zip
+            FHEROES_STRICT_COMPILATION: ON
+            FHEROES_WITH_TOOLS: ON
+            FHEROES_WITH_IMAGE: ON
+          package_name: fheroes_ubuntu_arm64_SDL2.zip
           package_files: >-
             LICENSE
             changelog.txt
-            fheroes2
+            fheroes
             ./docs/README.txt
             files/data/*.h2d
             files/lang/*.mo
@@ -76,7 +76,7 @@ jobs:
             ./script/demo/download_demo_version.sh
             ./script/homm2/extract_homm2_resources.sh
             script/linux/install_sdl2.sh
-          tools_package_name: fheroes2_tools_ubuntu_arm64_SDL2.zip
+          tools_package_name: fheroes_tools_ubuntu_arm64_SDL2.zip
           tools_package_files: >-
             LICENSE
             ./docs/GRAPHICAL_ASSETS.md
@@ -90,17 +90,17 @@ jobs:
             ./src/dist/tools/til2img
             ./src/dist/tools/xmi2midi
           release_name: Ubuntu ARM64 (Linux) build with SDL2 (latest commit)
-          release_tag: fheroes2-linux-arm-sdl2_dev
+          release_tag: fheroes-linux-arm-sdl2_dev
         - name: Linux ARM64 SDL2 Debug
           on: [ 'pull_request' ]
           os: ubuntu-24.04-arm
           dependencies: libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev gettext
           env:
-            FHEROES2_STRICT_COMPILATION: ON
-            FHEROES2_WITH_TOOLS: ON
-            FHEROES2_WITH_IMAGE: ON
-            FHEROES2_WITH_DEBUG: ON
-            FHEROES2_WITH_TSAN: ON
+            FHEROES_STRICT_COMPILATION: ON
+            FHEROES_WITH_TOOLS: ON
+            FHEROES_WITH_IMAGE: ON
+            FHEROES_WITH_DEBUG: ON
+            FHEROES_WITH_TSAN: ON
         - name: macOS SDL2
           on: [ 'pull_request', 'push' ]
           os: macos-14
@@ -110,14 +110,14 @@ jobs:
             CFLAGS: --target=x86_64-apple-macos10.15
             CXXFLAGS: --target=x86_64-apple-macos10.15
             LDFLAGS: --target=x86_64-apple-macos10.15
-            FHEROES2_STRICT_COMPILATION: ON
-            FHEROES2_WITH_TOOLS: ON
-            FHEROES2_WITH_IMAGE: ON
-          package_name: fheroes2_macos_x86-64_SDL2.zip
+            FHEROES_STRICT_COMPILATION: ON
+            FHEROES_WITH_TOOLS: ON
+            FHEROES_WITH_IMAGE: ON
+          package_name: fheroes_macos_x86-64_SDL2.zip
           package_files: >-
             LICENSE
             changelog.txt
-            fheroes2
+            fheroes
             ./docs/README.txt
             files/data/*.h2d
             files/lang/*.mo
@@ -125,7 +125,7 @@ jobs:
             ./script/demo/download_demo_version.sh
             ./script/homm2/extract_homm2_resources.sh
             script/macos/Brewfile
-          tools_package_name: fheroes2_tools_macos_x86-64_SDL2.zip
+          tools_package_name: fheroes_tools_macos_x86-64_SDL2.zip
           tools_package_files: >-
             LICENSE
             ./docs/GRAPHICAL_ASSETS.md
@@ -139,15 +139,15 @@ jobs:
             ./src/dist/tools/til2img
             ./src/dist/tools/xmi2midi
           release_name: macOS x86-64 build with SDL2 (latest commit)
-          release_tag: fheroes2-osx-sdl2_dev
+          release_tag: fheroes-osx-sdl2_dev
         - name: macOS SDL2 App Bundle
           on: [ 'pull_request' ]
           os: macos-latest
           dependencies: sdl2 sdl2_mixer dylibbundler
           env:
-            FHEROES2_STRICT_COMPILATION: ON
-            FHEROES2_WITH_TOOLS: ON
-            FHEROES2_MACOS_APP_BUNDLE: ON
+            FHEROES_STRICT_COMPILATION: ON
+            FHEROES_WITH_TOOLS: ON
+            FHEROES_MACOS_APP_BUNDLE: ON
     name: Make (${{ matrix.name }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -259,7 +259,7 @@ jobs:
         export PATH=$VITASDK/bin:$PATH
         make -f Makefile.vita -j "$(nproc)"
       env:
-        FHEROES2_STRICT_COMPILATION: ON
+        FHEROES_STRICT_COMPILATION: ON
         VITASDK: /usr/local/vitasdk
     - name: Update Vita SDK cache
       run: |
@@ -269,22 +269,22 @@ jobs:
         fi
     - name: Create package
       run: |
-        # Translations, H2D files and FH2M maps are already bundled into fheroes2.vpk
-        7z a -bb1 -tzip -- fheroes2_psv.zip LICENSE changelog.txt fheroes2.vpk ./docs/README.txt ./docs/README_PSV.md
+        # Translations, H2D files and FH2M maps are already bundled into fheroes.vpk
+        7z a -bb1 -tzip -- fheroes_psv.zip LICENSE changelog.txt fheroes.vpk ./docs/README.txt ./docs/README_PSV.md
     - uses: actions/upload-artifact@v4
       if: ${{ github.event_name == 'pull_request' }}
       with:
-        name: fheroes2_psv.zip
-        path: fheroes2_psv.zip
+        name: fheroes_psv.zip
+        path: fheroes_psv.zip
         if-no-files-found: error
     - uses: ncipollo/release-action@v1
       if: ${{ github.event_name == 'push' }}
       with:
-        artifacts: fheroes2_psv.zip
+        artifacts: fheroes_psv.zip
         body: ${{ github.event.head_commit.message }}
         token: ${{ secrets.GITHUB_TOKEN }}
         name: PS Vita build (latest commit)
-        tag: fheroes2-psv-sdl2_dev
+        tag: fheroes-psv-sdl2_dev
         allowUpdates: true
         artifactErrorsFailBuild: true
         prerelease: true
@@ -311,28 +311,28 @@ jobs:
         export PATH=$DEVKITPRO/tools/bin:$DEVKITPRO/portlibs/switch/bin:$DEVKITPRO/devkitA64/bin:$PATH
         make -f Makefile.switch -j "$(nproc)"
       env:
-        FHEROES2_STRICT_COMPILATION: ON
+        FHEROES_STRICT_COMPILATION: ON
         DEVKITPRO: /opt/devkitpro
     - name: Generate translations
       run: |
         make -C files/lang -j "$(nproc)"
     - name: Create package
       run: |
-        7z a -bb1 -tzip -- fheroes2_switch.zip LICENSE changelog.txt fheroes2.nro ./docs/README.txt ./docs/README_switch.md files/data/*.h2d files/lang/*.mo maps/*.fh2m
+        7z a -bb1 -tzip -- fheroes_switch.zip LICENSE changelog.txt fheroes.nro ./docs/README.txt ./docs/README_switch.md files/data/*.h2d files/lang/*.mo maps/*.fh2m
     - uses: actions/upload-artifact@v4
       if: ${{ github.event_name == 'pull_request' }}
       with:
-        name: fheroes2_switch.zip
-        path: fheroes2_switch.zip
+        name: fheroes_switch.zip
+        path: fheroes_switch.zip
         if-no-files-found: error
     - uses: ncipollo/release-action@v1
       if: ${{ github.event_name == 'push' }}
       with:
-        artifacts: fheroes2_switch.zip
+        artifacts: fheroes_switch.zip
         body: ${{ github.event.head_commit.message }}
         token: ${{ secrets.GITHUB_TOKEN }}
         name: Nintendo Switch build (latest commit)
-        tag: fheroes2-switch-sdl2_dev
+        tag: fheroes-switch-sdl2_dev
         allowUpdates: true
         artifactErrorsFailBuild: true
         prerelease: true
@@ -343,17 +343,17 @@ jobs:
         include:
         - name: Emscripten
           env:
-            FHEROES2_STRICT_COMPILATION: ON
-          package_name: fheroes2_emscripten.zip
+            FHEROES_STRICT_COMPILATION: ON
+          package_name: fheroes_emscripten.zip
           release_name: Emscripten build (latest commit)
-          release_tag: fheroes2-emscripten-sdl2_dev
+          release_tag: fheroes-emscripten-sdl2_dev
         - name: Emscripten Multithreaded
           env:
-            FHEROES2_STRICT_COMPILATION: ON
-            FHEROES2_WITH_THREADS: ON
-          package_name: fheroes2_emscripten_mt.zip
+            FHEROES_STRICT_COMPILATION: ON
+            FHEROES_WITH_THREADS: ON
+          package_name: fheroes_emscripten_mt.zip
           release_name: Emscripten Multithreaded build (latest commit)
-          release_tag: fheroes2-emscripten-sdl2-mt_dev
+          release_tag: fheroes-emscripten-sdl2-mt_dev
     name: Make (${{ matrix.name }})
     runs-on: ubuntu-latest
     container: emscripten/emsdk:latest
@@ -373,8 +373,8 @@ jobs:
       env: ${{ matrix.env }}
     - name: Create package
       run: |
-        # Translations, H2D files and FH2M maps are already bundled into fheroes2.data
-        7z a -bb1 -tzip -- ${{ matrix.package_name }} LICENSE changelog.txt fheroes2.data fheroes2.js fheroes2.wasm ./docs/README.txt ./files/emscripten/*
+        # Translations, H2D files and FH2M maps are already bundled into fheroes.data
+        7z a -bb1 -tzip -- ${{ matrix.package_name }} LICENSE changelog.txt fheroes.data fheroes.js fheroes.wasm ./docs/README.txt ./files/emscripten/*
     - uses: actions/upload-artifact@v4
       if: ${{ github.event_name == 'pull_request' }}
       with:

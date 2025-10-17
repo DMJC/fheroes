@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2021 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -119,17 +119,17 @@ namespace Logging
 #if defined( TARGET_NINTENDO_SWITCH )
         const std::scoped_lock<std::mutex> lock( logMutex );
 
-        logFile.open( "fheroes2.log", std::ofstream::out );
+        logFile.open( "fheroes.log", std::ofstream::out );
 #elif defined( _WIN32 )
         const std::scoped_lock<std::mutex> lock( logMutex );
 
-        const std::string configDir = System::GetConfigDirectory( "fheroes2" );
+        const std::string configDir = System::GetConfigDirectory( "fheroes" );
 
         System::MakeDirectory( configDir );
 
-        logFile.open( System::concatPath( configDir, "fheroes2.log" ), std::ofstream::out );
+        logFile.open( System::concatPath( configDir, "fheroes.log" ), std::ofstream::out );
 #elif defined( MACOS_APP_BUNDLE )
-        openlog( "fheroes2", LOG_CONS | LOG_NDELAY, LOG_USER );
+        openlog( "fheroes", LOG_CONS | LOG_NDELAY, LOG_USER );
 
         setlogmask( LOG_UPTO( LOG_WARNING ) );
 #endif

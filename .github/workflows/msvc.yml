@@ -15,20 +15,20 @@ jobs:
           platform: x86
           build_config: Release-SDL2
           deploy_config: SDL2
-          installer_package_name: fheroes2_windows_x86_SDL2_installer.exe
-          zip_package_name: fheroes2_windows_x86_SDL2.zip
-          tools_package_name: fheroes2_tools_windows_x86_SDL2.zip
+          installer_package_name: fheroes_windows_x86_SDL2_installer.exe
+          zip_package_name: fheroes_windows_x86_SDL2.zip
+          tools_package_name: fheroes_tools_windows_x86_SDL2.zip
           release_name: Windows x86 build with SDL2 (latest commit)
-          release_tag: fheroes2-windows-x86-SDL2
+          release_tag: fheroes-windows-x86-SDL2
         - name: SDL2 x64
           platform: x64
           build_config: Release-SDL2
           deploy_config: SDL2
-          installer_package_name: fheroes2_windows_x64_SDL2_installer.exe
-          zip_package_name: fheroes2_windows_x64_SDL2.zip
-          tools_package_name: fheroes2_tools_windows_x64_SDL2.zip
+          installer_package_name: fheroes_windows_x64_SDL2_installer.exe
+          zip_package_name: fheroes_windows_x64_SDL2.zip
+          tools_package_name: fheroes_tools_windows_x64_SDL2.zip
           release_name: Windows x64 build with SDL2 (latest commit)
-          release_tag: fheroes2-windows-x64-SDL2
+          release_tag: fheroes-windows-x64-SDL2
     name: MSVC (${{ matrix.name }})
     runs-on: windows-2022
     timeout-minutes: 30
@@ -60,11 +60,11 @@ jobs:
         SIGNTOOL_DIR: C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64
     - name: Generate version information
       run: |
-        echo "FHEROES2_APP_VERSION=$(cat version.txt)" >> "$GITHUB_ENV"
+        echo "FHEROES_APP_VERSION=$(cat version.txt)" >> "$GITHUB_ENV"
     - uses: microsoft/setup-msbuild@v2
     - name: Build
       run: |
-        MSBuild.exe fheroes2-vs2019.vcxproj /property:Platform=${{ matrix.platform }} /property:Configuration=${{ matrix.build_config }}
+        MSBuild.exe fheroes-vs2019.vcxproj /property:Platform=${{ matrix.platform }} /property:Configuration=${{ matrix.build_config }}
     - name: Build tools
       run: |
         cd src/tools
@@ -83,7 +83,7 @@ jobs:
       shell: cmd
     - name: Create Inno Setup package
       run: |
-        iscc.exe script\windows\fheroes2.iss /DAppVersion="%FHEROES2_APP_VERSION%" /DBuildDir="..\..\%BUILD_DIR%" ^
+        iscc.exe script\windows\fheroes.iss /DAppVersion="%FHEROES_APP_VERSION%" /DBuildDir="..\..\%BUILD_DIR%" ^
                  /DPlatform=${{ matrix.platform }} /DDeployConfName=${{ matrix.deploy_config }}
       shell: cmd
       env:
@@ -91,7 +91,7 @@ jobs:
     - name: Create ZIP packages
       run: |
         7z.exe a -bb1 -tzip -- "$BUILD_DIR"\\${{ matrix.zip_package_name }} \
-                               .\\"$BUILD_DIR"\\fheroes2.exe \
+                               .\\"$BUILD_DIR"\\fheroes.exe \
                                .\\"$BUILD_DIR"\\*.dll \
                                LICENSE \
                                changelog.txt \

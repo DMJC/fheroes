@@ -69,10 +69,10 @@ DATA/NETLODR.DAT
 # build directory
 build
 
-# fheroes2 related files
+# fheroes related files
 files/save
-# Never put 'fheroes2' in this list. It breaks SonarQube analysis
-fheroes2.cfg
+# Never put 'fheroes' in this list. It breaks SonarQube analysis
+fheroes.cfg
 
 # demo directory
 script/demo/demo
@@ -102,7 +102,7 @@ ios/**/xcuserdata
 .DS_Store
 
 # Web build artifacts
-fheroes2.data
-fheroes2.js
-fheroes2.wasm
-fheroes2.wasm.map
+fheroes.data
+fheroes.js
+fheroes.wasm
+fheroes.wasm.map

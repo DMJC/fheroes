@@ -1,16 +1,16 @@
-# Russian translation of fheroes2
-# Copyright (C) 2021 - 2025 fheroes2 team <fhomm2@gmail.com>
+# Russian translation of fheroes
+# Copyright (C) 2021 - 2025 fheroes team <fhomm2@gmail.com>
 # Copyright (C) 2009 Igor Orlov <igororlov@inbox.ru>
 # Copyright (C) 2009 Andrey Afletdinov <afletdinov@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2025-09-10 15:29+0300\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: <ru@li.org> <>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -5220,18 +5220,18 @@ msgstr "и многим другим, кто участвует в развит�
 msgid "Support us at"
 msgstr "Поддержите нас"
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
 msgstr ""
-"https://www.patreon.com/fheroes2\n"
-"https://boosty.to/fheroes2"
+"https://www.patreon.com/fheroes\n"
+"https://boosty.to/fheroes"
 
 msgid "Connect with us at"
 msgstr "Присоединяйтесь к нам"
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
 msgstr ""
-"https://vk.com/fheroes2\n"
-"https://www.facebook.com/groups/fheroes2"
+"https://vk.com/fheroes\n"
+"https://www.facebook.com/groups/fheroes"
 
 msgid "Need help with the game?"
 msgstr "Вам нужна помощь по игре?"
@@ -5813,11 +5813,11 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr "Вернуться в главное меню."
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "Команда fheroes2 Resurrection представляет"
+msgid "fheroes Resurrection Team presents"
+msgstr "Команда fheroes Resurrection представляет"
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
-msgstr "Добро пожаловать в Heroes of Might and Magic II на движке fheroes2!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
+msgstr "Добро пожаловать в Heroes of Might and Magic II на движке fheroes!"
 
 msgid ""
 "\n"
@@ -5879,12 +5879,12 @@ msgid "Loading video. Please wait..."
 msgstr "Загрузка видео. Пожалуйста, подождите..."
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."
 msgstr ""
-"Для работы fheroes2 необходимы файлы данных от оригинальной игры Heroes of "
+"Для работы fheroes необходимы файлы данных от оригинальной игры Heroes of "
 "Might and Magic II. Судя по всему, Вы используете файлы от демо-версии "
 "Heroes of Might and Magic II. Учтите, что в таком случае Вам будет доступен "
 "только один сценарий."

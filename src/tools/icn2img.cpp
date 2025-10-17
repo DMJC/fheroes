@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2022 - 2024                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -73,7 +73,7 @@ int main( int argc, char ** argv )
             return EXIT_FAILURE;
         }
 
-        fheroes2::setGamePalette( palette );
+        fheroes::setGamePalette( palette );
     }
 
     std::vector<std::string> inputFileNames;
@@ -122,13 +122,13 @@ int main( int argc, char ** argv )
 
         const size_t beginPos = inputStream.tell();
 
-        std::vector<fheroes2::ICNHeader> headers( spritesCount );
-        for ( fheroes2::ICNHeader & header : headers ) {
+        std::vector<fheroes::ICNHeader> headers( spritesCount );
+        for ( fheroes::ICNHeader & header : headers ) {
             inputStream >> header;
         }
 
         for ( uint16_t spriteIdx = 0; spriteIdx < spritesCount; ++spriteIdx ) {
-            const fheroes2::ICNHeader & header = headers[spriteIdx];
+            const fheroes::ICNHeader & header = headers[spriteIdx];
 
             inputStream.seek( beginPos + header.offsetData );
 
@@ -148,7 +148,7 @@ int main( int argc, char ** argv )
                 continue;
             }
 
-            const fheroes2::Sprite sprite = fheroes2::decodeICNSprite( buf.data(), buf.data() + dataSize, header );
+            const fheroes::Sprite sprite = fheroes::decodeICNSprite( buf.data(), buf.data() + dataSize, header );
 
             std::ostringstream spriteIdxStream;
             spriteIdxStream << std::setw( 3 ) << std::setfill( '0' ) << spriteIdx;
@@ -156,7 +156,7 @@ int main( int argc, char ** argv )
             const std::string spriteIdxStr = spriteIdxStream.str();
             std::string outputFileName = ( prefixPath / spriteIdxStr ).string();
 
-            if ( fheroes2::isPNGFormatSupported() ) {
+            if ( fheroes::isPNGFormatSupported() ) {
                 outputFileName += ".png";
             }
             else {
@@ -179,7 +179,7 @@ int main( int argc, char ** argv )
                 return EXIT_FAILURE;
             }
 
-            if ( !fheroes2::Save( sprite, outputFileName, spriteBackground ) ) {
+            if ( !fheroes::Save( sprite, outputFileName, spriteBackground ) ) {
                 ++spritesFailed;
 
                 std::cerr << inputFileName << ": error saving sprite " << spriteIdx << std::endl;

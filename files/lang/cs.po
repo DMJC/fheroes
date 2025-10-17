@@ -1,14 +1,14 @@
-# Czech translation for fheroes2
-# Copyright (C) 2022 fheroes2 team <fhomm2@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# Czech translation for fheroes
+# Copyright (C) 2022 fheroes team <fhomm2@gmail.com>
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2025-04-09 11:06+0200\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: Czech <george.king@seznam.cz>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -5178,14 +5178,14 @@ msgstr "a mnoho dalších přispěvatelů a podporovatelů!"
 msgid "Support us at"
 msgstr "Podpořte nás na"
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
-msgstr "https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
+msgstr "https://www.patreon.com/fheroes"
 
 msgid "Connect with us at"
 msgstr "Spojte se s námi na"
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
-msgstr "https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
+msgstr "https://www.facebook.com/groups/fheroes"
 
 msgid "Need help with the game?"
 msgstr "Potřebujete pomoc s hrou?"
@@ -5766,11 +5766,11 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr "Zrušit a vrátit se do hlavní nabídky."
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "Tým fheroes2 Resurrection uvádí"
+msgid "fheroes Resurrection Team presents"
+msgstr "Tým fheroes Resurrection uvádí"
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
-msgstr "Vítejte ve hře Heroes of Might and Magic II běžící na enginu fheroes2!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
+msgstr "Vítejte ve hře Heroes of Might and Magic II běžící na enginu fheroes!"
 
 msgid ""
 "\n"
@@ -5831,12 +5831,12 @@ msgid "Loading video. Please wait..."
 msgstr "Načítání videa. Prosím, čekej..."
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."
 msgstr ""
-"Aby mohl fheroes2 fungovat potřebuje soubory z původní hry Heroes of Might "
+"Aby mohl fheroes fungovat potřebuje soubory z původní hry Heroes of Might "
 "and Magic II. Zdá se, že k používáte demoverzi Heroes of Might and Magic II. "
 "Vezměte prosím na vědomí, že v tomto nastavení bude dostupný pouze jeden "
 "scénář."

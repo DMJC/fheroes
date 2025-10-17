@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2022 - 2024                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -70,7 +70,7 @@ int main( int argc, char ** argv )
             return EXIT_FAILURE;
         }
 
-        fheroes2::setGamePalette( palette );
+        fheroes::setGamePalette( palette );
     }
 
     std::vector<std::string> inputFileNames;
@@ -126,10 +126,10 @@ int main( int argc, char ** argv )
             return EXIT_FAILURE;
         }
 
-        std::vector<fheroes2::Image> sprites;
+        std::vector<fheroes::Image> sprites;
         sprites.reserve( spritesCount );
 
-        fheroes2::decodeTILImages( buf.data(), spritesCount, spriteWidth, spriteHeight, sprites );
+        fheroes::decodeTILImages( buf.data(), spritesCount, spriteWidth, spriteHeight, sprites );
         if ( sprites.size() != spritesCount ) {
             std::cerr << inputFileName << ": failed to extract sprites" << std::endl;
             return EXIT_FAILURE;
@@ -142,14 +142,14 @@ int main( int argc, char ** argv )
             const std::string spriteIdxStr = spriteIdxStream.str();
             std::string outputFileName = ( prefixPath / spriteIdxStr ).string();
 
-            if ( fheroes2::isPNGFormatSupported() ) {
+            if ( fheroes::isPNGFormatSupported() ) {
                 outputFileName += ".png";
             }
             else {
                 outputFileName += ".bmp";
             }
 
-            if ( !fheroes2::Save( sprites[spriteIdx], outputFileName, spriteBackground ) ) {
+            if ( !fheroes::Save( sprites[spriteIdx], outputFileName, spriteBackground ) ) {
                 std::cerr << inputFileName << ": error saving sprite " << spriteIdx << std::endl;
                 return EXIT_FAILURE;
             }

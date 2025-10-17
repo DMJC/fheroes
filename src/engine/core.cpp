@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2021 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -84,14 +84,14 @@ namespace
     }
 #endif
 
-    uint32_t convertToSDLFlag( const fheroes2::SystemInitializationComponent component )
+    uint32_t convertToSDLFlag( const fheroes::SystemInitializationComponent component )
     {
         switch ( component ) {
-        case fheroes2::SystemInitializationComponent::Audio:
+        case fheroes::SystemInitializationComponent::Audio:
             return SDL_INIT_AUDIO;
-        case fheroes2::SystemInitializationComponent::Video:
+        case fheroes::SystemInitializationComponent::Video:
             return SDL_INIT_VIDEO;
-        case fheroes2::SystemInitializationComponent::GameController:
+        case fheroes::SystemInitializationComponent::GameController:
             return SDL_INIT_GAMECONTROLLER;
         default:
             // Did you add a new component?
@@ -102,17 +102,17 @@ namespace
         return 0;
     }
 
-    uint32_t getSDLInitFlags( const std::set<fheroes2::SystemInitializationComponent> & components )
+    uint32_t getSDLInitFlags( const std::set<fheroes::SystemInitializationComponent> & components )
     {
         uint32_t flags = 0;
-        for ( const fheroes2::SystemInitializationComponent component : components ) {
+        for ( const fheroes::SystemInitializationComponent component : components ) {
             flags |= convertToSDLFlag( component );
         }
         return flags;
     }
 
     // For now only SDL library is supported.
-    bool initCoreInternally( const std::set<fheroes2::SystemInitializationComponent> & components )
+    bool initCoreInternally( const std::set<fheroes::SystemInitializationComponent> & components )
     {
         const uint32_t sdlFlags = getSDLInitFlags( components );
 
@@ -121,11 +121,11 @@ namespace
             return false;
         }
 
-        if ( components.count( fheroes2::SystemInitializationComponent::Audio ) > 0 ) {
+        if ( components.count( fheroes::SystemInitializationComponent::Audio ) > 0 ) {
             Audio::Init();
         }
 
-        if ( components.count( fheroes2::SystemInitializationComponent::GameController ) > 0 ) {
+        if ( components.count( fheroes::SystemInitializationComponent::GameController ) > 0 ) {
             LocalEvent::Get().initController();
         }
 
@@ -136,18 +136,18 @@ namespace
 
     void freeCoreInternally()
     {
-        if ( fheroes2::isComponentInitialized( fheroes2::SystemInitializationComponent::GameController ) ) {
+        if ( fheroes::isComponentInitialized( fheroes::SystemInitializationComponent::GameController ) ) {
             LocalEvent::Get().CloseController();
         }
 
-        if ( fheroes2::isComponentInitialized( fheroes2::SystemInitializationComponent::Audio ) ) {
+        if ( fheroes::isComponentInitialized( fheroes::SystemInitializationComponent::Audio ) ) {
             Audio::Quit();
         }
 
         SDL_Quit();
     }
 
-    bool isComponentInitializedInternally( const fheroes2::SystemInitializationComponent component )
+    bool isComponentInitializedInternally( const fheroes::SystemInitializationComponent component )
     {
         const uint32_t sdlFlag = convertToSDLFlag( component );
         assert( sdlFlag != 0 );
@@ -156,7 +156,7 @@ namespace
     }
 }
 
-namespace fheroes2
+namespace fheroes
 {
     HardwareInitializer::HardwareInitializer()
     {

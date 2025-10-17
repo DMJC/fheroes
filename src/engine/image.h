@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,7 +27,7 @@
 
 #include "math_base.h"
 
-namespace fheroes2
+namespace fheroes
 {
     // Image always contains an image layer and if image is not a single-layer then also a transform layer.
     // - image layer contains visible pixels which are copy to a destination image

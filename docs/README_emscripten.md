@@ -1,4 +1,4 @@
-# Emscripten (Wasm) Port of [fheroes2](README.md) Project
+# Emscripten (Wasm) Port of [fheroes](README.md) Project
 
 ## Current Status of this Port
 
@@ -32,7 +32,7 @@ emmake make -f Makefile.emscripten
 If you want to specify some additional ad hoc build parameters, you can use the appropriate environment variables for this. For example, the following command:
 
 ```sh
-FHEROES2_WITH_THREADS=ON LDFLAGS="-sMODULARIZE -sEXPORTED_RUNTIME_METHODS=run -sEXPORT_NAME=fheroes2" emmake make -f Makefile.emscripten
+FHEROES_WITH_THREADS=ON LDFLAGS="-sMODULARIZE -sEXPORTED_RUNTIME_METHODS=run -sEXPORT_NAME=fheroes" emmake make -f Makefile.emscripten
 ```
 
 will build a WebAssembly binary with multithreading support, as well as with additional parameters for creating a module.
@@ -59,10 +59,10 @@ Please see the following link for details:
 After the build is completed, copy the following files to the appropriate directory on your website:
 
 ```text
-fheroes2.data
-fheroes2.js
-fheroes2.wasm
-fheroes2.wasm.map (if fheroes2 has been built in debug mode)
+fheroes.data
+fheroes.js
+fheroes.wasm
+fheroes.wasm.map (if fheroes has been built in debug mode)
 ```
 
 If you want to use the stock launcher (pretty basic at the moment), then you will also need to copy all the files from `files/emscripten` to the same directory.

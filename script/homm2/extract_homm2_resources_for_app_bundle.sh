@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022 - 2025                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -21,7 +21,7 @@
 ###########################################################################
 
 # Purpose: This script extracts resources from a Heroes of Might and Magic II
-# directory or installer and copies them to the appropriate location for the fheroes2
+# directory or installer and copies them to the appropriate location for the fheroes
 # macOS app bundle.
 #
 # Usage: ./extract_homm2_resources_for_app_bundle.sh [HOMM2_PATH]
@@ -60,7 +60,7 @@ if [[ ! -e "${HOMM2_PATH}" ]]; then
 fi
 
 # Define user data directory
-USER_DATA_DIR="${HOME}/Library/Application Support/fheroes2"
+USER_DATA_DIR="${HOME}/Library/Application Support/fheroes"
 
 # Get the directory where this script is located
 SCRIPT_DIR=$(dirname "$0")

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2023 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -83,7 +83,7 @@ namespace
             return false;
         }
 
-        fheroes2::setGamePalette( palette );
+        fheroes::setGamePalette( palette );
         return true;
     }
 
@@ -112,7 +112,7 @@ namespace
         for ( const std::string & inputFileName : inputFileNames ) {
             std::cout << "Processing " << inputFileName << "..." << std::endl;
 
-            fheroes2::H2DReader reader;
+            fheroes::H2DReader reader;
             if ( !reader.open( inputFileName ) ) {
                 std::cerr << "Cannot open file " << inputFileName << std::endl;
                 // A non-existent or inaccessible file is not considered a fatal error
@@ -132,23 +132,23 @@ namespace
             for ( const std::string & name : reader.getAllFileNames() ) {
                 // Image items need special processing
                 if ( isH2DImageItem( name ) ) {
-                    fheroes2::Sprite image;
+                    fheroes::Sprite image;
 
-                    if ( !fheroes2::readImageFromH2D( reader, name, image ) ) {
+                    if ( !fheroes::readImageFromH2D( reader, name, image ) ) {
                         std::cerr << inputFileName << ": item " << name << " contains an invalid image" << std::endl;
                         return EXIT_FAILURE;
                     }
 
                     std::string outputFileName = ( prefixPath / std::filesystem::path( name ).stem() ).string();
 
-                    if ( fheroes2::isPNGFormatSupported() ) {
+                    if ( fheroes::isPNGFormatSupported() ) {
                         outputFileName += ".png";
                     }
                     else {
                         outputFileName += ".bmp";
                     }
 
-                    if ( !fheroes2::Save( image, outputFileName, imageBackground ) ) {
+                    if ( !fheroes::Save( image, outputFileName, imageBackground ) ) {
                         std::cerr << inputFileName << ": error saving image " << name << std::endl;
                         return EXIT_FAILURE;
                     }
@@ -166,7 +166,7 @@ namespace
                         return EXIT_FAILURE;
                     }
 
-                    const auto streamSize = fheroes2::checkedCast<std::streamsize>( buf.size() );
+                    const auto streamSize = fheroes::checkedCast<std::streamsize>( buf.size() );
                     if ( !streamSize ) {
                         std::cerr << inputFileName << ": item " << name << " is too large" << std::endl;
                         return EXIT_FAILURE;
@@ -208,7 +208,7 @@ namespace
             }
         }
 
-        fheroes2::H2DWriter writer;
+        fheroes::H2DWriter writer;
 
         std::error_code ec;
 
@@ -222,7 +222,7 @@ namespace
                 return EXIT_FAILURE;
             }
 
-            fheroes2::H2DReader reader;
+            fheroes::H2DReader reader;
             if ( !reader.open( h2dFileName ) ) {
                 std::cerr << "Cannot open file " << h2dFileName << std::endl;
                 return EXIT_FAILURE;
@@ -241,9 +241,9 @@ namespace
 
             // Image files need special processing
             if ( isImageFile( inputFileName ) ) {
-                fheroes2::Sprite image;
+                fheroes::Sprite image;
 
-                if ( !fheroes2::Load( inputFileName, image ) ) {
+                if ( !fheroes::Load( inputFileName, image ) ) {
                     std::cerr << "Cannot open file " << inputFileName << std::endl;
                     // A non-existent or inaccessible file is not considered a fatal error
                     continue;
@@ -256,7 +256,7 @@ namespace
 
                 // TODO: Add ability to set sprite position and ability to determine colors in original image
                 // that are used for transparency and shadows.
-                if ( !fheroes2::writeImageToH2D( writer, std::filesystem::path( inputFileName ).filename().replace_extension( "image" ).string(), image ) ) {
+                if ( !fheroes::writeImageToH2D( writer, std::filesystem::path( inputFileName ).filename().replace_extension( "image" ).string(), image ) ) {
                     std::cerr << "Error adding file " << inputFileName << std::endl;
                     return EXIT_FAILURE;
                 }
@@ -269,7 +269,7 @@ namespace
                     continue;
                 }
 
-                const auto size = fheroes2::checkedCast<size_t>( static_cast<std::streamoff>( inputStream.tellg() ) );
+                const auto size = fheroes::checkedCast<size_t>( static_cast<std::streamoff>( inputStream.tellg() ) );
                 if ( !size ) {
                     std::cerr << "File " << inputFileName << " is too large" << std::endl;
                     return EXIT_FAILURE;
@@ -286,7 +286,7 @@ namespace
 
                 inputStream.seekg( 0, std::ios_base::beg );
 
-                const auto streamSize = fheroes2::checkedCast<std::streamsize>( buf.size() );
+                const auto streamSize = fheroes::checkedCast<std::streamsize>( buf.size() );
                 if ( !streamSize ) {
                     std::cerr << "File " << inputFileName << " is too large" << std::endl;
                     return EXIT_FAILURE;

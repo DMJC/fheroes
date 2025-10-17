@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022 - 2025                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #

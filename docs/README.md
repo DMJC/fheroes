@@ -1,12 +1,12 @@
-# fheroes2
+# fheroes
 
-**fheroes2** is a recreation of the Heroes of Might and Magic II game engine.
+**fheroes** is a recreation of the Heroes of Might and Magic II game engine.
 
 This open source multiplatform project, written from scratch, is designed to reproduce the original game with significant
 improvements in gameplay, graphics and logic (including support for high-resolution graphics, improved AI, numerous fixes
 and user interface improvements), breathing new life into one of the most addictive turn-based strategy games.
 
-You can find a complete list of all of our changes and enhancements in [**its own wiki page**](https://github.com/ihhub/fheroes2/wiki/Features-and-enhancements-of-the-project).
+You can find a complete list of all of our changes and enhancements in [**its own wiki page**](https://github.com/ihhub/fheroes/wiki/Features-and-enhancements-of-the-project).
 
 <!-- markdownlint-disable MD033 -->
 <div class="image-showcase">
@@ -22,10 +22,10 @@ You can find a complete list of all of our changes and enhancements in [**its ow
 
 ## Download and Install
 
-Please follow the [**installation guide**](INSTALL.md) to download and install fheroes2.
+Please follow the [**installation guide**](INSTALL.md) to download and install fheroes.
 
-<a href="https://github.com/ihhub/fheroes2/releases">
-    <img loading="lazy" width="106" height="20" src="https://img.shields.io/github/downloads/ihhub/fheroes2/total.svg" alt="Github Downloads">
+<a href="https://github.com/ihhub/fheroes/releases">
+    <img loading="lazy" width="106" height="20" src="https://img.shields.io/github/downloads/ihhub/fheroes/total.svg" alt="Github Downloads">
 </a>
 
 ## Copyright
@@ -37,15 +37,15 @@ free demo version of the game. Please refer to the [**installation guide**](INST
 
 ## License
 
-This project is licensed under the [**GNU General Public License v2.0**](https://github.com/ihhub/fheroes2/blob/master/LICENSE).
+This project is licensed under the [**GNU General Public License v2.0**](https://github.com/ihhub/fheroes/blob/master/LICENSE).
 
-Initially, the project was developed on [**sourceforge**](https://sourceforge.net/projects/fheroes2/).
+Initially, the project was developed on [**sourceforge**](https://sourceforge.net/projects/fheroes/).
 
 ## Contribution and Development
 
-This repository is a place for everyone. If you want to contribute, please read more to learn [**how you can contribute**](https://github.com/ihhub/fheroes2/wiki/F.A.Q.#q-how-can-i-contribute-to-the-project).
+This repository is a place for everyone. If you want to contribute, please read more to learn [**how you can contribute**](https://github.com/ihhub/fheroes/wiki/F.A.Q.#q-how-can-i-contribute-to-the-project).
 
-### Developing fheroes2 engine
+### Developing fheroes engine
 
 To build the project from source, please follow [**this guide**](DEVELOPMENT.md).
 
@@ -53,35 +53,35 @@ To assist with the graphical asset efforts of the project, please look at our [*
 
 If you would like to help translating the project, please read the [**translation guide**](TRANSLATION.md).
 
-### Developing fheroes2 documentation site
+### Developing fheroes documentation site
 
-To build the [website](https://ihhub.github.io/fheroes2/) from source, please follow
+To build the [website](https://ihhub.github.io/fheroes/) from source, please follow
 [**this guide**](WEBSITE_LOCAL_DEV.md).
 
 ## Donation
 
-We accept donations via [**Patreon**](https://www.patreon.com/fheroes2), [**PayPal**](https://www.paypal.com/paypalme/fheroes2) or [**Boosty**](https://boosty.to/fheroes2).
+We accept donations via [**Patreon**](https://www.patreon.com/fheroes), [**PayPal**](https://www.paypal.com/paypalme/fheroes) or [**Boosty**](https://boosty.to/fheroes).
 All donations will be used only for the future project development as we do not consider this project as a source of income by any means.
 
-<a href="https://www.patreon.com/fheroes2">
+<a href="https://www.patreon.com/fheroes">
     <img loading="lazy" width="102" height="20" src="https://img.shields.io/badge/Donate-Patreon-green.svg" alt="Patreon Donate" />
 </a>
-<a href="https://www.paypal.com/paypalme/fheroes2">
+<a href="https://www.paypal.com/paypalme/fheroes">
     <img loading="lazy" width="96" height="20" src="https://img.shields.io/badge/Donate-PayPal-green.svg" alt="Paypal Donate" />
 </a>
-<a href="https://boosty.to/fheroes2">
+<a href="https://boosty.to/fheroes">
     <img loading="lazy" width="96" height="20" src="https://img.shields.io/badge/Donate-Boosty-green.svg" alt="Boosty Donate" />
 </a>
 
 ## Contacts
 
-Follow us on social networks: [**Facebook**](https://www.facebook.com/groups/fheroes2) or [**VK**](https://vk.com/fheroes2).
+Follow us on social networks: [**Facebook**](https://www.facebook.com/groups/fheroes) or [**VK**](https://vk.com/fheroes).
 We also have a [**Discord**](https://discord.gg/xF85vbZ) server to discuss the development of the project.
 
-<a href="https://www.facebook.com/groups/fheroes2">
+<a href="https://www.facebook.com/groups/fheroes">
     <img loading="lazy" width="61" height="20" src="https://img.shields.io/badge/Facebook-blue.svg" alt="Facebook" />
 </a>
-<a href="https://vk.com/fheroes2">
+<a href="https://vk.com/fheroes">
     <img loading="lazy" width="25" height="20" src="https://img.shields.io/badge/VK-blue.svg" alt="VK" />
 </a>
 <a href="https://discord.gg/xF85vbZ">
@@ -94,4 +94,4 @@ We also have a [**Discord**](https://discord.gg/xF85vbZ) server to discuss the d
 
 ## Frequently Asked Questions (FAQ)
 
-You can find answers to the most commonly asked questions on our [**F.A.Q. page**](https://github.com/ihhub/fheroes2/wiki/F.A.Q.).
+You can find answers to the most commonly asked questions on our [**F.A.Q. page**](https://github.com/ihhub/fheroes/wiki/F.A.Q.).

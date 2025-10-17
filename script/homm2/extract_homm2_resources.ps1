@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2021 - 2023                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -40,7 +40,7 @@ try {
 
     $destPath = $null
 
-    if (Test-Path -Path "fheroes2.exe" -PathType Leaf) {
+    if (Test-Path -Path "fheroes.exe" -PathType Leaf) {
         $destPath = "."
     } elseif (Test-Path -Path "..\..\src" -PathType Container) {
         # Special hack for developers running this script from the source tree
@@ -69,7 +69,7 @@ try {
             return
         }
 
-        $destPath = "$Env:APPDATA\fheroes2"
+        $destPath = "$Env:APPDATA\fheroes"
 
         if (-Not (Test-Path -Path $destPath -PathType Container)) {
             [void](New-Item -Path $destPath -ItemType "directory")
@@ -178,7 +178,7 @@ try {
             continue
         }
 
-        # fheroes2 can be installed to the HoMM2 directory, there is no need to copy files in this case
+        # fheroes can be installed to the HoMM2 directory, there is no need to copy files in this case
         if ((Resolve-Path $homm2Dir).Path -Eq (Resolve-Path $destPath).Path) {
             continue
         }

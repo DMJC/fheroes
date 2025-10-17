@@ -14,9 +14,9 @@
             path="files/save" />
         <include
             domain="external"
-            path="fheroes2.cfg" />
+            path="fheroes.cfg" />
         <include
             domain="external"
-            path="fheroes2.key" />
+            path="fheroes.key" />
     </cloud-backup>
 </data-extraction-rules>

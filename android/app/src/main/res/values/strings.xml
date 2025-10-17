@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_label">fheroes2</string>
+    <string name="app_label">fheroes</string>
     <string name="activity_toolset_label">fh2 Toolset</string>
-    <string name="activity_toolset_game_logo_img_content_description">fheroes2 logo</string>
+    <string name="activity_toolset_game_logo_img_content_description">fheroes logo</string>
     <string name="activity_toolset_game_status_lbl_text"><b>You cannot run the game at the moment, because some data files of the original game are missing.</b>\n\nPlease put the contents of the directory with the original Heroes of Might and Magic II game (or just <b>ANIM</b>, <b>DATA</b>, <b>MAPS</b> and <b>MUSIC</b> folders) into a ZIP archive, copy it to this device, press the \"<b>Extract HoMM2 assets</b>\" button and select this ZIP archive.\n\nIf you do not have a copy of the original game, you can download a ZIP archive of the demo version. Once the download is complete please press the \"<b>Extract HoMM2 assets</b>\" button and select the newly downloaded demo archive.</string>
     <string name="activity_toolset_start_game_btn_text">Start game</string>
     <string name="activity_toolset_extract_homm2_assets_btn_text">Extract HoMM2 assets</string>
@@ -54,7 +54,7 @@
     </plurals>
     <string name="activity_save_file_manager_delete_confirmation_positive_btn_text">Yes</string>
     <string name="activity_save_file_manager_delete_confirmation_negative_btn_text">No</string>
-    <string name="activity_save_file_manager_suggested_zip_file_name" translatable="false">fheroes2_save_files.zip</string>
+    <string name="activity_save_file_manager_suggested_zip_file_name" translatable="false">fheroes_save_files.zip</string>
     <string name="activity_map_file_manager_label">fh2 Map File Manager</string>
     <string name="activity_map_file_manager_map_file_list_empty_lbl_text">No map files available</string>
     <string name="activity_map_file_manager_select_all_btn_content_description">Select all map files</string>
@@ -86,5 +86,5 @@
     </plurals>
     <string name="activity_map_file_manager_delete_confirmation_positive_btn_text">Yes</string>
     <string name="activity_map_file_manager_delete_confirmation_negative_btn_text">No</string>
-    <string name="activity_map_file_manager_suggested_zip_file_name" translatable="false">fheroes2_map_files.zip</string>
+    <string name="activity_map_file_manager_suggested_zip_file_name" translatable="false">fheroes_map_files.zip</string>
 </resources>

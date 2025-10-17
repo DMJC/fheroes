@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2023                                                    *
  *                                                                         *
  *   Copyright (c) 2010 Stephen Connolly.                                  *

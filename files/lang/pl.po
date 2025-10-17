@@ -1,16 +1,16 @@
-# Polish translation of fheroes2
-# Copyright (C) 2021 - 2022 fheroes2 team <fhomm2@gmail.com>
+# Polish translation of fheroes
+# Copyright (C) 2021 - 2022 fheroes team <fhomm2@gmail.com>
 # Copyright (C) 2009 Igor Orlov <igororlov@inbox.ru>
 # Copyright (C) 2009 Andrey Afletdinov <afletdinov@mail.dc.baikal.ru>
-# This file is distributed under the same license as the fheroes2 package.
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2024-07-20 23:19+0200\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -5358,14 +5358,14 @@ msgstr "i wielu, wielu innym!"
 msgid "Support us at"
 msgstr "Wesprzyj nas"
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
-msgstr "https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
+msgstr "https://www.patreon.com/fheroes"
 
 msgid "Connect with us at"
 msgstr "Odwiedź nas"
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
-msgstr "https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
+msgstr "https://www.facebook.com/groups/fheroes"
 
 msgid "Need help with the game?"
 msgstr "Potrzebujesz wsparcia?"
@@ -5966,12 +5966,12 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr "Wróć do głównego menu."
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "fheroes2 Resurrection Team prezentuje"
+msgid "fheroes Resurrection Team presents"
+msgstr "fheroes Resurrection Team prezentuje"
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
 msgstr ""
-"Witamy w grze Heroes of Might and Magic II na silniku fheroes2! Przed "
+"Witamy w grze Heroes of Might and Magic II na silniku fheroes! Przed "
 "rozpoczęciem wybierz rozdzielczość gry."
 
 msgid ""
@@ -5989,7 +5989,7 @@ msgid ""
 "\n"
 "Before starting the game, please select a game resolution."
 msgstr ""
-"Witamy w grze Heroes of Might and Magic II na silniku fheroes2! Przed "
+"Witamy w grze Heroes of Might and Magic II na silniku fheroes! Przed "
 "rozpoczęciem wybierz rozdzielczość gry."
 
 msgid "Greetings!"
@@ -6030,7 +6030,7 @@ msgid "Loading video. Please wait..."
 msgstr "Wczytuję video. Proszę czekać..."
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."

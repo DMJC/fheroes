@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -197,7 +197,7 @@ namespace
         69,  69,  69,  69,  69,  69,  69,  69,  69,  69,  242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255 // No cycle
     };
 
-    bool Validate( const fheroes2::Image & image, const int32_t x, const int32_t y, const int32_t width, const int32_t height )
+    bool Validate( const fheroes::Image & image, const int32_t x, const int32_t y, const int32_t width, const int32_t height )
     {
         if ( image.empty() || width <= 0 || height <= 0 ) {
             // What's the reason to work with empty images?
@@ -211,7 +211,7 @@ namespace
         return true;
     }
 
-    bool Verify( const fheroes2::Image & image, int32_t & x, int32_t & y, int32_t & width, int32_t & height )
+    bool Verify( const fheroes::Image & image, int32_t & x, int32_t & y, int32_t & width, int32_t & height )
     {
         if ( image.empty() || width <= 0 || height <= 0 ) {
             // What's the reason to work with empty images?
@@ -337,7 +337,7 @@ namespace
         return true;
     }
 
-    bool Verify( const fheroes2::Image & in, int32_t & inX, int32_t & inY, const fheroes2::Image & out, int32_t & outX, int32_t & outY, int32_t & width,
+    bool Verify( const fheroes::Image & in, int32_t & inX, int32_t & inY, const fheroes::Image & out, int32_t & outX, int32_t & outY, int32_t & width,
                  int32_t & height )
     {
         return Verify( inX, inY, outX, outY, width, height, in.width(), in.height(), out.width(), out.height() );
@@ -355,7 +355,7 @@ namespace
             int32_t g = 0;
             int32_t b = 0;
 
-            const uint8_t * gamePalette = fheroes2::getGamePalette();
+            const uint8_t * gamePalette = fheroes::getGamePalette();
 
             for ( uint32_t id = 0; id < size; ++id ) {
                 r = static_cast<int32_t>( id % 64 );
@@ -393,7 +393,7 @@ namespace
         return rgbToId[red + green * 64 + blue * 64 * 64];
     }
 
-    void ApplyRawPalette( const fheroes2::Image & in, int32_t inX, int32_t inY, fheroes2::Image & out, int32_t outX, int32_t outY, int32_t width, int32_t height,
+    void ApplyRawPalette( const fheroes::Image & in, int32_t inX, int32_t inY, fheroes::Image & out, int32_t outX, int32_t outY, int32_t width, int32_t height,
                           const uint8_t * palette )
     {
         if ( !Verify( in, inX, inY, out, outX, outY, width, height ) ) {
@@ -438,7 +438,7 @@ namespace
     }
 }
 
-namespace fheroes2
+namespace fheroes
 {
     Image::Image( Image && image ) noexcept
         : _data( std::move( image._data ) )
@@ -2092,8 +2092,8 @@ namespace fheroes2
 
                 outputSquareId.emplace_back( offset + Point( x, y ) );
 
-                outputImageInfo.emplace_back( fheroes2::Point( intersection.x - roi.x, intersection.y - roi.y ),
-                                              fheroes2::Rect( intersection.x - spriteRelativeOffset.x, intersection.y - spriteRelativeOffset.y, intersection.width,
+                outputImageInfo.emplace_back( fheroes::Point( intersection.x - roi.x, intersection.y - roi.y ),
+                                              fheroes::Rect( intersection.x - spriteRelativeOffset.x, intersection.y - spriteRelativeOffset.y, intersection.width,
                                                               intersection.height ) );
             }
         }

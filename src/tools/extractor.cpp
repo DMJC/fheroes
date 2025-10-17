@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2022 - 2024                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -47,7 +47,7 @@ namespace
 
     struct AGGItemInfo
     {
-        // Hash of this item's name, see fheroes2::calculateAggFilenameHash() for details
+        // Hash of this item's name, see fheroes::calculateAggFilenameHash() for details
         uint32_t hash;
         uint32_t offset;
         uint32_t size;
@@ -126,7 +126,7 @@ int main( int argc, char ** argv )
                 continue;
             }
 
-            const uint32_t hash = fheroes2::calculateAggFilenameHash( name );
+            const uint32_t hash = fheroes::calculateAggFilenameHash( name );
             if ( hash != info.hash ) {
                 ++itemsFailed;
 
@@ -156,7 +156,7 @@ int main( int argc, char ** argv )
             }
 
             {
-                const auto streamSize = fheroes2::checkedCast<std::streamsize>( buf.size() );
+                const auto streamSize = fheroes::checkedCast<std::streamsize>( buf.size() );
                 if ( !streamSize ) {
                     std::cerr << inputFileName << ": item " << name << " is too large" << std::endl;
                     return EXIT_FAILURE;

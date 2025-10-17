@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -56,7 +56,7 @@ namespace
 
         // According to https://wiki.multimedia.cx/index.php/Smacker the minimum size of a file must be 56 bytes.
         if ( fileSize < 56 ) {
-            throw fheroes2::InvalidDataResources( "Video file " + filePath + " is being corrupted. Make sure that you own an official version of the game." );
+            throw fheroes::InvalidDataResources( "Video file " + filePath + " is being corrupted. Make sure that you own an official version of the game." );
         }
     }
 }
@@ -236,7 +236,7 @@ void SMKVideoSequence::resetFrame()
     _currentFrameId = 0;
 }
 
-void SMKVideoSequence::getCurrentFrame( fheroes2::Image & image, const int32_t x, const int32_t y, int32_t & width, int32_t & height,
+void SMKVideoSequence::getCurrentFrame( fheroes::Image & image, const int32_t x, const int32_t y, int32_t & width, int32_t & height,
                                         std::vector<uint8_t> & palette ) const
 {
     if ( !_videoFile || image.empty() || x < 0 || y < 0 || x >= image.width() || y >= image.height() || !image.singleLayer() ) {

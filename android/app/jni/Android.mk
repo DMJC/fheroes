@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022 - 2024                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -21,7 +21,7 @@
 LOCAL_PATH := $(call my-dir)
 
 # Common for both C and C++
-FHEROES2_C_WARN_OPTIONS := \
+FHEROES_C_WARN_OPTIONS := \
     -pedantic \
     -Wall \
     -Wextra \
@@ -37,7 +37,7 @@ FHEROES2_C_WARN_OPTIONS := \
     -Wunused
 
 # C++ only
-FHEROES2_CPP_WARN_OPTIONS := \
+FHEROES_CPP_WARN_OPTIONS := \
     -Wctor-dtor-privacy \
     -Wextra-semi \
     -Wmissing-declarations \

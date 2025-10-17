@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2025                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +33,7 @@ class ThemeManager
     {
         // Initialize accessibility manager if not already initialized
         if ( !this.accessibility ) {
-            this.accessibility = window.fheroes2.AccessibilityManager ? new window.fheroes2.AccessibilityManager() : null;
+            this.accessibility = window.fheroes.AccessibilityManager ? new window.fheroes.AccessibilityManager() : null;
         }
 
         this.themeToggle = document.getElementById( "theme-toggle" );

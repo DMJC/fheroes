@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2025                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@ class HeadingCopyManager
     {
         // Initialize accessibility manager if not already initialized
         if ( !this.accessibility ) {
-            this.accessibility = new window.fheroes2.AccessibilityManager();
+            this.accessibility = new window.fheroes.AccessibilityManager();
         }
 
         // Apply to all headings

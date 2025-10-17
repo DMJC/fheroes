@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022 - 2023                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -28,4 +28,4 @@ if [[ "${PLATFORM_NAME}" != "Darwin" ]]; then
     exit 1
 fi
 
-zsh "$(dirname "${(%):-%x}")/download_demo_version.sh" "${HOME}/Library/Application Support/fheroes2"
+zsh "$(dirname "${(%):-%x}")/download_demo_version.sh" "${HOME}/Library/Application Support/fheroes"

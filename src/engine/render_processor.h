@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2023 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@
 
 #include "timing.h"
 
-namespace fheroes2
+namespace fheroes
 {
     class RenderProcessor
     {
@@ -93,8 +93,8 @@ namespace fheroes2
         std::function<void()> _preRenderer;
         std::function<void()> _postRenderer;
 
-        fheroes2::Time _cyclingTimer;
-        fheroes2::Time _lastRenderCall;
+        fheroes::Time _cyclingTimer;
+        fheroes::Time _lastRenderCall;
 
         uint32_t _cyclingCounter{ 0 };
 

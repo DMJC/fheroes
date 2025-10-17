@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2024                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -195,7 +195,7 @@ namespace
             assert( 0 );
         }
 
-        const auto strLen = fheroes2::checkedCast<int>( str.size() );
+        const auto strLen = fheroes::checkedCast<int>( str.size() );
         if ( !strLen ) {
             // The size of this string does not fit into an int, so this string cannot be safely converted
 #ifdef WITH_DEBUG
@@ -477,7 +477,7 @@ bool System::GetCaseInsensitivePath( const std::string_view path, std::string & 
         // Avoid directory traversal and try to probe directory name directly.
         // Speeds up file lookup when intermediate directories have a lot of
         // files. Example is NixOS where file layout is:
-        //     /nix/store/...-fheroes2-${ver}/share/fheroes2/files/lang
+        //     /nix/store/...-fheroes-${ver}/share/fheroes/files/lang
         //     /nix/store/...-other-package-1/...
         //     /nix/store/...-other-package-2/...
         // It's not uncommon for /nix/store to have tens of thousands files.

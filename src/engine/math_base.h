@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,7 +28,7 @@
 #endif
 
 // Below source code was partially taken from https://github.com/ihhub/penguinv open source project
-namespace fheroes2
+namespace fheroes
 {
     // overload this function for floating types
     template <typename _Type>

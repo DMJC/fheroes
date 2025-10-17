@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2021 - 2023                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -48,7 +48,7 @@ DEST_PATH=""
 
 if [[ -n "$1" ]]; then
     DEST_PATH="$1"
-elif [[ -f fheroes2 && -x fheroes2 ]]; then
+elif [[ -f fheroes && -x fheroes ]]; then
     DEST_PATH="."
 elif [[ -d ../../src ]]; then
     # Special hack for developers running this script from the source tree
@@ -57,9 +57,9 @@ fi
 
 if [[ -z "$DEST_PATH" || ! -d "$DEST_PATH" || ! -w "$DEST_PATH" ]]; then
     if [[ "$(uname 2> /dev/null)" == "Linux" ]]; then
-        DEST_PATH="${XDG_CONFIG_HOME:-$HOME/.local/share}/fheroes2"
+        DEST_PATH="${XDG_CONFIG_HOME:-$HOME/.local/share}/fheroes"
     elif [[ -z "$1" ]]; then
-        DEST_PATH="$HOME/.fheroes2"
+        DEST_PATH="$HOME/.fheroes"
     fi
 fi
 

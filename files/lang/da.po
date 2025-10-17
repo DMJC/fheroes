@@ -1,14 +1,14 @@
-# Danish translation for fheroes2
-# Copyright (C) 2021 - 2025 fheroes2 team <fhomm2@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# Danish translation for fheroes
+# Copyright (C) 2021 - 2025 fheroes team <fhomm2@gmail.com>
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2025-04-19 17:45+0200\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: Danish (Denmark)\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
@@ -5255,14 +5255,14 @@ msgstr "og mange-mange andre bidragydere og tilhængere!"
 msgid "Support us at"
 msgstr "Støt os på"
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
-msgstr "local-donation-platform|https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
+msgstr "local-donation-platform|https://www.patreon.com/fheroes"
 
 msgid "Connect with us at"
 msgstr "Kontakt os på"
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
-msgstr "local-social-network|https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
+msgstr "local-social-network|https://www.facebook.com/groups/fheroes"
 
 msgid "Need help with the game?"
 msgstr "Brug for hjælp til spillet?"
@@ -5846,12 +5846,12 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr "Afbryd og gå tilbage til hovedmenuen."
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "Teamet bag fheroes2 Resurrection præsenterer"
+msgid "fheroes Resurrection Team presents"
+msgstr "Teamet bag fheroes Resurrection præsenterer"
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
 msgstr ""
-"Velkommen til Heroes of Might and Magic II, drevet af fheroes2-motoren!"
+"Velkommen til Heroes of Might and Magic II, drevet af fheroes-motoren!"
 
 msgid ""
 "\n"
@@ -5914,12 +5914,12 @@ msgid "Loading video. Please wait..."
 msgstr "Indlæser video. Vent venligst..."
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."
 msgstr ""
-"For at kunne køre har fheroes2 brug for datafiler fra det originale Heroes "
+"For at kunne køre har fheroes brug for datafiler fra det originale Heroes "
 "of Might and Magic II. Du ser ud til at bruge demoversionen af Heroes of "
 "Might and Magic II til dette formål. Bemærk venligst, at kun ét scenarie vil "
 "være tilgængeligt i denne opsætning."

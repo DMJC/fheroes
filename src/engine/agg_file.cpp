@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +25,7 @@
 #include <iterator>
 #include <string>
 
-namespace fheroes2
+namespace fheroes
 {
     bool AGGFile::open( const std::string & fileName )
     {
@@ -103,7 +103,7 @@ namespace fheroes2
     }
 }
 
-IStreamBase & operator>>( IStreamBase & stream, fheroes2::ICNHeader & icn )
+IStreamBase & operator>>( IStreamBase & stream, fheroes::ICNHeader & icn )
 {
     icn.offsetX = static_cast<int16_t>( stream.getLE16() );
     icn.offsetY = static_cast<int16_t>( stream.getLE16() );

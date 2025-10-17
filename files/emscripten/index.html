@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>fheroes2</title>
+  <title>fheroes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
           width: 100vw;
           display: block;
           margin: 0 auto;
-          background: url(./fheroes2.jpeg) center center;
+          background: url(./fheroes.jpeg) center center;
           background-size: cover;
           position: absolute;
           z-index: 10;
@@ -89,22 +89,22 @@
     Object.assign(window, { Module: {
             preRun: [
                 () => Object.assign(window.ENV, {
-                    FHEROES2_DATA: `/fheroes2/data`,
-                    HOME: '/fheroes2'
+                    FHEROES_DATA: `/fheroes/data`,
+                    HOME: '/fheroes'
                 }),
                 () => {
                     addRunDependency('syncfs');
-                    FS.mkdir('/fheroes2');
-                    FS.mount(IDBFS, { root: '/' }, '/fheroes2');
+                    FS.mkdir('/fheroes');
+                    FS.mount(IDBFS, { root: '/' }, '/fheroes');
                     FS.syncfs(true, (err) => {
                         if (err) throw err;
                         try {
-                            if (Object.keys(FS.lookupPath(`${ENV.FHEROES2_DATA}`)).length === 0) return;
+                            if (Object.keys(FS.lookupPath(`${ENV.FHEROES_DATA}`)).length === 0) return;
                             document.querySelector('#uploader').style.display = 'none';
                             document.querySelector('#launcher').style.display = 'block';
                         }
                         catch (ignore) {
-                            FS.mkdir(`${ENV.FHEROES2_DATA}`);
+                            FS.mkdir(`${ENV.FHEROES_DATA}`);
                         }
                     });
                 },
@@ -127,12 +127,12 @@
                         }).reduce((uploaded, file, _ignore, queue) => {
                             const [fileName, ...path] = file.webkitRelativePath.split('/').reverse();
                             const [ignore, ...relativePath] = path.reverse();
-                            Module.mkdirWithParents(`${ENV.FHEROES2_DATA}/${relativePath.join('/')}`);
+                            Module.mkdirWithParents(`${ENV.FHEROES_DATA}/${relativePath.join('/')}`);
 
                             const reader = new FileReader();
                             reader.addEventListener('error', console.error);
                             reader.addEventListener('loadend', ({ target: { result } }) => {
-                                FS.writeFile(`${ENV.FHEROES2_DATA}/${relativePath.join('/')}/${fileName}`, new Uint8Array(result), {
+                                FS.writeFile(`${ENV.FHEROES_DATA}/${relativePath.join('/')}/${fileName}`, new Uint8Array(result), {
                                     encoding: 'binary'
                                 });
                                 uploaded.push(file);
@@ -183,7 +183,7 @@
             },
             deleteFiles: () => {
                 if (false === confirm('Are you sure?')) return;
-                Module.clearPath(ENV.FHEROES2_DATA);
+                Module.clearPath(ENV.FHEROES_DATA);
                 FS.syncfs(false, ignore => {});
                 Module.clearInput();
                 document.querySelector('#uploader').style.display = 'block';
@@ -205,6 +205,6 @@
         }
     });
 
-    document.head.append(Object.assign(document.createElement('script'), {src: './fheroes2.js'}));
+    document.head.append(Object.assign(document.createElement('script'), {src: './fheroes.js'}));
 </script>
 </body>

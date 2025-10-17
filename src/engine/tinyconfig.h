@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2025                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2010 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2010 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -43,10 +43,10 @@ public:
     std::string StrParams( const std::string & key ) const;
     // Tries to find and return a Point-type struct stored as a string "[ x, y ]" for a given key.
     // In case of any error, the fallback value is returned.
-    fheroes2::Point PointParams( const std::string & key, const fheroes2::Point & fallbackValue ) const;
+    fheroes::Point PointParams( const std::string & key, const fheroes::Point & fallbackValue ) const;
     // Tries to find and return a ResolutionInfo-type struct (multiple formats are supported, see the implementation for details)
     // for a given key. In case of any error, the fallback value is returned.
-    fheroes2::ResolutionInfo ResolutionParams( const std::string & key, const fheroes2::ResolutionInfo & fallbackValue ) const;
+    fheroes::ResolutionInfo ResolutionParams( const std::string & key, const fheroes::ResolutionInfo & fallbackValue ) const;
 
 private:
     const char separator;

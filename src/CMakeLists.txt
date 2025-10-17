@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022 - 2024                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -35,7 +35,7 @@ set(
 
 add_subdirectory(thirdparty)
 add_subdirectory(engine)
-add_subdirectory(fheroes2)
+add_subdirectory(fheroes)
 if(ENABLE_TOOLS)
 	add_subdirectory(tools)
 endif(ENABLE_TOOLS)

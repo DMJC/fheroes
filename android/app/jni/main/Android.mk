@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022                                                    #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -25,7 +25,7 @@ include $(CLEAR_VARS)
 # Mitigate the issue with Windows command line size limit
 LOCAL_SHORT_COMMANDS := true
 
-MAIN_SRC_DIR := $(LOCAL_PATH)/../../../../src/fheroes2
+MAIN_SRC_DIR := $(LOCAL_PATH)/../../../../src/fheroes
 
 # SDL expects libmain.so as the main application module
 LOCAL_MODULE := main
@@ -37,10 +37,10 @@ LOCAL_SRC_FILES := \
     $(wildcard $(MAIN_SRC_DIR)/*/*/*.cpp)
 LOCAL_SHARED_LIBRARIES := SDL2
 LOCAL_STATIC_LIBRARIES := engine
-LOCAL_CFLAGS := $(FHEROES2_C_WARN_OPTIONS)
+LOCAL_CFLAGS := $(FHEROES_C_WARN_OPTIONS)
 LOCAL_CPP_FEATURES := exceptions rtti
 LOCAL_CPPFLAGS := \
     -std=c++17 \
-    $(FHEROES2_CPP_WARN_OPTIONS)
+    $(FHEROES_CPP_WARN_OPTIONS)
 
 include $(BUILD_SHARED_LIBRARY)

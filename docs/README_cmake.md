@@ -2,7 +2,7 @@
 
 ## Linux and macOS
 
-[**fheroes2**](README.md) can be built with CMake buildsystem. First, you need to install dependencies.
+[**fheroes**](README.md) can be built with CMake buildsystem. First, you need to install dependencies.
 For Linux and macOS follow to instructions as described above.
 
 Next, you can configure the project with following commands:
@@ -38,14 +38,14 @@ Your vcpkg is ready to install external libraries. Assuming that you use x64 sys
 .\vcpkg\vcpkg --triplet x64-windows install sdl2 sdl2-image sdl2-mixer zlib
 ```
 
-If you planning to develop fheroes2 with Visual Studio, you may want to integrate vcpkg with it (requires elevated admin privileges).
+If you planning to develop fheroes with Visual Studio, you may want to integrate vcpkg with it (requires elevated admin privileges).
 After following command Visual Studio automagically will find all required dependencies:
 
 ```shell
 .\vcpkg\vcpkg integrate install
 ```
 
-Now you are ready to configure the project. cd to fheroes2 directory and run `cmake` command (note for `-DCMAKE_TOOLCHAIN_FILE` and
+Now you are ready to configure the project. cd to fheroes directory and run `cmake` command (note for `-DCMAKE_TOOLCHAIN_FILE` and
 `-DVCPKG_TARGET_TRIPLET` options):
 
 ```shell
@@ -62,7 +62,7 @@ After building, executable can be found in `build\Release` directory.
 
 ## Using Demo Data
 
-CMake project allows to download and install original HoMM II Demo files which used by fheroes2 project.
+CMake project allows to download and install original HoMM II Demo files which used by fheroes project.
 To do this please add `-DGET_HOMM2_DEMO=ON` to configuration options. For example:
 
 ```shell

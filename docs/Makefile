@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022 - 2025                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -18,14 +18,14 @@
 #   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ###########################################################################
 
-LIN_DATA := $$HOME/.local/share/fheroes2
-LIN_CONF := $$HOME/.config/fheroes2
-UNIX_DATA := $$HOME/.fheroes2
+LIN_DATA := $$HOME/.local/share/fheroes
+LIN_CONF := $$HOME/.config/fheroes
+UNIX_DATA := $$HOME/.fheroes
 
 SEDEX := /^\#_SG/,/^\#_EG/ d
 
-ifneq ($(FHEROES2_DATA),)
-SEDEX := /^\#_SG/,/^\#_EG/ { /^\#_[SE]G/d; s:@FHEROES2_DATA@:$(FHEROES2_DATA):}
+ifneq ($(FHEROES_DATA),)
+SEDEX := /^\#_SG/,/^\#_EG/ { /^\#_[SE]G/d; s:@FHEROES_DATA@:$(FHEROES_DATA):}
 endif
 ifeq ($(shell uname), Linux)
 SEDEX := $(SEDEX); s:@data@:$(LIN_DATA):; s:@config@:$(LIN_CONF):
@@ -37,7 +37,7 @@ endif
 .PHONY: all clean
 
 all:
-	sed -e '$(SEDEX)' fheroes2.6.in > fheroes2.6
+	sed -e '$(SEDEX)' fheroes.6.in > fheroes.6
 
 clean:
-	-rm -f fheroes2.6
+	-rm -f fheroes.6

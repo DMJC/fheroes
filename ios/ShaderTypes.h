@@ -1,6 +1,6 @@
 //
 //  ShaderTypes.h
-//  fheroes2
+//  fheroes
 //
 //  Created by Drew Bratcher on 4/29/23.
 //

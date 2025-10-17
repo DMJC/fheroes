@@ -1,14 +1,14 @@
-# Vietnamese translation of fheroes2
-# Copyright (C) 2024 fheroes2 team <fhomm2@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# Vietnamese translation of fheroes
+# Copyright (C) 2024 fheroes team <fhomm2@gmail.com>
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2024-02-20 08:49+0700\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: \n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
@@ -5359,13 +5359,13 @@ msgstr "và nhiều - nhiều những người hỗ trợ khác!"
 msgid "Support us at"
 msgstr "Hỗ trợ chúng tôi tại"
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
 msgstr ""
 
 msgid "Connect with us at"
 msgstr "Kết nối với chúng tôi tại"
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
 msgstr ""
 
 msgid "Need help with the game?"
@@ -5961,12 +5961,12 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr "Hủy quay lại menu chính."
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "fheroes2 Resurrection Team giới thiệu"
+msgid "fheroes Resurrection Team presents"
+msgstr "fheroes Resurrection Team giới thiệu"
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
 msgstr ""
-"Chào mừng tới Heroes of Might and Magic II cung cấp bởi mã nguồn fheroes2!"
+"Chào mừng tới Heroes of Might and Magic II cung cấp bởi mã nguồn fheroes!"
 
 msgid ""
 "\n"
@@ -5983,7 +5983,7 @@ msgid ""
 "\n"
 "Before starting the game, please select a game resolution."
 msgstr ""
-"Chào mừng tới Heroes of Might and Magic II cung cấp bởi mã nguồn fheroes2! "
+"Chào mừng tới Heroes of Might and Magic II cung cấp bởi mã nguồn fheroes! "
 "Trước khi bắt đầu hãy chọn độ phân giải của trò chơi."
 
 msgid "Greetings!"
@@ -6023,7 +6023,7 @@ msgid "Loading video. Please wait..."
 msgstr "Đang tải video. Xin đợi..."
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."

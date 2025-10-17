@@ -19,7 +19,7 @@ body:
   attributes:
     label: Preliminary checks
     options:
-    - label: I've checked that there aren't [**other open issues**](https://github.com/ihhub/fheroes2/issues?q=is%3Aissue) on the same topic.
+    - label: I've checked that there aren't [**other open issues**](https://github.com/ihhub/fheroes/issues?q=is%3Aissue) on the same topic.
       required: true
 - type: textarea
   attributes:

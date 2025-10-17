@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -68,7 +68,7 @@ namespace
 
     std::vector<uint8_t> PALPalette()
     {
-        const uint8_t * gamePalette = fheroes2::getGamePalette();
+        const uint8_t * gamePalette = fheroes::getGamePalette();
 
         std::vector<uint8_t> palette( 256 * 3 );
         for ( size_t i = 0; i < palette.size(); ++i ) {
@@ -79,9 +79,9 @@ namespace
     }
 
 #if defined( WITH_IMAGE )
-    bool SaveImage( const fheroes2::Image & image, const std::string & path )
+    bool SaveImage( const fheroes::Image & image, const std::string & path )
 #else
-    bool SaveImage( const fheroes2::Image & image, std::string path )
+    bool SaveImage( const fheroes::Image & image, std::string path )
 #endif
     {
         const std::vector<uint8_t> & palette = PALPalette();
@@ -144,7 +144,7 @@ namespace
     }
 }
 
-namespace fheroes2
+namespace fheroes
 {
     bool Save( const Image & image, const std::string & path, const uint8_t background )
     {
@@ -445,7 +445,7 @@ namespace fheroes2
             return {};
         }
 
-        fheroes2::Sprite output( width, height );
+        fheroes::Sprite output( width, height );
 
         const uint8_t * input = data.data() + 6;
         uint8_t * image = output.image();

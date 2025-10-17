@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2021 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -125,7 +125,7 @@ namespace Logging
     {                                                                                                                                                                    \
         std::ostringstream _log_strstream; /* The name was chosen on purpose to avoid name collisions with outer code blocks. */                                         \
         _log_strstream << x;                                                                                                                                             \
-        syslog( LOG_WARNING, "fheroes2_log: %s", _log_strstream.str().c_str() );                                                                                         \
+        syslog( LOG_WARNING, "fheroes_log: %s", _log_strstream.str().c_str() );                                                                                         \
     }
 #elif defined( ANDROID )
 #include <android/log.h>
@@ -133,7 +133,7 @@ namespace Logging
     {                                                                                                                                                                    \
         std::ostringstream _log_strstream; /* The name was chosen on purpose to avoid name collisions with outer code blocks. */                                         \
         _log_strstream << x;                                                                                                                                             \
-        __android_log_print( ANDROID_LOG_INFO, "fheroes2", "%s", _log_strstream.str().c_str() );                                                                         \
+        __android_log_print( ANDROID_LOG_INFO, "fheroes", "%s", _log_strstream.str().c_str() );                                                                         \
     }
 #elif defined( __EMSCRIPTEN__ )
 #include <emscripten/console.h>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +25,7 @@
 
 #include "math_base.h"
 
-namespace fheroes2
+namespace fheroes
 {
     double GetAngle( const Point & start, const Point & target );
     std::vector<Point> getLinePoints( const Point & pt1, const Point & pt2, const uint32_t step );

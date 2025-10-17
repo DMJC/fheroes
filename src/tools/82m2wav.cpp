@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2022 - 2024                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -86,7 +86,7 @@ int main( int argc, char ** argv )
             continue;
         }
 
-        const auto size = fheroes2::checkedCast<size_t>( static_cast<std::streamoff>( inputStream.tellg() ) );
+        const auto size = fheroes::checkedCast<size_t>( static_cast<std::streamoff>( inputStream.tellg() ) );
         if ( !size ) {
             std::cerr << "File " << inputFileName << " is too large" << std::endl;
             return EXIT_FAILURE;
@@ -107,7 +107,7 @@ int main( int argc, char ** argv )
         inputStream.seekg( 0, std::ios_base::beg );
 
         {
-            const auto streamSize = fheroes2::checkedCast<std::streamsize>( size.value() );
+            const auto streamSize = fheroes::checkedCast<std::streamsize>( size.value() );
             if ( !streamSize ) {
                 std::cerr << "File " << inputFileName << " is too large" << std::endl;
                 return EXIT_FAILURE;
@@ -147,7 +147,7 @@ int main( int argc, char ** argv )
         wavHeader.putLE32( static_cast<uint32_t>( size.value() ) ); // Size of the data sub-chunk
 
         {
-            const auto streamSize = fheroes2::checkedCast<std::streamsize>( wavHeader.size() );
+            const auto streamSize = fheroes::checkedCast<std::streamsize>( wavHeader.size() );
             if ( !streamSize ) {
                 std::cerr << inputFileName << ": resulting WAV is too large" << std::endl;
                 return EXIT_FAILURE;
@@ -157,7 +157,7 @@ int main( int argc, char ** argv )
         }
 
         {
-            const auto streamSize = fheroes2::checkedCast<std::streamsize>( size.value() );
+            const auto streamSize = fheroes::checkedCast<std::streamsize>( size.value() );
             if ( !streamSize ) {
                 std::cerr << inputFileName << ": resulting WAV is too large" << std::endl;
                 return EXIT_FAILURE;

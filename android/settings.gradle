@@ -15,6 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'fheroes2'
+rootProject.name = 'fheroes'
 
 include ':app', ':isotools', ':sdl2'

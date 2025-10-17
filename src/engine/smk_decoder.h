@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,7 +27,7 @@
 
 #include "smacker.h"
 
-namespace fheroes2
+namespace fheroes
 {
     class Image;
 }
@@ -45,11 +45,11 @@ public:
 
     // Input image must be resized to accommodate the frame, and also it must be a single layer image as video frames shouldn't have any transform-related information.
     // If the image is smaller than the frame then only a part of the frame will be drawn.
-    void getCurrentFrame( fheroes2::Image & image, int32_t x, int32_t y, int32_t & width, int32_t & height, std::vector<uint8_t> & palette ) const;
+    void getCurrentFrame( fheroes::Image & image, int32_t x, int32_t y, int32_t & width, int32_t & height, std::vector<uint8_t> & palette ) const;
 
     // Input image must be resized to accommodate the frame and also it must be a single layer image as video frames shouldn't have any transform-related information.
     // If the image is smaller than the frame then only a part of the frame will be drawn.
-    void getNextFrame( fheroes2::Image & image, const int32_t x, const int32_t y, int32_t & width, int32_t & height, std::vector<uint8_t> & palette )
+    void getNextFrame( fheroes::Image & image, const int32_t x, const int32_t y, int32_t & width, int32_t & height, std::vector<uint8_t> & palette )
     {
         getCurrentFrame( image, x, y, width, height, palette );
         skipFrame();

@@ -1,10 +1,10 @@
-# [fheroes2](README.md) build and contribution guide
+# [fheroes](README.md) build and contribution guide
 
-## Building the fheroes2 Project
+## Building the fheroes Project
 
 Please follow the instructions below to be able to build the project from source:
 
-**Note:** You will need to clone the `fheroes2` project before following the instructions below.
+**Note:** You will need to clone the `fheroes` project before following the instructions below.
 
 ### Windows
 
@@ -14,7 +14,7 @@ Please follow the instructions below to be able to build the project from source
   be missing depending on the version of the original game) to the project root directory.
 * Alternatively, go to the directory `script/demo` and run the file `download_demo_version.bat`.
   This script will download a demo version of the original game, which is the minimum required for development.
-* Open the file `fheroes2-vs2019.vcxproj` (targeted for Visual Studio 2019) and build the project.
+* Open the file `fheroes-vs2019.vcxproj` (targeted for Visual Studio 2019) and build the project.
 * Visual Studio will automatically copy game files in the root directory to the build directory.
 
 ### macOS and Linux
@@ -60,7 +60,7 @@ found in the [**website local dev**](WEBSITE_LOCAL_DEV.md) guide.
 ## Contribution
 
 We welcome and appreciate any help, even if it is a tiny text or code change. Please read our
-[**contribution guide**](https://github.com/ihhub/fheroes2/blob/master/CONTRIBUTING.md) before starting work on a pull request.
+[**contribution guide**](https://github.com/ihhub/fheroes/blob/master/CONTRIBUTING.md) before starting work on a pull request.
 Not sure what to start with? Feel free to refer to
-[**good first issue**](https://github.com/ihhub/fheroes2/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22) or
-[**help wanted**](https://github.com/ihhub/fheroes2/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22help%20wanted%22) tags.
+[**good first issue**](https://github.com/ihhub/fheroes/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22) or
+[**help wanted**](https://github.com/ihhub/fheroes/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22help%20wanted%22) tags.

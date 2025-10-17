@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2025                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// Create the fheroes2 namespace if it doesn't exist
-window.fheroes2 = window.fheroes2 || {};
+// Create the fheroes namespace if it doesn't exist
+window.fheroes = window.fheroes || {};
 
 // Utility class for handling common accessibility features
 class AccessibilityManager
@@ -179,5 +179,5 @@ class AccessibilityManager
     }
 }
 
-// Export the accessibility manager to the fheroes2 namespace
-window.fheroes2.AccessibilityManager = AccessibilityManager;
+// Export the accessibility manager to the fheroes namespace
+window.fheroes.AccessibilityManager = AccessibilityManager;

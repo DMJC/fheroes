@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2021 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@
 
 #include "serialize.h"
 
-namespace fheroes2
+namespace fheroes
 {
     class Sprite;
 

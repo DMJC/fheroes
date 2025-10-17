@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,7 +31,7 @@
 
 #include "serialize.h"
 
-namespace fheroes2
+namespace fheroes
 {
     class AGGFile
     {
@@ -68,4 +68,4 @@ namespace fheroes2
     uint32_t calculateAggFilenameHash( const std::string_view str );
 }
 
-IStreamBase & operator>>( IStreamBase & stream, fheroes2::ICNHeader & icn );
+IStreamBase & operator>>( IStreamBase & stream, fheroes::ICNHeader & icn );

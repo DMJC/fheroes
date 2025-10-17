@@ -1,25 +1,25 @@
-# [fheroes2](README.md) Graphical Artist Guide
+# [fheroes](README.md) Graphical Artist Guide
 
 The original game has its graphical assets stored in the `HEROES2.agg` file and potentially the `HEROES2X.agg` file if the expansion
 pack The Price of Loyalty is present. These two AGG files are located in the `DATA` folder of the original Heroes 2 installation.
 
-For convenience's sake the fheroes2 project provides a set of tools and a script that artists can use to easily extract and convert the original
+For convenience's sake the fheroes project provides a set of tools and a script that artists can use to easily extract and convert the original
 graphical assets into viewable PNG files.
 
-New assets that the fheroes2 project adds to the game are included in the `files/data/resurrection.h2d` data file.
+New assets that the fheroes project adds to the game are included in the `files/data/resurrection.h2d` data file.
 
 This guide is designed for Linux, MacOS and Windows users. The source files to these tools are available in the project's repository.
 
 ## Where to Get the Tools
 
 You can download the precompiled tools for your operating system (OS) of choice here:
-[Windows 32-bit](https://github.com/ihhub/fheroes2/releases/download/fheroes2-windows-x86-SDL2/fheroes2_tools_windows_x86_SDL2.zip)
-[Windows 64-bit](https://github.com/ihhub/fheroes2/releases/download/fheroes2-windows-x64-SDL2/fheroes2_tools_windows_x64_SDL2.zip)
+[Windows 32-bit](https://github.com/ihhub/fheroes/releases/download/fheroes-windows-x86-SDL2/fheroes_tools_windows_x86_SDL2.zip)
+[Windows 64-bit](https://github.com/ihhub/fheroes/releases/download/fheroes-windows-x64-SDL2/fheroes_tools_windows_x64_SDL2.zip)
 
-[MacOS](https://github.com/ihhub/fheroes2/releases/download/fheroes2-osx-sdl2_dev/fheroes2_tools_macos_x86-64_SDL2.zip)
+[MacOS](https://github.com/ihhub/fheroes/releases/download/fheroes-osx-sdl2_dev/fheroes_tools_macos_x86-64_SDL2.zip)
 
-[Linux Ubuntu 64-bit](https://github.com/ihhub/fheroes2/releases/download/fheroes2-linux-sdl2_dev/fheroes2_tools_ubuntu_x86-64_SDL2.zip)
-[Linux Ubuntu ARM 64-bit](https://github.com/ihhub/fheroes2/releases/download/fheroes2-linux-arm-sdl2_dev/fheroes2_tools_ubuntu_arm64_SDL2.zip)
+[Linux Ubuntu 64-bit](https://github.com/ihhub/fheroes/releases/download/fheroes-linux-sdl2_dev/fheroes_tools_ubuntu_x86-64_SDL2.zip)
+[Linux Ubuntu ARM 64-bit](https://github.com/ihhub/fheroes/releases/download/fheroes-linux-arm-sdl2_dev/fheroes_tools_ubuntu_arm64_SDL2.zip)
 
 Here is a list and short description of the various graphical artist tools:
 
@@ -58,18 +58,18 @@ graphical artists.
 ## Where is Help Needed
 
 We have labelled and tracked some issues that need help from graphical artists.
-[Issues that require changes of the original art can be found here](https://github.com/ihhub/fheroes2/issues?q=is%3Aopen+is%3Aissue+label%3A"original+assets").
-[New art tasks can be found here](https://github.com/ihhub/fheroes2/issues?q=is%3Aopen+is%3Aissue+label%3A"new+assets").
+[Issues that require changes of the original art can be found here](https://github.com/ihhub/fheroes/issues?q=is%3Aopen+is%3Aissue+label%3A"original+assets").
+[New art tasks can be found here](https://github.com/ihhub/fheroes/issues?q=is%3Aopen+is%3Aissue+label%3A"new+assets").
 
 NOTE! Before starting to work on an issue make sure to check if someone isn't already assigned to it by looking at the relevant place
-within the issue. Also notify the fheroes2 team that you wish to work on the issue. This is to avoid duplicate work.
+within the issue. Also notify the fheroes team that you wish to work on the issue. This is to avoid duplicate work.
 
 ## The Work Process
 
-1. Choose the item you are going to work on and notify the fheroes2 team to avoid duplicate work.
+1. Choose the item you are going to work on and notify the fheroes team to avoid duplicate work.
 2. Present a prototype / complete enough work in your opinion of your work.
 3. 1-2 members of the team will give their feedback.
 4. Address the given feedback if any.
 5. Repeat steps 3-4 until approval.
 6. Expand the review team to 3-4 members and steps 3-4 are repeated.
-7. Once everyone approves we will add this file into the `resurrection.h2d` data file and change the code in the fheroes2 source code to use it.
+7. Once everyone approves we will add this file into the `resurrection.h2d` data file and change the code in the fheroes source code to use it.

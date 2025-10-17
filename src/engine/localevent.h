@@ -1,10 +1,10 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2025                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
  *   Copyright (C) 2008 by Josh Matthews <josh@joshmatthews.net>           *
- *   Copyright (C) 2006 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Copyright (C) 2006 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,7 +40,7 @@ namespace EventProcessing
     class EventEngine;
 }
 
-namespace fheroes2
+namespace fheroes
 {
     enum class Key : int32_t
     {
@@ -204,12 +204,12 @@ public:
         _actionStates = 0;
     }
 
-    void setGlobalMouseMotionEventHook( std::function<fheroes2::Rect( const int32_t, const int32_t )> hook )
+    void setGlobalMouseMotionEventHook( std::function<fheroes::Rect( const int32_t, const int32_t )> hook )
     {
         _globalMouseMotionEventHook = std::move( hook );
     }
 
-    void setGlobalKeyDownEventHook( std::function<void( const fheroes2::Key, const int32_t )> hook )
+    void setGlobalKeyDownEventHook( std::function<void( const fheroes::Key, const int32_t )> hook )
     {
         _globalKeyDownEventHook = std::move( hook );
     }
@@ -222,12 +222,12 @@ public:
         return ( _actionStates & MOUSE_MOTION ) == MOUSE_MOTION;
     }
 
-    const fheroes2::Point & getMouseCursorPos() const
+    const fheroes::Point & getMouseCursorPos() const
     {
         return _mouseCursorPos;
     }
 
-    const fheroes2::Point & getMouseLeftButtonPressedPos() const
+    const fheroes::Point & getMouseLeftButtonPressedPos() const
     {
         return _mousePressLeftPos;
     }
@@ -236,12 +236,12 @@ public:
     bool MouseClickMiddle();
     bool MouseClickRight();
 
-    bool MouseClickLeft( const fheroes2::Rect & area );
-    bool MouseClickRight( const fheroes2::Rect & area );
+    bool MouseClickLeft( const fheroes::Rect & area );
+    bool MouseClickRight( const fheroes::Rect & area );
 
     // The long press event is triggered only once. If this event was triggered (i.e. this method was called
     // and returned true), then after releasing the mouse button, the click event will not be triggered.
-    bool MouseLongPressLeft( const fheroes2::Rect & rt );
+    bool MouseLongPressLeft( const fheroes::Rect & rt );
 
     bool isMouseWheelUp() const
     {
@@ -258,12 +258,12 @@ public:
         return ( _actionStates & MOUSE_PRESSED ) && _currentMouseButton == MouseButtonType::MOUSE_BUTTON_LEFT;
     }
 
-    bool isMouseLeftButtonPressedInArea( const fheroes2::Rect & area ) const
+    bool isMouseLeftButtonPressedInArea( const fheroes::Rect & area ) const
     {
         return isMouseLeftButtonPressed() && ( area & _mousePressLeftPos );
     }
 
-    bool isMouseLeftButtonPressedAndHeldInArea( const fheroes2::Rect & area ) const
+    bool isMouseLeftButtonPressedAndHeldInArea( const fheroes::Rect & area ) const
     {
         return isMouseLeftButtonPressedInArea( area ) && isMouseCursorPosInArea( area );
     }
@@ -273,7 +273,7 @@ public:
         return ( _actionStates & MOUSE_PRESSED ) && _currentMouseButton == MouseButtonType::MOUSE_BUTTON_RIGHT;
     }
 
-    bool isMouseRightButtonPressedInArea( const fheroes2::Rect & area ) const
+    bool isMouseRightButtonPressedInArea( const fheroes::Rect & area ) const
     {
         return isMouseRightButtonPressed() && ( area & _mousePressRightPos );
     }
@@ -283,22 +283,22 @@ public:
         return ( _actionStates & MOUSE_RELEASED ) && _currentMouseButton == MouseButtonType::MOUSE_BUTTON_LEFT;
     }
 
-    bool isMouseLeftButtonReleasedInArea( const fheroes2::Rect & area ) const
+    bool isMouseLeftButtonReleasedInArea( const fheroes::Rect & area ) const
     {
         return isMouseLeftButtonReleased() && ( area & _mouseReleaseLeftPos );
     }
 
-    bool isMouseWheelUpInArea( const fheroes2::Rect & area ) const
+    bool isMouseWheelUpInArea( const fheroes::Rect & area ) const
     {
         return isMouseWheelUp() && ( area & _mouseCursorPos );
     }
 
-    bool isMouseWheelDownInArea( const fheroes2::Rect & area ) const
+    bool isMouseWheelDownInArea( const fheroes::Rect & area ) const
     {
         return isMouseWheelDown() && ( area & _mouseCursorPos );
     }
 
-    bool isMouseCursorPosInArea( const fheroes2::Rect & area ) const
+    bool isMouseCursorPosInArea( const fheroes::Rect & area ) const
     {
         return area & _mouseCursorPos;
     }
@@ -317,7 +317,7 @@ public:
         return _actionStates & KEY_PRESSED;
     }
 
-    bool isKeyPressed( const fheroes2::Key key ) const
+    bool isKeyPressed( const fheroes::Key key ) const
     {
         return key == _currentKeyboardValue && ( _actionStates & KEY_PRESSED );
     }
@@ -327,7 +327,7 @@ public:
         return ( _actionStates & KEY_HOLD ) != 0;
     }
 
-    fheroes2::Key getPressedKeyValue() const
+    fheroes::Key getPressedKeyValue() const
     {
         return _currentKeyboardValue;
     }
@@ -438,7 +438,7 @@ private:
         CONTROLLER_R_DEADZONE = 25000
     };
 
-    class LongPressDelay final : public fheroes2::TimeDelay
+    class LongPressDelay final : public fheroes::TimeDelay
     {
     public:
         using TimeDelay::TimeDelay;
@@ -467,38 +467,38 @@ private:
     std::unique_ptr<EventProcessing::EventEngine> _engine;
 
     uint32_t _actionStates{ NO_EVENT };
-    fheroes2::Key _currentKeyboardValue{ fheroes2::Key::NONE };
+    fheroes::Key _currentKeyboardValue{ fheroes::Key::NONE };
     MouseButtonType _currentMouseButton{ MouseButtonType::MOUSE_BUTTON_UNKNOWN };
 
-    fheroes2::Point _mousePressLeftPos;
-    fheroes2::Point _mousePressMiddlePos;
-    fheroes2::Point _mousePressRightPos;
+    fheroes::Point _mousePressLeftPos;
+    fheroes::Point _mousePressMiddlePos;
+    fheroes::Point _mousePressRightPos;
 
-    fheroes2::Point _mouseReleaseLeftPos;
-    fheroes2::Point _mouseReleaseMiddlePos;
-    fheroes2::Point _mouseReleaseRightPos;
+    fheroes::Point _mouseReleaseLeftPos;
+    fheroes::Point _mouseReleaseMiddlePos;
+    fheroes::Point _mouseReleaseRightPos;
 
-    fheroes2::Point _mouseCursorPos;
+    fheroes::Point _mouseCursorPos;
 
-    fheroes2::Point _mouseWheelMovementOffset;
+    fheroes::Point _mouseWheelMovementOffset;
 
     LongPressDelay _mouseButtonLongPressDelay;
 
-    std::function<fheroes2::Rect( const int32_t, const int32_t )> _globalMouseMotionEventHook;
-    std::function<void( const fheroes2::Key, const int32_t )> _globalKeyDownEventHook;
+    std::function<fheroes::Rect( const int32_t, const int32_t )> _globalMouseMotionEventHook;
+    std::function<void( const fheroes::Key, const int32_t )> _globalKeyDownEventHook;
 
-    fheroes2::Rect _mouseCursorRenderArea;
+    fheroes::Rect _mouseCursorRenderArea;
 
     // used to convert user-friendly pointer speed values into more usable ones
     const double _controllerSpeedModifier{ 2000000.0 };
     double _controllerPointerSpeed{ 10.0 / _controllerSpeedModifier };
-    fheroes2::PointBase2D<double> _emulatedPointerPos;
+    fheroes::PointBase2D<double> _emulatedPointerPos;
 
     // bigger value corresponds to faster pointer movement speed with bigger stick axis values
     const double _controllerAxisSpeedup{ 1.03 };
     const double _controllerTriggerCursorSpeedup{ 2.0 };
 
-    fheroes2::Time _controllerTimer;
+    fheroes::Time _controllerTimer;
     int16_t _controllerLeftXAxis{ 0 };
     int16_t _controllerLeftYAxis{ 0 };
     int16_t _controllerRightXAxis{ 0 };
@@ -517,13 +517,13 @@ private:
 
     LocalEvent();
 
-    void onMouseMotionEvent( fheroes2::Point position );
-    void onMouseButtonEvent( const bool isPressed, const MouseButtonType buttonType, fheroes2::Point position );
-    void onKeyboardEvent( const fheroes2::Key key, const int32_t keyModifier, const KeyboardEventState keyState );
-    void onMouseWheelEvent( fheroes2::Point position );
+    void onMouseMotionEvent( fheroes::Point position );
+    void onMouseButtonEvent( const bool isPressed, const MouseButtonType buttonType, fheroes::Point position );
+    void onKeyboardEvent( const fheroes::Key key, const int32_t keyModifier, const KeyboardEventState keyState );
+    void onMouseWheelEvent( fheroes::Point position );
     void onControllerAxisEvent( const ControllerAxisType axisType, const int16_t value );
     void onControllerButtonEvent( const bool isPressed, const ControllerButtonType buttonType );
-    void onTouchFingerEvent( const TouchFingerEventType eventType, const int64_t touchId, const int64_t fingerId, fheroes2::PointBase2D<float> position );
+    void onTouchFingerEvent( const TouchFingerEventType eventType, const int64_t touchId, const int64_t fingerId, fheroes::PointBase2D<float> position );
 
     void ProcessControllerAxisMotion();
 

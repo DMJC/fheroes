@@ -10,7 +10,7 @@ development purposes.
 * Bundler
 * Git
 * Node/npm
-* A GitHub account with a fork of the fheroes2 repository
+* A GitHub account with a fork of the fheroes repository
 
 ### macOS Users
 
@@ -30,8 +30,8 @@ source files.
 1. Clone your fork of the repository:
 
    ```bash
-   git clone https://github.com/<YOUR_USERNAME>/fheroes2.git
-   cd fheroes2/docs
+   git clone https://github.com/<YOUR_USERNAME>/fheroes.git
+   cd fheroes/docs
    ```
 
 2. Copy the development Gemfile to enable local development:
@@ -144,7 +144,7 @@ Make sure to:
 3. Wait for GitHub Pages to build and deploy your site. This may take a few
 minutes. You can monitor the progress in the "Actions" tab of your repository.
 
-4. Once deployed, you can preview your changes at `https://<YOUR_USERNAME>.github.io/fheroes2/`
+4. Once deployed, you can preview your changes at `https://<YOUR_USERNAME>.github.io/fheroes/`
 
 5. Review your changes in the preview environment to ensure:
 
@@ -154,7 +154,7 @@ minutes. You can monitor the progress in the "Actions" tab of your repository.
    * No broken references or missing assets
 
 6. After verifying everything looks correct in your fork's GitHub Pages, create
-a Pull Request (PR) from your fork's branch to the main fheroes2 repository for
+a Pull Request (PR) from your fork's branch to the main fheroes repository for
 final review and deployment.
 
 ## Common Issues and Solutions

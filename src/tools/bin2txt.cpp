@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2022 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -78,7 +78,7 @@ int main( int argc, char ** argv )
             continue;
         }
 
-        const auto size = fheroes2::checkedCast<size_t>( static_cast<std::streamoff>( inputStream.tellg() ) );
+        const auto size = fheroes::checkedCast<size_t>( static_cast<std::streamoff>( inputStream.tellg() ) );
         if ( !size ) {
             std::cerr << "File " << inputFileName << " is too large" << std::endl;
             // Ignore files of invalid size
@@ -103,7 +103,7 @@ int main( int argc, char ** argv )
         inputStream.seekg( 0, std::ios_base::beg );
 
         {
-            const auto streamSize = fheroes2::checkedCast<std::streamsize>( buf.size() );
+            const auto streamSize = fheroes::checkedCast<std::streamsize>( buf.size() );
             if ( !streamSize ) {
                 std::cerr << "File " << inputFileName << " is too large" << std::endl;
                 return EXIT_FAILURE;
@@ -127,7 +127,7 @@ int main( int argc, char ** argv )
 
         const char * data = buf.data();
 
-        outputStream << "Monster eye position: [" << fheroes2::getLEValue<int16_t>( data, 1 ) << ", " << fheroes2::getLEValue<int16_t>( data, 3 ) << "]\n\n";
+        outputStream << "Monster eye position: [" << fheroes::getLEValue<int16_t>( data, 1 ) << ", " << fheroes::getLEValue<int16_t>( data, 3 ) << "]\n\n";
 
         outputStream << "Animation frame offsets:\n";
         for ( size_t setId = 0; setId < 7; ++setId ) {
@@ -159,23 +159,23 @@ int main( int argc, char ** argv )
 
         outputStream << "Probabilities of each idle animation:\n";
         for ( size_t animId = 0; animId < idleAnimationCount; ++animId ) {
-            outputStream << animId + 1 << ": " << fheroes2::getLEValue<float>( data, 118, animId ) << "\n";
+            outputStream << animId + 1 << ": " << fheroes::getLEValue<float>( data, 118, animId ) << "\n";
         }
         outputStream << "\n";
 
-        outputStream << "Idle animation delay (?) (ms): " << fheroes2::getLEValue<uint32_t>( data, 138, 0 ) << " " << fheroes2::getLEValue<uint32_t>( data, 138, 1 )
-                     << " " << fheroes2::getLEValue<uint32_t>( data, 138, 2 ) << " " << fheroes2::getLEValue<uint32_t>( data, 138, 3 ) << " "
-                     << fheroes2::getLEValue<uint32_t>( data, 138, 4 ) << "\n\n";
+        outputStream << "Idle animation delay (?) (ms): " << fheroes::getLEValue<uint32_t>( data, 138, 0 ) << " " << fheroes::getLEValue<uint32_t>( data, 138, 1 )
+                     << " " << fheroes::getLEValue<uint32_t>( data, 138, 2 ) << " " << fheroes::getLEValue<uint32_t>( data, 138, 3 ) << " "
+                     << fheroes::getLEValue<uint32_t>( data, 138, 4 ) << "\n\n";
 
-        outputStream << "Idle animation delay (?) (ms): " << fheroes2::getLEValue<uint32_t>( data, 158 ) << "\n\n";
-        outputStream << "Walking animation speed (ms): " << fheroes2::getLEValue<uint32_t>( data, 162 ) << "\n\n";
-        outputStream << "Shooting animation speed (ms): " << fheroes2::getLEValue<uint32_t>( data, 166 ) << "\n\n";
-        outputStream << "Flying animation speed (ms): " << fheroes2::getLEValue<uint32_t>( data, 170 ) << "\n\n";
+        outputStream << "Idle animation delay (?) (ms): " << fheroes::getLEValue<uint32_t>( data, 158 ) << "\n\n";
+        outputStream << "Walking animation speed (ms): " << fheroes::getLEValue<uint32_t>( data, 162 ) << "\n\n";
+        outputStream << "Shooting animation speed (ms): " << fheroes::getLEValue<uint32_t>( data, 166 ) << "\n\n";
+        outputStream << "Flying animation speed (ms): " << fheroes::getLEValue<uint32_t>( data, 170 ) << "\n\n";
 
         outputStream << "Projectile start positions:\n";
-        outputStream << "[" << fheroes2::getLEValue<int16_t>( data, 174, 0 ) << ", " << fheroes2::getLEValue<int16_t>( data, 174, 1 ) << "]\n";
-        outputStream << "[" << fheroes2::getLEValue<int16_t>( data, 174, 2 ) << ", " << fheroes2::getLEValue<int16_t>( data, 174, 3 ) << "]\n";
-        outputStream << "[" << fheroes2::getLEValue<int16_t>( data, 174, 4 ) << ", " << fheroes2::getLEValue<int16_t>( data, 174, 5 ) << "]\n";
+        outputStream << "[" << fheroes::getLEValue<int16_t>( data, 174, 0 ) << ", " << fheroes::getLEValue<int16_t>( data, 174, 1 ) << "]\n";
+        outputStream << "[" << fheroes::getLEValue<int16_t>( data, 174, 2 ) << ", " << fheroes::getLEValue<int16_t>( data, 174, 3 ) << "]\n";
+        outputStream << "[" << fheroes::getLEValue<int16_t>( data, 174, 4 ) << ", " << fheroes::getLEValue<int16_t>( data, 174, 5 ) << "]\n";
         outputStream << "\n";
 
         const int projectileFramesCount = static_cast<unsigned char>( *( data + 186 ) );
@@ -183,11 +183,11 @@ int main( int argc, char ** argv )
 
         outputStream << "Projectile angles:\n";
         for ( size_t angleId = 0; angleId < 12; ++angleId ) {
-            outputStream << fheroes2::getLEValue<float>( data, 187, angleId ) << "\n";
+            outputStream << fheroes::getLEValue<float>( data, 187, angleId ) << "\n";
         }
         outputStream << "\n";
 
-        outputStream << "Troop count offset: [" << fheroes2::getLEValue<int32_t>( data, 235 ) << ", " << fheroes2::getLEValue<int32_t>( data, 239 ) << "]\n\n";
+        outputStream << "Troop count offset: [" << fheroes::getLEValue<int32_t>( data, 235 ) << ", " << fheroes::getLEValue<int32_t>( data, 239 ) << "]\n\n";
 
         constexpr char invalidFrameId = '\xFF';
 

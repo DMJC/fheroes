@@ -1,14 +1,14 @@
-# Bulgarian translation of fheroes2
-# Copyright (C) 2022 fheroes2 team <fhomm2@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# Bulgarian translation of fheroes
+# Copyright (C) 2022 fheroes team <fhomm2@gmail.com>
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2022-11-08 16:44+0000\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: \n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
@@ -5396,13 +5396,13 @@ msgstr "и много-много други поддръжници!"
 msgid "Support us at"
 msgstr "Подкрепете ни на"
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
 msgstr ""
 
 msgid "Connect with us at"
 msgstr "Свържете се с нас на"
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
 msgstr ""
 
 msgid "Need help with the game?"
@@ -5998,12 +5998,12 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr "Отказ обратно към главното меню."
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "fheroes2 Отбор възкрeсяване представя"
+msgid "fheroes Resurrection Team presents"
+msgstr "fheroes Отбор възкрeсяване представя"
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
 msgstr ""
-"Добре дошъл в Heroes of Might and Magic II, задвижван от двигателя fheroes2!"
+"Добре дошъл в Heroes of Might and Magic II, задвижван от двигателя fheroes!"
 
 msgid ""
 "\n"
@@ -6020,7 +6020,7 @@ msgid ""
 "\n"
 "Before starting the game, please select a game resolution."
 msgstr ""
-"Добре дошъл в Heroes of Might and Magic II, задвижван от двигателя fheroes2! "
+"Добре дошъл в Heroes of Might and Magic II, задвижван от двигателя fheroes! "
 "Преди да започнеш играта, моля избери разделителна способност на играта."
 
 msgid "Greetings!"
@@ -6061,7 +6061,7 @@ msgid "Loading video. Please wait..."
 msgstr "Видеото се зарежда. Моля изчакай..."
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."

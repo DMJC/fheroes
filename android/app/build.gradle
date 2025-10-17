@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    namespace 'org.fheroes2'
+    namespace 'org.fheroes'
 
     compileSdk 35
 
     defaultConfig {
-        applicationId 'org.fheroes2'
+        applicationId 'org.fheroes'
 
         minSdk 22
         targetSdk 35
@@ -44,25 +44,25 @@ android {
     signingConfigs {
         release {
             storeFile({
-                def keystorePath = System.getenv('FHEROES2_KEYSTORE')
+                def keystorePath = System.getenv('FHEROES_KEYSTORE')
 
                 return keystorePath ? file(keystorePath) : null
             }.call())
 
             storePassword({
-                def keystorePass = System.getenv('FHEROES2_KEYSTORE_PASSWORD')
+                def keystorePass = System.getenv('FHEROES_KEYSTORE_PASSWORD')
 
                 return keystorePass ? keystorePass : ''
             }.call())
 
             keyAlias({
-                def keyAlias = System.getenv('FHEROES2_KEY_ALIAS')
+                def keyAlias = System.getenv('FHEROES_KEY_ALIAS')
 
                 return keyAlias ? keyAlias : ''
             }.call())
 
             keyPassword({
-                def keyPass = System.getenv('FHEROES2_KEY_PASSWORD')
+                def keyPass = System.getenv('FHEROES_KEY_PASSWORD')
 
                 return keyPass ? keyPass : ''
             }.call())

@@ -1,14 +1,14 @@
-# Slovak translation of fheroes2
-# Copyright (C) 2023 fheroes2 team <fhomm2@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# Slovak translation of fheroes
+# Copyright (C) 2023 fheroes team <fhomm2@gmail.com>
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2025-03-12 23:48+0100\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: \n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -5355,14 +5355,14 @@ msgstr "a mnoho ďalších podporovateľov!"
 msgid "Support us at"
 msgstr "Prispej na"
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
-msgstr "https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
+msgstr "https://www.patreon.com/fheroes"
 
 msgid "Connect with us at"
 msgstr "Spoj sa s nami na"
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
-msgstr "https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
+msgstr "https://www.facebook.com/groups/fheroes"
 
 msgid "Need help with the game?"
 msgstr "Potrebuješ pomoc s hrou?"
@@ -5962,11 +5962,11 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr "Zrušiť a späť do hlavného menu."
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "Tím fheroes2 Resurrection uvádza"
+msgid "fheroes Resurrection Team presents"
+msgstr "Tím fheroes Resurrection uvádza"
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
-msgstr "Vitaj v hre Heroes of Might and Magic II poháňanej enginom fheroes2!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
+msgstr "Vitaj v hre Heroes of Might and Magic II poháňanej enginom fheroes!"
 
 msgid ""
 "\n"
@@ -5983,7 +5983,7 @@ msgid ""
 "\n"
 "Before starting the game, please select a game resolution."
 msgstr ""
-"Vitaj v hre Heroes of Might and Magic II poháňanej enginom fheroes2! Pred "
+"Vitaj v hre Heroes of Might and Magic II poháňanej enginom fheroes! Pred "
 "spustením hry si vyber rozlíšenie."
 
 msgid "Greetings!"
@@ -6024,7 +6024,7 @@ msgid "Loading video. Please wait..."
 msgstr "Načítanie videa. Chvíľku vydrž, prosím..."
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2023 - 2024                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -66,7 +66,7 @@ def main():  # pylint: disable=missing-function-docstring
 
     tpl = """
     <release date="{}" version="v{}">
-      <url>https://github.com/ihhub/fheroes2/releases/tag/{}</url>
+      <url>https://github.com/ihhub/fheroes/releases/tag/{}</url>
       <description>
         <p>Changes in v{} ({}):</p>
         <ul>

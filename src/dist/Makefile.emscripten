@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2025                                                    #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -18,7 +18,7 @@
 #   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ###########################################################################
 
-TARGET := fheroes2.js
+TARGET := fheroes.js
 
 SDL2_MIXER_FORMATS := mid,mp3,ogg
 
@@ -49,7 +49,7 @@ LDFLAGS := $(LDFLAGS) \
 	-lhtml5 \
 	-lidbfs.js
 
-ifdef FHEROES2_WITH_DEBUG
+ifdef FHEROES_WITH_DEBUG
 CCFLAGS := $(CCFLAGS) -gsource-map
 LDFLAGS := $(LDFLAGS) -O0 -gsource-map
 else
@@ -57,7 +57,7 @@ CCFLAGS := $(CCFLAGS) -flto
 LDFLAGS := $(LDFLAGS) -O3 -flto
 endif
 
-ifdef FHEROES2_WITH_THREADS
+ifdef FHEROES_WITH_THREADS
 LDFLAGS := $(LDFLAGS) \
 	-Wno-pthreads-mem-growth \
 	-sALLOW_BLOCKING_ON_MAIN_THREAD \

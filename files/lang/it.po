@@ -1,14 +1,14 @@
-# Italian translation of fheroes2
-# Copyright (C) 2021 - 2022 fheroes2 team <fhomm2@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# Italian translation of fheroes
+# Copyright (C) 2021 - 2022 fheroes team <fhomm2@gmail.com>
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2022-12-03 04:36+0100\n"
-"Last-Translator: fheroes2 team <fhomm2@gmail.com>\n"
+"Last-Translator: fheroes team <fhomm2@gmail.com>\n"
 "Language-Team: <it@li.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -2973,7 +2973,7 @@ msgstr "Esci"
 
 #, fuzzy
 msgid "Quit out of Heroes of Might and Magic II."
-msgstr "Esci da fheroes2."
+msgstr "Esci da fheroes."
 
 msgid "Language"
 msgstr "Lingua"
@@ -5150,13 +5150,13 @@ msgstr ""
 msgid "Support us at"
 msgstr ""
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
 msgstr ""
 
 msgid "Connect with us at"
 msgstr ""
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
 msgstr ""
 
 msgid "Need help with the game?"
@@ -5167,7 +5167,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Heroes of Might and Magic II: The Succession Wars team"
-msgstr "Esci da fheroes2."
+msgstr "Esci da fheroes."
 
 msgid "Designed and Directed"
 msgstr ""
@@ -5222,7 +5222,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Heroes of Might and Magic II: The Price of Loyalty team"
-msgstr "Esci da fheroes2."
+msgstr "Esci da fheroes."
 
 msgid "Design Lead"
 msgstr ""
@@ -5767,13 +5767,13 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr ""
 
-msgid "fheroes2 Resurrection Team presents"
-msgstr "Il Team di fheroes2 Resurrection presenta"
+msgid "fheroes Resurrection Team presents"
+msgstr "Il Team di fheroes Resurrection presenta"
 
 #, fuzzy
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
 msgstr ""
-"Benvenuti a fheroes2! Gentilmente, prima di cominciare il gioco scegli una "
+"Benvenuti a fheroes! Gentilmente, prima di cominciare il gioco scegli una "
 "risoluzione per il gioco."
 
 msgid ""
@@ -5791,7 +5791,7 @@ msgid ""
 "\n"
 "Before starting the game, please select a game resolution."
 msgstr ""
-"Benvenuti a fheroes2! Gentilmente, prima di cominciare il gioco scegli una "
+"Benvenuti a fheroes! Gentilmente, prima di cominciare il gioco scegli una "
 "risoluzione per il gioco."
 
 msgid "Greetings!"
@@ -5799,7 +5799,7 @@ msgstr "Saluti!"
 
 #, fuzzy
 msgid "Quit Heroes of Might and Magic II and return to the operating system."
-msgstr "Lascia fheroes2."
+msgstr "Lascia fheroes."
 
 msgid "Credits"
 msgstr "Titoli di coda"
@@ -5830,7 +5830,7 @@ msgid "Loading video. Please wait..."
 msgstr ""
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."

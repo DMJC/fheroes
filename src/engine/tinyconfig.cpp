@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2024                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2010 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2010 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -128,7 +128,7 @@ std::string TinyConfig::StrParams( const std::string & key ) const
     return it != end() ? it->second : "";
 }
 
-fheroes2::Point TinyConfig::PointParams( const std::string & key, const fheroes2::Point & fallbackValue ) const
+fheroes::Point TinyConfig::PointParams( const std::string & key, const fheroes::Point & fallbackValue ) const
 {
     const const_iterator it = find( ModifyKey( key ) );
     if ( it == end() ) {
@@ -145,7 +145,7 @@ fheroes2::Point TinyConfig::PointParams( const std::string & key, const fheroes2
 
     assert( pointRegexMatch.size() == 3 );
 
-    fheroes2::Point result;
+    fheroes::Point result;
 
     static_assert( std::is_integral<decltype( result.x )>::value && std::is_integral<decltype( result.y )>::value,
                    "The type of result fields is not integer, check the logic of this method" );
@@ -160,7 +160,7 @@ fheroes2::Point TinyConfig::PointParams( const std::string & key, const fheroes2
     return result;
 }
 
-fheroes2::ResolutionInfo TinyConfig::ResolutionParams( const std::string & key, const fheroes2::ResolutionInfo & fallbackValue ) const
+fheroes::ResolutionInfo TinyConfig::ResolutionParams( const std::string & key, const fheroes::ResolutionInfo & fallbackValue ) const
 {
     const const_iterator it = find( ModifyKey( key ) );
     if ( it == end() ) {

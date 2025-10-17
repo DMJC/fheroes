@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2021 - 2025                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -18,7 +18,7 @@
 #   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ###########################################################################
 
-ifndef FHEROES2_WITH_SYSTEM_SMACKER
+ifndef FHEROES_WITH_SYSTEM_SMACKER
 CCFLAGS := $(CCFLAGS) -I../../thirdparty/libsmacker
 endif
 

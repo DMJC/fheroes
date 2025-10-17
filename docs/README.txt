@@ -22,14 +22,14 @@ OS and macOS. This script will extract all the necessary resource files.
 
 As an alternative to the previous step, you can manually copy the subdirectories 'ANIM',
 'DATA', 'MAPS' and 'MUSIC' (some of them may be missing depending on the version of the
-original game) from the original game directory to the fheroes2 installation directory.
+original game) from the original game directory to the fheroes installation directory.
 
-If you are running fheroes2 on Windows and see complaints about missing DLLs, then you
+If you are running fheroes on Windows and see complaints about missing DLLs, then you
 may need to install the Microsoft Visual C++ redistributable package. You can download
 it using the following URLs:
 
-https://aka.ms/vs/17/release/vc_redist.x86.exe - for 32-bit x86 fheroes2 builds;
-https://aka.ms/vs/17/release/vc_redist.x64.exe - for 64-bit x64 fheroes2 builds.
+https://aka.ms/vs/17/release/vc_redist.x86.exe - for 32-bit x86 fheroes builds;
+https://aka.ms/vs/17/release/vc_redist.x64.exe - for 64-bit x64 fheroes builds.
 
 Or you can install the game using the installer, in this case, this package will be
 installed automatically.
@@ -39,7 +39,7 @@ This project is under GNU General Public License v2.0. Refer to file LICENSE for
 details.
 
 --- Donation ---
-Currently we accept donations via Patreon at https://www.patreon.com/fheroes2,
-via PayPal at https://www.paypal.com/paypalme/fheroes2 and via Boosty at
-https://boosty.to/fheroes2. All donations will be used only for the future project
+Currently we accept donations via Patreon at https://www.patreon.com/fheroes,
+via PayPal at https://www.paypal.com/paypalme/fheroes and via Boosty at
+https://boosty.to/fheroes. All donations will be used only for the future project
 development as we do not consider this project as a source of income by any means.

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2021 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,7 @@
 #include <chrono>
 #include <cstdint>
 
-namespace fheroes2
+namespace fheroes
 {
     // IMPORTANT!!! According to https://en.cppreference.com/w/cpp/chrono/high_resolution_clock we should never use high_resolution_clock for time internal measurements
     // because for high_resolution_clock the time may go backwards.

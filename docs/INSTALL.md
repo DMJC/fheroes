@@ -1,4 +1,4 @@
-# [fheroes2](README.md) Installation Guide
+# [fheroes](README.md) Installation Guide
 
 ## Requirements
 
@@ -38,44 +38,44 @@ Alternatively, you can [**download the precompiled binaries of the latest commit
 ### Windows Installer
 
 * Download one of the following Windows installer packages:
-  * [**Windows x64 (64-bit)**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_windows_x64_SDL2_installer.exe)
-  * [**Windows x86 (32-bit)**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_windows_x86_SDL2_installer.exe)
+  * [**Windows x64 (64-bit)**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_windows_x64_SDL2_installer.exe)
+  * [**Windows x86 (32-bit)**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_windows_x86_SDL2_installer.exe)
 * After downloading the installer, launch it and follow the instructions.
 * During the installation process, you will be prompted to extract game resources from the original game (select this option if you
   already have a legally purchased copy of the original game installed), or download the demo version of the original game and extract
   game resources from it (you can also do this later by clicking the appropriate shortcut in the program's group in the Windows Start
   menu).
-* If you purchased a copy of the original game only after installing fheroes2, you can run the `Extract game resources from the original
+* If you purchased a copy of the original game only after installing fheroes, you can run the `Extract game resources from the original
   distribution of HoMM2` shortcut in the program's group in the Windows Start menu. This script will try to perform an automatic search
   for an existing installation of the original game and extract all the necessary resource files. If it can't find an existing installation,
   you will be prompted to enter the location of the original game manually.
 * As an alternative to the previous step, you can manually copy the subdirectories `ANIM`, `DATA`, `MAPS` and `MUSIC` (some of them may
-  be missing depending on the version of the original game) from the original game directory to the fheroes2 installation directory.
+  be missing depending on the version of the original game) from the original game directory to the fheroes installation directory.
 
 ### Windows ZIP Archive
 
 * Download one of the following Windows ZIP archives:
-  * [**Windows x64 (64-bit)**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_windows_x64_SDL2.zip)
-  * [**Windows x86 (32-bit)**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_windows_x86_SDL2.zip)
+  * [**Windows x64 (64-bit)**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_windows_x64_SDL2.zip)
+  * [**Windows x86 (32-bit)**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_windows_x86_SDL2.zip)
 * After downloading the ZIP archive, extract it to a suitable directory of your choice.
 * If you have a legally purchased copy of the original game, run the `extract_homm2_resources.bat` script supplied in the ZIP archive.
   This script will try to perform an automatic search for an existing installation of the original game and extract all the necessary
   resource files. If it can't find an existing installation, you will be prompted to enter the location of the original game manually.
 * As an alternative to the previous step, you can manually copy the subdirectories `ANIM`, `DATA`, `MAPS` and `MUSIC` (some of them may
-  be missing depending on the version of the original game) from the original game directory to the fheroes2 installation directory.
+  be missing depending on the version of the original game) from the original game directory to the fheroes installation directory.
 * If you don't have a legally purchased copy of the original game, you can download and install the demo version of the original game
   by running the `download_demo_version.bat` script supplied in the ZIP archive.
 
 #### Troubleshooting Missing Microsoft Visual C++ DLLs
 
-If you see complaints about missing DLLs when running fheroes2, then you may need to install the Microsoft Visual C++ redistributable package.
+If you see complaints about missing DLLs when running fheroes, then you may need to install the Microsoft Visual C++ redistributable package.
 
 You can download it using the following URLs:
 
 | Windows Version | C++ Package |
 |--------|--------|
-| For 64-bit x64 fheroes2 builds | [**https://aka.ms/vs/17/release/vc_redist.x64.exe**](https://aka.ms/vs/17/release/vc_redist.x64.exe) |
-| for 32-bit x86 fheroes2 builds | [**https://aka.ms/vs/17/release/vc_redist.x86.exe**](https://aka.ms/vs/17/release/vc_redist.x86.exe) |
+| For 64-bit x64 fheroes builds | [**https://aka.ms/vs/17/release/vc_redist.x64.exe**](https://aka.ms/vs/17/release/vc_redist.x64.exe) |
+| for 32-bit x86 fheroes builds | [**https://aka.ms/vs/17/release/vc_redist.x86.exe**](https://aka.ms/vs/17/release/vc_redist.x86.exe) |
 
 ## macOS
 
@@ -84,33 +84,33 @@ You can download it using the following URLs:
 If you are using [**Homebrew**](https://brew.sh/), you can install the game by running the following command:
 
 ```sh
-brew install fheroes2
+brew install fheroes
 ```
 
-Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes2 to function as expected.
+Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes to function as expected.
 
 ### MacPorts
 
 If you are using [**MacPorts**](https://www.macports.org/), you can install the game by running the following command:
 
 ```sh
-port install fheroes2
+port install fheroes
 ```
 
 Then follow the instructions on the screen.
 
-Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes2 to function as expected.
+Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes to function as expected.
 
 ### macOS ZIP Archive
 
-* Download the [**macOS ZIP archive**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_macos_x86-64_SDL2.zip).
+* Download the [**macOS ZIP archive**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_macos_x86-64_SDL2.zip).
   Currently only x86-64 binaries are provided. If you use a machine with an Apple Silicon chip, you should choose another installation
   method (using [**MacPorts**](#macports) or [**Homebrew**](#homebrew-on-macos)), or
   [**build the project from source**](DEVELOPMENT.md#macos-and-linux).
 * After downloading the ZIP archive, extract it to a suitable directory of your choice and then run `brew bundle` from
   the `script/macos` subdirectory. This will install the SDL libraries required to run the game.
 
-Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes2 to function as expected.
+Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes to function as expected.
 
 ### macOS Native App
 
@@ -123,25 +123,25 @@ brew bundle --file script/macos/Brewfile.app_bundle
 * Download the source and compile with the `-DMACOS_APP_BUNDLE=ON` option (if using CMake) or using the following command (with make):
 
 ```sh
-make FHEROES2_MACOS_APP_BUNDLE=ON
+make FHEROES_MACOS_APP_BUNDLE=ON
 ```
 
-Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes2 to function as expected.
+Follow the [**instructions below**](#gathering-game-resources) to gather resources necessary for fheroes to function as expected.
 
 ### Gathering Game Resources
 
-Once you obtain the fheroes2 executable using any of the options above, you should follow these steps to load in the correct resources:
+Once you obtain the fheroes executable using any of the options above, you should follow these steps to load in the correct resources:
 
 * If you have a legally purchased copy of the original game in a self-extracting Windows executable (such as from GOG), you can utilize
   [`innoextract`](https://constexpr.org/innoextract/#use) to extract files out of the exe without having to use Wine/Windows emulation
   software on your *UNIX-based machine.
 * If you have a legally purchased copy of the original game, run the extract resources script which will prompt you to enter
   the location of the original game, and will extract all the necessary resource files. The script can be run from the following paths depending on
-  how you installed fheroes2:
+  how you installed fheroes:
 
   | Installation Method | Script |
   |--------|--------|
-  | If you used a package manager (MacPorts or Homebrew) | `fheroes2-extract-resources` |
+  | If you used a package manager (MacPorts or Homebrew) | `fheroes-extract-resources` |
   | If you built from source using the [**macOS native app**](#macos-native-app) method | `script/homm2/extract_homm2_resources_for_app_bundle.sh` |
   | All other cases | `script/homm2/extract_homm2_resources.sh` |
 
@@ -149,15 +149,15 @@ Once you obtain the fheroes2 executable using any of the options above, you shou
 
   | Installation Method | Destination |
   |--------|--------|
-  | built from source using the [**macOS native app**](#macos-native-app) | `~/Library/Application Support/fheroes2` |
-  | All other cases | `~/.fheroes2` |
+  | built from source using the [**macOS native app**](#macos-native-app) | `~/Library/Application Support/fheroes` |
+  | All other cases | `~/.fheroes` |
 
 * If you don't have a legally purchased copy of the original game, you can download and install the demo version of the original game
-  by running the download demo script. The script can be run from the following paths depending on how you installed fheroes2:
+  by running the download demo script. The script can be run from the following paths depending on how you installed fheroes:
 
   | Installation Method | Script |
   |--------|--------|
-  | If you used a package manager (MacPorts or Homebrew) | `fheroes2-install-demo` |
+  | If you used a package manager (MacPorts or Homebrew) | `fheroes-install-demo` |
   | If you built from source using the [**macOS native app**](#macos-native-app) method | `script/demo/download_demo_version_for_app_bundle.sh` |
   | All other cases | `script/demo/download_demo_version.sh` |
 
@@ -189,7 +189,7 @@ After the first start you will be asked for the original files. There are three 
 The recommended option requires the Heroes of Might and Magic II installer file (*.exe) from GOG. This will extract the appropriate resources by itself.
 
 For the manual installation you have to copy the subdirectories `ANIM`, `DATA`, `MAPS` and `MUSIC` from the original game or demo directory to the
-`~/.var/app/io.github.ihhub.Fheroes2/data/fheroes2` directory. The destination folder will be opened when this option is selected.
+`~/.var/app/io.github.ihhub.Fheroes2/data/fheroes` directory. The destination folder will be opened when this option is selected.
 
 ### Gentoo Package
 
@@ -204,7 +204,7 @@ sudo emerge -av games-strategy/homm2-gold-gog
 ```
 
 It will ask you to put the .exe installer of the game and optionally the zip file with FLAC music to your distfiles directory,
-and if it's there, it will unpack everything to the correct places and pull `games-engines/fheroes2` as a dependency.
+and if it's there, it will unpack everything to the correct places and pull `games-engines/fheroes` as a dependency.
 
 USE-flag `flac` determines whether the game will use FLAC music or OGG music.
 
@@ -221,8 +221,8 @@ sudo emerge -av games-strategy/homm2-demo
 If you installed the game from original CD, use the following commands:
 
 ```sh
-sudo emerge -av games-engines/fheroes2
-/usr/share/fheroes2/extract_homm2_resources.sh
+sudo emerge -av games-engines/fheroes
+/usr/share/fheroes/extract_homm2_resources.sh
 ```
 
 The second command (Note: run it without root) will ask you where your data files are.
@@ -232,17 +232,17 @@ The second command (Note: run it without root) will ask you where your data file
 If you are using [**Homebrew**](https://brew.sh/), you can install the game by running the following command:
 
 ```sh
-brew install fheroes2
+brew install fheroes
 ```
 
 If you have a legally purchased copy of the original game, copy the subdirectories `ANIM`, `DATA`, `MAPS` and `MUSIC` (some of them may
-be missing depending on the version of the original game) from the original game directory to the `$XDG_DATA_HOME/fheroes2` (usually
-`~/.local/share/fheroes2`) directory. Otherwise, you can download and install the demo version of the original game by running the
-`/usr/share/fheroes2/download_demo_version.sh` script.
+be missing depending on the version of the original game) from the original game directory to the `$XDG_DATA_HOME/fheroes` (usually
+`~/.local/share/fheroes`) directory. Otherwise, you can download and install the demo version of the original game by running the
+`/usr/share/fheroes/download_demo_version.sh` script.
 
 ### AUR Package
 
-If you are using Arch Linux or compatible distribution, you can install [**fheroes2 package**](https://aur.archlinux.org/packages/fheroes2)
+If you are using Arch Linux or compatible distribution, you can install [**fheroes package**](https://aur.archlinux.org/packages/fheroes)
 from AUR (Arch User Repository).
 
 #### Install Using AUR Helper
@@ -250,7 +250,7 @@ from AUR (Arch User Repository).
 If you use one of AUR helpers, e.g. `yay`, you can install the game by running the following command:
 
 ```sh
-yay -S aur/fheroes2
+yay -S aur/fheroes
 ```
 
 #### Install Using the Official Guide
@@ -259,25 +259,25 @@ Follow the [**official guide**](https://wiki.archlinux.org/title/Arch_User_Repos
 One of possible command sets:
 
 ```sh
-git clone https://aur.archlinux.org/fheroes2.git
-cd fheroes2
+git clone https://aur.archlinux.org/fheroes.git
+cd fheroes
 makepkg -si
 ```
 
 ### Debian and Ubuntu
 
-fheroes2 is available from `contrib` repositories for Debian (since 13) and Ubuntu (since 24.04). You can install it by running:
+fheroes is available from `contrib` repositories for Debian (since 13) and Ubuntu (since 24.04). You can install it by running:
 
 ```sh
-apt install fheroes2
+apt install fheroes
 ```
 
 These distributions may not provide the latest version of the game due to their release cycle.
 
 #### Game Resources
 
-To play the game you need the original game resources. You can install them to per-user paths (`man fheroes2` for more info, or you
-can install them to the system-wide path (`/usr/share/games/fheroes2`) with `game-data-packager` program (since v70).
+To play the game you need the original game resources. You can install them to per-user paths (`man fheroes` for more info, or you
+can install them to the system-wide path (`/usr/share/games/fheroes`) with `game-data-packager` program (since v70).
 To make the resource package:
 
 ```sh
@@ -290,8 +290,8 @@ You can get more info about resource packaging by running `game-data-packager he
 ### Linux ZIP Archive
 
 * Download one of the following Linux ZIP archives:
-  * [**Linux x86-64**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_ubuntu_x86-64_SDL2.zip)
-  * [**Linux ARM64**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_ubuntu_arm64_SDL2.zip)
+  * [**Linux x86-64**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_ubuntu_x86-64_SDL2.zip)
+  * [**Linux ARM64**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_ubuntu_arm64_SDL2.zip)
 * After downloading the ZIP archive, extract it to a suitable directory of your choice. Then you will need to install the SDL libraries
   required to run the game. The installation procedure depends on the Linux distribution you are using:
   * **Debian-based**: run the script `install_sdl2.sh` from the `script/linux` subdirectory.
@@ -303,28 +303,28 @@ You can get more info about resource packaging by running `game-data-packager he
   copy of the original game. You will be prompted to enter the location of the original game, and the script will extract all the necessary
   resource files.
 * As an alternative to the previous step, you can manually copy the subdirectories `ANIM`, `DATA`, `MAPS` and `MUSIC` (some of them may
-  be missing depending on the version of the original game) from the original game directory to the fheroes2 installation directory.
+  be missing depending on the version of the original game) from the original game directory to the fheroes installation directory.
 * If you don't have a legally purchased copy of the original game, you can download and install the demo version of the original game
   by running the `download_demo_version.sh` script supplied in the ZIP archive.
 
 ## Android
 
-* Install the fheroes2 app from [**Google Play**](https://play.google.com/store/apps/details?id=org.fheroes2) or download the
-  [**Android ZIP archive**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_android.zip).
+* Install the fheroes app from [**Google Play**](https://play.google.com/store/apps/details?id=org.fheroes) or download the
+  [**Android ZIP archive**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_android.zip).
 * Follow the [**instructions**](README_android.md).
 
 ## PlayStation Vita
 
 **Please note**: you need to be running custom firmware for it to work.
 
-* Download the [**PlayStation Vita ZIP archive**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_psv.zip).
+* Download the [**PlayStation Vita ZIP archive**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_psv.zip).
 * Follow the [**instructions**](README_PSV.md).
 
 ## Nintendo Switch
 
 **Please note**: you need to be running custom firmware for it to work.
 
-* Download the [**Nintendo Switch ZIP archive**](https://github.com/ihhub/fheroes2/releases/latest/download/fheroes2_switch.zip).
+* Download the [**Nintendo Switch ZIP archive**](https://github.com/ihhub/fheroes/releases/latest/download/fheroes_switch.zip).
 * Follow the [**instructions**](README_switch.md).
 
 ## Snapshots (Latest Builds)
@@ -333,14 +333,14 @@ You can download the precompiled binaries of the latest commit (snapshot)
 
 | Platform Version | Release                                                                                                   |
 |------------------|-----------------------------------------------------------------------------------------------------------|
-| Windows x64 SDL2 | [fheroes2-windows-x64-SDL2](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-windows-x64-SDL2)     |
-| Windows x86 SDL2 | [fheroes2-windows-x86-SDL2](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-windows-x86-SDL2)     |
-| macOS x86-64     | [fheroes2-osx-sdl2_dev](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-osx-sdl2_dev)             |
-| Ubuntu x86-64    | [fheroes2-linux-sdl2_dev](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-linux-sdl2_dev)         |
-| Ubuntu ARM       | [fheroes2-linux-arm-sdl2_dev](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-linux-arm-sdl2_dev) |
-| Android          | [fheroes2-android](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-android)                       |
-| PlayStation Vita | [fheroes2-psv-sdl2_dev](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-psv-sdl2_dev)             |
-| Nintendo Switch  | [fheroes2-switch-sdl2_dev](https://github.com/ihhub/fheroes2/releases/tag/fheroes2-switch-sdl2_dev)       |
+| Windows x64 SDL2 | [fheroes-windows-x64-SDL2](https://github.com/ihhub/fheroes/releases/tag/fheroes-windows-x64-SDL2)     |
+| Windows x86 SDL2 | [fheroes-windows-x86-SDL2](https://github.com/ihhub/fheroes/releases/tag/fheroes-windows-x86-SDL2)     |
+| macOS x86-64     | [fheroes-osx-sdl2_dev](https://github.com/ihhub/fheroes/releases/tag/fheroes-osx-sdl2_dev)             |
+| Ubuntu x86-64    | [fheroes-linux-sdl2_dev](https://github.com/ihhub/fheroes/releases/tag/fheroes-linux-sdl2_dev)         |
+| Ubuntu ARM       | [fheroes-linux-arm-sdl2_dev](https://github.com/ihhub/fheroes/releases/tag/fheroes-linux-arm-sdl2_dev) |
+| Android          | [fheroes-android](https://github.com/ihhub/fheroes/releases/tag/fheroes-android)                       |
+| PlayStation Vita | [fheroes-psv-sdl2_dev](https://github.com/ihhub/fheroes/releases/tag/fheroes-psv-sdl2_dev)             |
+| Nintendo Switch  | [fheroes-switch-sdl2_dev](https://github.com/ihhub/fheroes/releases/tag/fheroes-switch-sdl2_dev)       |
 
 **These binaries incorporate all the latest changes, but also all the latest bugs, and are mainly intended for developers.**
 

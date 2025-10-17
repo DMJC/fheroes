@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2020 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +24,7 @@
 #include <cmath>
 #include <cstdlib>
 
-double fheroes2::GetAngle( const Point & start, const Point & target )
+double fheroes::GetAngle( const Point & start, const Point & target )
 {
     const int dx = target.x - start.x;
     const int dy = target.y - start.y;
@@ -36,7 +36,7 @@ double fheroes2::GetAngle( const Point & start, const Point & target )
     return angle;
 }
 
-std::vector<fheroes2::Point> fheroes2::getLinePoints( const Point & pt1, const Point & pt2, const uint32_t step )
+std::vector<fheroes::Point> fheroes::getLinePoints( const Point & pt1, const Point & pt2, const uint32_t step )
 {
     const int dx = pt2.x - pt1.x;
     const int dy = pt2.y - pt1.y;
@@ -81,7 +81,7 @@ std::vector<fheroes2::Point> fheroes2::getLinePoints( const Point & pt1, const P
     return line;
 }
 
-std::vector<fheroes2::Point> fheroes2::GetArcPoints( const Point & from, const Point & to, const int32_t arcHeight, const int32_t step )
+std::vector<fheroes::Point> fheroes::GetArcPoints( const Point & from, const Point & to, const int32_t arcHeight, const int32_t step )
 {
     std::vector<Point> res;
     Point pt( from );
@@ -127,7 +127,7 @@ std::vector<fheroes2::Point> fheroes2::GetArcPoints( const Point & from, const P
     return res;
 }
 
-int32_t fheroes2::GetRectIndex( const std::vector<Rect> & rects, const Point & pt )
+int32_t fheroes::GetRectIndex( const std::vector<Rect> & rects, const Point & pt )
 {
     for ( size_t i = 0; i < rects.size(); ++i ) {
         if ( rects[i] & pt )
@@ -137,7 +137,7 @@ int32_t fheroes2::GetRectIndex( const std::vector<Rect> & rects, const Point & p
     return -1;
 }
 
-fheroes2::Rect fheroes2::getBoundaryRect( const Rect & rt1, const Rect & rt2 )
+fheroes::Rect fheroes::getBoundaryRect( const Rect & rt1, const Rect & rt2 )
 {
     if ( rt2.width == 0 && rt2.height == 0 ) {
         return rt1;

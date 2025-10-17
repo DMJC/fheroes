@@ -1,5 +1,5 @@
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2022 - 2024                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -20,10 +20,10 @@
 
 include $(DEVKITPRO)/libnx/switch_rules
 
-# Common flags (for both C and C++ compilers) for both third-party libraries and fheroes2
+# Common flags (for both C and C++ compilers) for both third-party libraries and fheroes
 CCFLAGS := $(CCFLAGS) $(shell sdl2-config --cflags) -fPIE
 LDFLAGS := $(LDFLAGS) -specs=$(DEVKITPRO)/libnx/switch.specs
-# Common flags (for both C and C++ compilers) for fheroes2 only
+# Common flags (for both C and C++ compilers) for fheroes only
 CCFLAGS_FH2 := -DTARGET_NINTENDO_SWITCH
 
 LIBS := $(LIBS) -lvorbisidec -lmodplug -lmpg123 -lopusfile -lopus -logg

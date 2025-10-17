@@ -1,9 +1,9 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2025                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes2         *
- *   Copyright (C) 2008 by Andrey Afletdinov <fheroes2@gmail.com>          *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2008 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -418,7 +418,7 @@ namespace
         // This counter should be incremented every time the current track or its playback mode changes
         std::atomic<uint64_t> _currentTrackChangeCounter{ 0 };
 
-        fheroes2::Time _currentTrackTimer;
+        fheroes::Time _currentTrackTimer;
 
         Mix_Music * _musicQueue{ nullptr };
     };
@@ -624,7 +624,7 @@ void Audio::Init()
         return;
     }
 
-    if ( !fheroes2::isComponentInitialized( fheroes2::SystemInitializationComponent::Audio ) ) {
+    if ( !fheroes::isComponentInitialized( fheroes::SystemInitializationComponent::Audio ) ) {
         ERROR_LOG( "The audio subsystem was not initialized." )
         return;
     }
@@ -716,7 +716,7 @@ void Audio::Quit()
             return;
         }
 
-        if ( !fheroes2::isComponentInitialized( fheroes2::SystemInitializationComponent::Audio ) ) {
+        if ( !fheroes::isComponentInitialized( fheroes::SystemInitializationComponent::Audio ) ) {
             // Something wrong with the logic! The component must be initialized.
             assert( 0 );
             return;

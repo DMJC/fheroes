@@ -1,49 +1,49 @@
-# [fheroes2](README.md) Translation Guide
+# [fheroes](README.md) Translation Guide
 
 This project uses portable object (PO) files to handle localization in various languages. The PO files are located in the `files/lang`
 subdirectory of the project source tree. The current instruction is designed for Linux, MacOS and Windows users.
 
 ## Current Status
 
-![Belarusian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_be.json)
-![Bulgarian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_bg.json)
-![Czech](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_cs.json)
-![German](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_de.json)
-![Danish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_dk.json)
-![Spanish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_es.json)
-![French](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_fr.json)
-![Hungarian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_hu.json)
-![Italian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_it.json)
-![Lithuanian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_lt.json)
-![Norwegian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_nb.json)
-![Dutch](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_nl.json)
-![Polish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_pl.json)
-![Brazilian Portuguese](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_pt.json)
-![Romanian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_ro.json)
-![Russian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_ru.json)
-![Slovak](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_sk.json)
-![Swedish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_sv.json)
-![Turkish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_tr.json)
-![Ukrainian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_uk.json)
-![Vietnamese](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes2/json/lang_vi.json)
+![Belarusian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_be.json)
+![Bulgarian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_bg.json)
+![Czech](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_cs.json)
+![German](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_de.json)
+![Danish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_dk.json)
+![Spanish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_es.json)
+![French](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_fr.json)
+![Hungarian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_hu.json)
+![Italian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_it.json)
+![Lithuanian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_lt.json)
+![Norwegian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_nb.json)
+![Dutch](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_nl.json)
+![Polish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_pl.json)
+![Brazilian Portuguese](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_pt.json)
+![Romanian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_ro.json)
+![Russian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_ru.json)
+![Slovak](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_sk.json)
+![Swedish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_sv.json)
+![Turkish](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_tr.json)
+![Ukrainian](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_uk.json)
+![Vietnamese](https://img.shields.io/endpoint?url=https://ihhub.github.io/fheroes/json/lang_vi.json)
 
 ## Adding New Translations/Localizations
 
 If you want to add a new localization, you will first need to add it to the `SupportedLanguage` list/enumeration in the source code.
 Afterwards, a new PO file for it will need to be added. It will have to be named according to the ISO standard's two-character
 language abbreviations. Then to have font support, you will have to specify what font encoding/charset is compatible by adding
-the language to the font generation code found in `src/fheroes2/gui/ui_font.cpp`. If a compatible font encoding has not currently
+the language to the font generation code found in `src/fheroes/gui/ui_font.cpp`. If a compatible font encoding has not currently
 been implemented, then code for that will need to be written.
 
 ## Editing Translations - Before You Start
 
-Before starting, you will have to set up the necessary environment: fork the fheroes2 repository and install an application used
-for translating. When you have your own fork of fheroes2 you should create a branch. At this point you can start translating.
+Before starting, you will have to set up the necessary environment: fork the fheroes repository and install an application used
+for translating. When you have your own fork of fheroes you should create a branch. At this point you can start translating.
 After you finish your work, and you are ready to share it, you will have to prepare a pull request.
 
-### Forking the fheroes2 Repository
+### Forking the fheroes Repository
 
-A fork is your copy of the fheroes2 repository. It gives you a safe environment to prepare and test your changes.
+A fork is your copy of the fheroes repository. It gives you a safe environment to prepare and test your changes.
 You can read here how to [**create a fork**](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
 
 ### Translation Editing Software
@@ -55,7 +55,7 @@ edit translations. Currently all implemented languages adhere to a standardized 
 
 ### Syncing Your Fork
 
-Before you start working on the first or next translation, make sure that your fork has all the recent changes from the fheroes2 repo.
+Before you start working on the first or next translation, make sure that your fork has all the recent changes from the fheroes repo.
 To do this, [**sync your fork**](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork).
 
 ### Creating a Branch
@@ -79,7 +79,7 @@ _( "Are you sure you want to quit?" )
 ### Testing Your Changes
 
 Once the translation files have been modified, for Linux/MacOS run the `make` command below in the `files/lang` subdirectory to create
-machine object (MO) binary files which can be used by the fheroes2 engine.
+machine object (MO) binary files which can be used by the fheroes engine.
 
 For example, for the German PO file, `de.po`, the following would be the command:
 
@@ -87,16 +87,16 @@ For example, for the German PO file, `de.po`, the following would be the command
 make de.mo
 ```
 
-To make the engine use this MO, the file should be placed in the `files/lang` folder used by the fheroes2 executable.
+To make the engine use this MO, the file should be placed in the `files/lang` folder used by the fheroes executable.
 The exact location of this folder depends on the operating system.
 
 On Windows, it is usually located in the app installation directory.
 
-On Linux, it is usually located in the `/usr/share/fheroes2` or `/usr/local/share/fheroes2`.
+On Linux, it is usually located in the `/usr/share/fheroes` or `/usr/local/share/fheroes`.
 
-Currently for MacOS users this location is dependent on what third-party package manager is used to install fheroes2.
+Currently for MacOS users this location is dependent on what third-party package manager is used to install fheroes.
 
-The Flatpak version of the fheroes2 installation from Flathub is located in the `usr/.var/app/io.github.ihhub.Fheroes2` directory.
+The Flatpak version of the fheroes installation from Flathub is located in the `usr/.var/app/io.github.ihhub.Fheroes2` directory.
 
 For Windows users who use POEdit or a similar application, it is possible to compile the MO file using said program. However, note that
 the program will need to be set to compile the MO file in the font encoding/charset that the language that you are translating to has been
@@ -108,7 +108,7 @@ a pull request with your changes, you will have to save the PO file in UTF-8 enc
 ### Sharing Your Translation Work
 
 When you are satisfied with your work, you can proceed with sharing it. The first step is to commit your work into the branch you made of
-your own fheroes2 fork. Then, create a pull request that proposes to introduce your changes into the fheroes2 repository.
+your own fheroes fork. Then, create a pull request that proposes to introduce your changes into the fheroes repository.
 
 How to [**commit**](https://github.com/git-guides/git-commit).
 
@@ -121,7 +121,7 @@ your work, I.E. "Update the Slovak translation".
 
 <summary>Pull request restrictions - Please read</summary>
 
-The fheroes2 team has set a maximum of 400 total modified lines for any pull request for translations. For contributors wanting to
+The fheroes team has set a maximum of 400 total modified lines for any pull request for translations. For contributors wanting to
 add translated lines to a new language this has a maximum of 30 total modified lines for that first pull request.
 
 These limitations have been set because every pull request needs to be reviewed by our team, and so changing too many lines at once will only slow this
@@ -139,7 +139,7 @@ example creature names or castle buildings.
 ## Updating PO Templates and Translatable Strings in PO Files
 
 Currently all PO files are automatically updated with new strings after each commit that brings changes to the ingame text. If for whatever reason
-you still need to update strings locally, this can be achieved by running the command below in `src/dist/fheroes2` to generate a new portable object
+you still need to update strings locally, this can be achieved by running the command below in `src/dist/fheroes` to generate a new portable object
 template (POT) file. Windows users will need to set up an environment that lets them run `make`, like Windows Subsystem for Linux (WSL) or
 [**Cygwin**](https://www.cygwin.com/)/[**MSYS2**](https://www.msys2.org/).
 

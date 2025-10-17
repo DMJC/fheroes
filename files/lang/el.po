@@ -1,10 +1,10 @@
-# Greek translation of fheroes2
-# Copyright (C) 2022-2025 fheroes2 team <fhomm2@gmail.com>
-# This file is distributed under the same license as the fheroes2 package.
+# Greek translation of fheroes
+# Copyright (C) 2022-2025 fheroes team <fhomm2@gmail.com>
+# This file is distributed under the same license as the fheroes package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fheroes2\n"
+"Project-Id-Version: fheroes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-14 22:58+0000\n"
 "PO-Revision-Date: 2025-05-19 07:06+0200\n"
@@ -4695,13 +4695,13 @@ msgstr ""
 msgid "Support us at"
 msgstr ""
 
-msgid "local-donation-platform|https://www.patreon.com/fheroes2"
+msgid "local-donation-platform|https://www.patreon.com/fheroes"
 msgstr ""
 
 msgid "Connect with us at"
 msgstr ""
 
-msgid "local-social-network|https://www.facebook.com/groups/fheroes2"
+msgid "local-social-network|https://www.facebook.com/groups/fheroes"
 msgstr ""
 
 msgid "Need help with the game?"
@@ -5275,10 +5275,10 @@ msgstr ""
 msgid "Cancel back to the main menu."
 msgstr ""
 
-msgid "fheroes2 Resurrection Team presents"
+msgid "fheroes Resurrection Team presents"
 msgstr ""
 
-msgid "Welcome to Heroes of Might and Magic II powered by fheroes2 engine!"
+msgid "Welcome to Heroes of Might and Magic II powered by fheroes engine!"
 msgstr ""
 
 msgid ""
@@ -5329,7 +5329,7 @@ msgid "Loading video. Please wait..."
 msgstr ""
 
 msgid ""
-"fheroes2 needs data files from the original Heroes of Might and Magic II to "
+"fheroes needs data files from the original Heroes of Might and Magic II to "
 "operate. You appear to be using the demo version of Heroes of Might and "
 "Magic II for this purpose. Please note that only one scenario will be "
 "available in this setup."

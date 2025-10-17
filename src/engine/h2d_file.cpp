@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2021 - 2025                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,7 +40,7 @@ namespace
     const std::array<uint8_t, 4> magicSequence{ 'H', '2', 'D', version };
 }
 
-namespace fheroes2
+namespace fheroes
 {
     bool H2DReader::open( const std::string & path )
     {

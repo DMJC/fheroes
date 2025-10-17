@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###########################################################################
-#   fheroes2: https://github.com/ihhub/fheroes2                           #
+#   fheroes: https://github.com/ihhub/fheroes                           #
 #   Copyright (C) 2021 - 2025                                             #
 #                                                                         #
 #   Copyright 2018 Google LLC                                             #

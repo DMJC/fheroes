@@ -1,5 +1,5 @@
 /***************************************************************************
- *   fheroes2: https://github.com/ihhub/fheroes2                           *
+ *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2021 - 2022                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -80,7 +80,7 @@ namespace
     };
 }
 
-namespace fheroes2
+namespace fheroes
 {
     const uint8_t * getGamePalette()
     {

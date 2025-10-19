@@ -1,0 +1,54 @@
+/***************************************************************************
+ *   fheroes: https://github.com/ihhub/fheroes                           *
+ *   Copyright (C) 2019 - 2025                                             *
+ *                                                                         *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "castle.h" // IWYU pragma: associated
+#include "dialog.h"
+#include "game_delays.h"
+#include "game_string.h"
+#include "icn.h"
+#include "translations.h"
+#include "ui_dialog.h"
+#include "ui_text.h"
+#include "world.h"
+
+void Castle::_openTavern() const
+{
+    auto rumor = world.getCurrentRumor();
+
+    std::string body( _( "A generous tip for the barkeep yields the following rumor:" ) );
+    body += "\n\n";
+
+    auto text = std::make_shared<fheroes::MultiFontText>();
+    text->add( fheroes::Text{ std::move( body ), fheroes::FontType::normalWhite() } );
+    text->add( fheroes::Text{ std::move( rumor.text ), fheroes::FontType::normalWhite(), rumor.language } );
+
+    const fheroes::AnimationDialogElement imageUI( ICN::TAVWIN, { 0, 1 }, 0, Game::getAnimationDelayValue( Game::CASTLE_TAVERN_DELAY ) );
+    const fheroes::TextDialogElement textBodyUI( text );
+
+    fheroes::showStandardTextMessage( GetStringBuilding( BUILD_TAVERN ), {}, Dialog::OK, { &imageUI, &textBodyUI } );
+}

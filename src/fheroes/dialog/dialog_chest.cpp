@@ -1,0 +1,133 @@
+/***************************************************************************
+ *   fheroes: https://github.com/ihhub/fheroes                           *
+ *   Copyright (C) 2019 - 2025                                             *
+ *                                                                         *
+ *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include <cstdint>
+#include <string>
+
+#include "agg_image.h"
+#include "cursor.h"
+#include "dialog.h" // IWYU pragma: associated
+#include "game_hotkeys.h"
+#include "heroes.h"
+#include "icn.h"
+#include "image.h"
+#include "kingdom.h"
+#include "localevent.h"
+#include "math_base.h"
+#include "resource.h"
+#include "screen.h"
+#include "settings.h"
+#include "translations.h"
+#include "ui_button.h"
+#include "ui_text.h"
+#include "world.h"
+
+bool Dialog::SelectGoldOrExp( const std::string & header, const std::string & message, uint32_t gold, uint32_t expr, const Heroes & hero )
+{
+    fheroes::Display & display = fheroes::Display::instance();
+
+    // setup cursor
+    const CursorRestorer cursorRestorer( true, Cursor::POINTER );
+
+    const fheroes::Sprite & sprite_gold = fheroes::AGG::GetICN( ICN::RESOURCE, 6 );
+    const fheroes::Sprite & sprite_expr = fheroes::AGG::GetICN( ICN::EXPMRL, 4 );
+
+    fheroes::Text headerText( header, fheroes::FontType::normalYellow() );
+    fheroes::Text messageText( message, fheroes::FontType::normalWhite() );
+
+    fheroes::Text text{ std::to_string( gold ) + " (" + _( "Total: " ) + std::to_string( world.GetKingdom( hero.GetColor() ).GetFunds().Get( Resource::GOLD ) ) + ")",
+                         fheroes::FontType::smallWhite() };
+
+    const int spacer = 10;
+    const FrameBox box( headerText.height( fheroes::boxAreaWidthPx ) + spacer + messageText.height( fheroes::boxAreaWidthPx ) + spacer + sprite_expr.height() + 2
+                            + text.height(),
+                        true );
+
+    const bool isEvilInterface = Settings::Get().isEvilInterfaceEnabled();
+    const int buttonYesIcnID = isEvilInterface ? ICN::BUTTON_SMALL_YES_EVIL : ICN::BUTTON_SMALL_YES_GOOD;
+    const int buttonNoIcnID = isEvilInterface ? ICN::BUTTON_SMALL_NO_EVIL : ICN::BUTTON_SMALL_NO_GOOD;
+
+    const fheroes::Sprite & buttonYesSprite = fheroes::AGG::GetICN( buttonYesIcnID, 0 );
+
+    const int32_t buttonsYPosition = box.GetArea().y + box.GetArea().height - buttonYesSprite.height();
+    const int32_t buttonYesXPosition = box.GetArea().x + box.GetArea().width / 2 - buttonYesSprite.width() - 20;
+
+    fheroes::Button buttonYes( buttonYesXPosition, buttonsYPosition, buttonYesIcnID, 0, 1 );
+
+    const int32_t buttonNoXPosition = box.GetArea().x + box.GetArea().width / 2 + 20;
+
+    fheroes::Button buttonNo( buttonNoXPosition, buttonsYPosition, buttonNoIcnID, 0, 1 );
+
+    fheroes::Rect pos = box.GetArea();
+
+    if ( !header.empty() ) {
+        headerText.draw( pos.x, pos.y + 2, fheroes::boxAreaWidthPx, display );
+    }
+
+    pos.y += headerText.height( fheroes::boxAreaWidthPx ) + spacer;
+
+    if ( !message.empty() ) {
+        messageText.draw( pos.x, pos.y + 2, fheroes::boxAreaWidthPx, display );
+    }
+
+    pos.y += messageText.height( fheroes::boxAreaWidthPx ) + spacer;
+
+    pos.y += sprite_expr.height();
+    // sprite1
+    pos.x = buttonYesXPosition + ( ( buttonYesSprite.width() - sprite_gold.width() ) / 2 );
+    fheroes::Blit( sprite_gold, display, pos.x, pos.y - sprite_gold.height() );
+    // text
+    text.draw( pos.x + sprite_gold.width() / 2 - text.width() / 2, pos.y + 4, display );
+
+    // sprite2
+    pos.x = buttonNoXPosition + ( ( fheroes::AGG::GetICN( buttonNoIcnID, 0 ).width() - sprite_expr.width() ) / 2 );
+    fheroes::Blit( sprite_expr, display, pos.x, pos.y - sprite_expr.height() );
+    // text
+    text.set( std::to_string( expr ) + " (" + _( "Need: " ) + std::to_string( Heroes::GetExperienceFromLevel( hero.GetLevel() ) - hero.GetExperience() ) + ")",
+              fheroes::FontType::smallWhite() );
+    text.draw( pos.x + sprite_expr.width() / 2 - text.width() / 2, pos.y + 4, display );
+
+    buttonYes.draw();
+    buttonNo.draw();
+
+    display.render();
+    LocalEvent & le = LocalEvent::Get();
+    bool result = false;
+
+    // message loop
+    while ( le.HandleEvents() ) {
+        buttonYes.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( buttonYes.area() ) );
+        buttonNo.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( buttonNo.area() ) );
+
+        if ( Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_OKAY ) || le.MouseClickLeft( buttonYes.area() ) ) {
+            result = true;
+            break;
+        }
+        if ( Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_CANCEL ) || le.MouseClickLeft( buttonNo.area() ) ) {
+            result = false;
+            break;
+        }
+    }
+
+    return result;
+}

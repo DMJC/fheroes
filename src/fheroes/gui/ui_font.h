@@ -1,0 +1,54 @@
+/***************************************************************************
+ *   fheroes: https://github.com/ihhub/fheroes                           *
+ *   Copyright (C) 2022 - 2025                                             *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#pragma once
+
+#include <cstdint>
+#include <string>
+#include <vector>
+
+namespace fheroes
+{
+    class Image;
+    class Sprite;
+
+    enum class SupportedLanguage : uint8_t;
+
+    void generateAlphabet( const SupportedLanguage language, std::vector<std::vector<Sprite>> & icnVsSprite );
+
+    bool isAlphabetSupported( const SupportedLanguage language );
+
+    void generateBaseButtonFont( std::vector<Sprite> & goodReleased, std::vector<Sprite> & goodPressed, std::vector<Sprite> & evilReleased,
+                                 std::vector<Sprite> & evilPressed );
+
+    void generateButtonAlphabet( const SupportedLanguage language, std::vector<std::vector<Sprite>> & icnVsSprite );
+
+    void modifyBaseNormalFont( std::vector<fheroes::Sprite> & icnVsSprite );
+
+    void modifyBaseSmallFont( std::vector<fheroes::Sprite> & icnVsSprite );
+
+    void applyFontVerticalGradient( Image & image, const uint8_t insideColor, const uint8_t outsideColor );
+
+    // The original French version replaces several ASCII special characters with language-specific characters.
+    // In the engine we use CP1252 for the French translation.
+    // This function replaces the special ASCII characters with the language-specific characters from CP1252
+    // to properly display texts for maps from French assets.
+    void fixFrenchCharactersForMP2Map( std::string & str );
+}

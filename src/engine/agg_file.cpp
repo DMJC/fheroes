@@ -49,8 +49,8 @@ namespace fheroes
         for ( size_t i = 0; i < count; ++i ) {
             std::string name = nameEntries.getString( _maxFilenameSize );
 
-            // Check 32-bit filename hash.
-            if ( fileEntries.getLE32() != calculateAggFilenameHash( name ) ) {
+            // Check 16-bit filename hash.
+            if ( fileEntries.getLE16() != calculateAggFilenameHash( name ) ) {
                 // Hash check failed. AGG file is corrupted.
                 _files.clear();
                 return false;
@@ -58,6 +58,7 @@ namespace fheroes
 
             const uint32_t fileOffset = fileEntries.getLE32();
             const uint32_t fileSize = fileEntries.getLE32();
+            const uint32_t discard = fileEntries.getLE32();
             _files.try_emplace( std::move( name ), std::make_pair( fileSize, fileOffset ) );
         }
 
@@ -87,8 +88,8 @@ namespace fheroes
 
     uint32_t calculateAggFilenameHash( const std::string_view str )
     {
-        uint32_t hash = 0;
-        uint32_t sum = 0;
+        uint16_t hash = 0;
+        uint16_t sum = 0;
 
         for ( auto iter = str.rbegin(); iter != str.rend(); ++iter ) {
             const unsigned char c = static_cast<unsigned char>( std::toupper( static_cast<unsigned char>( *iter ) ) );

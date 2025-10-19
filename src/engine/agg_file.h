@@ -46,7 +46,6 @@ namespace fheroes
 
     private:
         static const size_t _maxFilenameSize = 15; // 8.3 ASCIIZ file name + 2-bytes padding
-
         StreamFile _stream;
         std::map<std::string, std::pair<uint32_t, uint32_t>, std::less<>> _files;
     };

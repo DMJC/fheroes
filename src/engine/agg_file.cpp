@@ -24,6 +24,7 @@
 #include <cstdint>
 #include <iterator>
 #include <string>
+#include <vector>
 
 namespace fheroes
 {
@@ -34,32 +35,103 @@ namespace fheroes
         }
 
         const size_t size = _stream.size();
-        const size_t count = _stream.getLE16();
-        const size_t fileRecordSize = sizeof( uint32_t ) * 3;
-
-        if ( count * ( fileRecordSize + _maxFilenameSize ) >= size ) {
+        if ( size < sizeof( uint16_t ) ) {
             return false;
         }
 
-        ROStreamBuf fileEntries = _stream.getStreamBuf( count * fileRecordSize );
+        const size_t count = _stream.getLE16();
+
+        if ( count == 0 ) {
+            return true;
+        }
+
         const size_t nameEntriesSize = _maxFilenameSize * count;
-        _stream.seek( size - nameEntriesSize );
+        if ( sizeof( uint16_t ) + nameEntriesSize > size ) {
+            return false;
+        }
+
+        const size_t entriesSize = size - sizeof( uint16_t ) - nameEntriesSize;
+        if ( entriesSize % count != 0 ) {
+            return false;
+        }
+
+        const size_t recordSize = entriesSize / count;
+        enum class AGGRecordType
+        {
+            Hash32,
+            Hash16,
+            NoHash
+        };
+
+        AGGRecordType recordType;
+
+        switch ( recordSize ) {
+        case sizeof( uint32_t ) * 3:
+            recordType = AGGRecordType::Hash32;
+            break;
+        case sizeof( uint32_t ) * 2 + sizeof( uint16_t ):
+            recordType = AGGRecordType::Hash16;
+            break;
+        case sizeof( uint32_t ) * 2:
+            recordType = AGGRecordType::NoHash;
+            break;
+        default:
+            return false;
+        }
+
+        ROStreamBuf fileEntries = _stream.getStreamBuf( entriesSize );
+        const size_t dataSectionEnd = size - nameEntriesSize;
+        _stream.seek( dataSectionEnd );
         ROStreamBuf nameEntries = _stream.getStreamBuf( nameEntriesSize );
 
-        for ( size_t i = 0; i < count; ++i ) {
-            std::string name = nameEntries.getString( _maxFilenameSize );
+        std::vector<std::string> fileNames;
+        fileNames.reserve( count );
 
-            // Check 16-bit filename hash.
-            if ( fileEntries.getLE16() != calculateAggFilenameHash( name ) ) {
-                // Hash check failed. AGG file is corrupted.
+        for ( size_t i = 0; i < count; ++i ) {
+            fileNames.emplace_back( nameEntries.getString( _maxFilenameSize ) );
+        }
+
+        for ( size_t i = 0; i < count; ++i ) {
+            const std::string & name = fileNames[i];
+
+            uint32_t fileOffset = 0;
+            uint32_t fileSize = 0;
+
+            switch ( recordType ) {
+            case AGGRecordType::Hash32: {
+                const uint32_t storedHash = fileEntries.getLE32();
+                if ( storedHash != calculateAggFilenameHash( name ) ) {
+                    _files.clear();
+                    return false;
+                }
+
+                fileOffset = fileEntries.getLE32();
+                fileSize = fileEntries.getLE32();
+                break;
+            }
+            case AGGRecordType::Hash16: {
+                const uint16_t storedHash = fileEntries.getLE16();
+                if ( storedHash != static_cast<uint16_t>( calculateAggFilenameHash( name ) ) ) {
+                    _files.clear();
+                    return false;
+                }
+
+                fileOffset = fileEntries.getLE32();
+                fileSize = fileEntries.getLE32();
+                break;
+            }
+            case AGGRecordType::NoHash:
+                fileOffset = fileEntries.getLE32();
+                fileSize = fileEntries.getLE32();
+                break;
+            }
+
+            if ( fileOffset + fileSize > dataSectionEnd ) {
                 _files.clear();
                 return false;
             }
 
-            const uint32_t fileOffset = fileEntries.getLE32();
-            const uint32_t fileSize = fileEntries.getLE32();
-            const uint32_t discard = fileEntries.getLE32();
-            _files.try_emplace( std::move( name ), std::make_pair( fileSize, fileOffset ) );
+            _files.try_emplace( name, std::make_pair( fileSize, fileOffset ) );
         }
 
         if ( _files.size() != count ) {

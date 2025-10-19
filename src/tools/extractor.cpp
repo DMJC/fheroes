@@ -47,10 +47,11 @@ namespace
 
     struct AGGItemInfo
     {
-        // Hash of this item's name, see fheroes::calculateAggFilenameHash() for details
-        uint32_t hash;
-        uint32_t offset;
-        uint32_t size;
+        uint32_t offset{ 0 };
+        uint32_t size{ 0 };
+        uint32_t hash{ 0 };
+        bool hasHash{ false };
+        bool isHash16Bit{ false };
     };
 }
 
@@ -100,20 +101,94 @@ int main( int argc, char ** argv )
         }
 
         const size_t inputStreamSize = inputStream.size();
+        if ( inputStreamSize < sizeof( uint16_t ) ) {
+            std::cerr << inputFileName << ": invalid AGG file" << std::endl;
+            continue;
+        }
+
         const uint16_t itemsCount = inputStream.getLE16();
 
-        ROStreamBuf itemsStream = inputStream.getStreamBuf( static_cast<size_t>( itemsCount ) * 4 * 3 /* hash, offset, size */ );
-        inputStream.seek( inputStreamSize - AGGItemNameLen * itemsCount );
-        ROStreamBuf namesStream = inputStream.getStreamBuf( AGGItemNameLen * itemsCount );
+        if ( itemsCount == 0 ) {
+            continue;
+        }
+
+        const size_t namesTableSize = static_cast<size_t>( itemsCount ) * AGGItemNameLen;
+        if ( sizeof( uint16_t ) + namesTableSize > inputStreamSize ) {
+            std::cerr << inputFileName << ": invalid AGG file" << std::endl;
+            continue;
+        }
+
+        const size_t namesTableOffset = inputStreamSize - namesTableSize;
+        const size_t itemsDataSize = namesTableOffset - sizeof( uint16_t );
+
+        if ( itemsDataSize % itemsCount != 0 ) {
+            std::cerr << inputFileName << ": unsupported AGG record layout" << std::endl;
+            continue;
+        }
+
+        const size_t recordSize = itemsDataSize / itemsCount;
+
+        enum class AGGRecordType
+        {
+            Hash32,
+            Hash16,
+            NoHash
+        };
+
+        AGGRecordType recordType;
+
+        switch ( recordSize ) {
+        case sizeof( uint32_t ) * 3:
+            recordType = AGGRecordType::Hash32;
+            break;
+        case sizeof( uint32_t ) * 2 + sizeof( uint16_t ):
+            recordType = AGGRecordType::Hash16;
+            break;
+        case sizeof( uint32_t ) * 2:
+            recordType = AGGRecordType::NoHash;
+            break;
+        default:
+            std::cerr << inputFileName << ": unsupported AGG record layout" << std::endl;
+            continue;
+        }
+
+        ROStreamBuf itemsStream = inputStream.getStreamBuf( itemsDataSize );
+        inputStream.seek( namesTableOffset );
+        ROStreamBuf namesStream = inputStream.getStreamBuf( namesTableSize );
 
         std::map<std::string, AGGItemInfo, std::less<>> aggItemsMap;
+        std::vector<std::string> itemNames;
+        itemNames.reserve( itemsCount );
 
         for ( uint16_t i = 0; i < itemsCount; ++i ) {
-            AGGItemInfo & info = aggItemsMap[StringLower( namesStream.getString( AGGItemNameLen ) )];
+            const std::string name = StringLower( namesStream.getString( AGGItemNameLen ) );
+            itemNames.emplace_back( name );
+            aggItemsMap.try_emplace( name, AGGItemInfo{} );
+        }
 
-            info.hash = itemsStream.getLE32();
-            info.offset = itemsStream.getLE32();
-            info.size = itemsStream.getLE32();
+        for ( uint16_t i = 0; i < itemsCount; ++i ) {
+            AGGItemInfo & info = aggItemsMap[itemNames[i]];
+
+            switch ( recordType ) {
+            case AGGRecordType::Hash32:
+                info.hash = itemsStream.getLE32();
+                info.hasHash = true;
+                info.isHash16Bit = false;
+                info.offset = itemsStream.getLE32();
+                info.size = itemsStream.getLE32();
+                break;
+            case AGGRecordType::Hash16:
+                info.hash = itemsStream.getLE16();
+                info.hasHash = true;
+                info.isHash16Bit = true;
+                info.offset = itemsStream.getLE32();
+                info.size = itemsStream.getLE32();
+                break;
+            case AGGRecordType::NoHash:
+                info.offset = itemsStream.getLE32();
+                info.size = itemsStream.getLE32();
+                break;
+            }
         }
 
         for ( const auto & item : aggItemsMap ) {
@@ -126,12 +201,24 @@ int main( int argc, char ** argv )
                 continue;
             }
 
-            const uint32_t hash = fheroes::calculateAggFilenameHash( name );
-            if ( hash != info.hash ) {
+            if ( info.hasHash ) {
+                const uint32_t hash = fheroes::calculateAggFilenameHash( name );
+                const bool hashMatch = info.isHash16Bit ? static_cast<uint16_t>( hash ) == static_cast<uint16_t>( info.hash )
+                                                        : hash == info.hash;
+
+                if ( !hashMatch ) {
+                    ++itemsFailed;
+
+                    std::cerr << inputFileName << ": invalid hash for item " << name << ": expected " << GetHexString( info.hash )
+                              << ", got " << GetHexString( hash ) << std::endl;
+                    continue;
+                }
+            }
+
+            if ( static_cast<uint64_t>( info.offset ) + info.size > namesTableOffset ) {
                 ++itemsFailed;
 
-                std::cerr << inputFileName << ": invalid hash for item " << name << ": expected " << GetHexString( info.hash ) << ", got " << GetHexString( hash )
-                          << std::endl;
+                std::cerr << inputFileName << ": item " << name << " has an invalid range" << std::endl;
                 continue;
             }
 

@@ -2,7 +2,7 @@
  *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2024                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Free Heroes Engine: http://sourceforge.net/projects/fheroes         *
  *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,21 +33,21 @@
 
 namespace
 {
-    fheroes::AGGFile heroes2_agg;
-    fheroes::AGGFile heroes2x_agg;
+    fheroes::AGGFile heroes_agg;
+    fheroes::AGGFile heroesx_agg;
 }
 
 std::vector<uint8_t> AGG::getDataFromAggFile( const std::string & key, const bool ignoreExpansion )
 {
-    if ( !ignoreExpansion && heroes2x_agg.isGood() ) {
+    if ( !ignoreExpansion && heroesx_agg.isGood() ) {
         // Make sure that the below container is not const and not a reference
         // so returning it from the function will invoke a move constructor instead of copy constructor.
-        std::vector<uint8_t> buf = heroes2x_agg.read( key );
+        std::vector<uint8_t> buf = heroesx_agg.read( key );
         if ( !buf.empty() )
             return buf;
     }
 
-    return heroes2_agg.read( key );
+    return heroes_agg.read( key );
 }
 
 AGG::AGGInitializer::AGGInitializer()
@@ -66,53 +66,53 @@ bool AGG::AGGInitializer::init()
         return false;
     }
 
-    const std::string heroes2AggFileName( "heroes2.agg" );
-    std::string heroes2AggFilePath;
+    const std::string heroesAggFileName( "heroes.agg" );
+    std::string heroesAggFilePath;
     std::string aggLowerCaseFilePath;
 
     for ( const std::string & path : aggFileNames ) {
-        if ( path.size() < heroes2AggFileName.size() ) {
+        if ( path.size() < heroesAggFileName.size() ) {
             // Obviously this is not a correct file.
             continue;
         }
 
         std::string tempPath = StringLower( path );
 
-        if ( tempPath.compare( tempPath.size() - heroes2AggFileName.size(), heroes2AggFileName.size(), heroes2AggFileName ) == 0 ) {
-            heroes2AggFilePath = path;
+        if ( tempPath.compare( tempPath.size() - heroesAggFileName.size(), heroesAggFileName.size(), heroesAggFileName ) == 0 ) {
+            heroesAggFilePath = path;
             aggLowerCaseFilePath = std::move( tempPath );
             break;
         }
     }
 
-    if ( heroes2AggFilePath.empty() ) {
+    if ( heroesAggFilePath.empty() ) {
         // The main game resource file was not found.
         return false;
     }
 
-    if ( !heroes2_agg.open( heroes2AggFilePath ) ) {
+    if ( !heroes_agg.open( heroesAggFilePath ) ) {
         return false;
     }
 
-    _originalAGGFilePath = std::move( heroes2AggFilePath );
+    _originalAGGFilePath = std::move( heroesAggFilePath );
 
-    // Find "heroes2x.agg" file.
-    std::string heroes2XAggFilePath;
+    // Find "heroesx.agg" file.
+    std::string heroesXAggFilePath;
     fheroes::replaceStringEnding( aggLowerCaseFilePath, ".agg", "x.agg" );
 
     for ( const std::string & path : aggFileNames ) {
         const std::string tempPath = StringLower( path );
         if ( tempPath == aggLowerCaseFilePath ) {
-            heroes2XAggFilePath = path;
+            heroesXAggFilePath = path;
             break;
         }
     }
 
-    if ( !heroes2XAggFilePath.empty() && heroes2x_agg.open( heroes2XAggFilePath ) ) {
-        _expansionAGGFilePath = std::move( heroes2XAggFilePath );
+    if ( !heroesXAggFilePath.empty() && heroesx_agg.open( heroesXAggFilePath ) ) {
+        _expansionAGGFilePath = std::move( heroesXAggFilePath );
     }
 
-    Settings::Get().EnablePriceOfLoyaltySupport( heroes2x_agg.isGood() );
+    Settings::Get().EnablePriceOfLoyaltySupport( heroesx_agg.isGood() );
 
     return true;
 }

@@ -94,8 +94,6 @@ namespace Battle
         BARBARIAN,
         SORCERESS,
         WARLOCK,
-        WIZARD,
-        NECROMANCER,
         CAPTAIN
     };
 

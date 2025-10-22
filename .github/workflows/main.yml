@@ -1,5 +1,5 @@
         - name: Setup SDL
           uses: libsdl-org/setup-sdl@v1 # Use the latest version
           with:
-            sdl-version: '2.x.x' # Specify the desired SDL2 version
+            sdl-version: '2.32.10' # Specify the desired SDL2 version
             # Add other SDL libraries if needed (e.g., sdl_image, sdl_mixer)

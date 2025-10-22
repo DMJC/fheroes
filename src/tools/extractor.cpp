@@ -49,7 +49,7 @@ namespace
     {
         uint32_t offset{ 0 };
         uint32_t size{ 0 };
-        uint32_t hash{ 0 };
+        uint32_t size2{ 0 };
         bool hasHash{ false };
         bool isHash16Bit{ false };
     };

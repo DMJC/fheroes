@@ -394,10 +394,6 @@ namespace
             return Battle::SORCERESS;
         case Race::WRLK:
             return Battle::WARLOCK;
-        case Race::WZRD:
-            return Battle::WIZARD;
-        case Race::NECR:
-            return Battle::NECROMANCER;
         default:
             break;
         }
@@ -1003,12 +999,6 @@ Battle::OpponentSprite::OpponentSprite( const fheroes::Rect & area, HeroBase * h
     case Race::WRLK:
         _heroIcnId = isCaptain ? ICN::CMBTCAPW : ICN::CMBTHROW;
         break;
-    case Race::WZRD:
-        _heroIcnId = isCaptain ? ICN::CMBTCAPZ : ICN::CMBTHROZ;
-        break;
-    case Race::NECR:
-        _heroIcnId = isCaptain ? ICN::CMBTCAPN : ICN::CMBTHRON;
-        break;
     default:
         // Did you add a new faction? Add the logic here.
         assert( 0 );
@@ -1072,14 +1062,6 @@ fheroes::Point Battle::OpponentSprite::GetCastPosition() const
     case Race::WRLK:
         offset.x = isCaptain ? 2 : 9;
         offset.y = isCaptain ? 5 : -11;
-        break;
-    case Race::WZRD:
-        offset.x = isCaptain ? 5 : 1;
-        offset.y = isCaptain ? 8 : -9;
-        break;
-    case Race::NECR:
-        offset.x = isCaptain ? 5 : 13;
-        offset.y = isCaptain ? 6 : -7;
         break;
     default:
         break;
@@ -2328,17 +2310,11 @@ void Battle::Interface::_redrawBattleGround()
         case Race::KNGT:
             castleBackgroundIcnId = ICN::CASTBKGK;
             break;
-        case Race::NECR:
-            castleBackgroundIcnId = ICN::CASTBKGN;
-            break;
         case Race::SORC:
             castleBackgroundIcnId = ICN::CASTBKGS;
             break;
         case Race::WRLK:
             castleBackgroundIcnId = ICN::CASTBKGW;
-            break;
-        case Race::WZRD:
-            castleBackgroundIcnId = ICN::CASTBKGZ;
             break;
         default:
             // Did you add a new race? Add the appropriate logic for it.

@@ -2,7 +2,7 @@
  *   fheroes: https://github.com/ihhub/fheroes                           *
  *   Copyright (C) 2019 - 2022                                             *
  *                                                                         *
- *   Free Heroes2 Engine: http://sourceforge.net/projects/fheroes         *
+ *   Free Heroes Engine: http://sourceforge.net/projects/fheroes         *
  *   Copyright (C) 2009 by Andrey Afletdinov <fheroes@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -53,8 +53,6 @@ namespace XMI
         { MIDI_ORIGINAL_BARBARIAN, "MIDI0007.XMI" }, // Barbarian intended theme is under MIDI0007
         { MIDI_ORIGINAL_SORCERESS, "MIDI0005.XMI" }, // Sorceress doesn't have own track in OG release, Warlock theme was used
         { MIDI_ORIGINAL_WARLOCK, "MIDI0005.XMI" }, // Warlock theme was set to Sorceress so we use MIDI0005
-        { MIDI_ORIGINAL_WIZARD, "MIDI0008.XMI" }, // Wizard's and Knight's tracks were switched around, so we use MIDI0008
-        { MIDI_ORIGINAL_NECROMANCER, "MIDI0006.XMI" } // Necromancer theme has trickled down to Warlock so we use MIDI0006
     };
 }
 
@@ -63,7 +61,7 @@ const char * XMI::GetString( int track )
     return UNKNOWN < track && MIDI_ORIGINAL_NECROMANCER >= track ? xmimap[track].string : xmimap[UNKNOWN].string;
 }
 
-// Due to a bug in Succession Wars/demo release (HEROES2.AGG) we have to remap original MIDI tracks to intended castles
+// Due to a bug in Succession Wars/demo release (HEROES.AGG) we have to remap original MIDI tracks to intended castles
 int XMI::FromMUS( int track, bool expansion )
 {
     switch ( track ) {
@@ -78,14 +76,10 @@ int XMI::FromMUS( int track, bool expansion )
         return MIDI0005;
     case MUS::WARLOCK_CASTLE:
         return expansion ? MIDI0006 : MIDI_ORIGINAL_WARLOCK;
-    case MUS::NECROMANCER_CASTLE:
-        return expansion ? MIDI0007 : MIDI_ORIGINAL_NECROMANCER;
     case MUS::KNIGHT_CASTLE:
         return expansion ? MIDI0008 : MIDI_ORIGINAL_KNIGHT;
     case MUS::BARBARIAN_CASTLE:
         return expansion ? MIDI0009 : MIDI_ORIGINAL_BARBARIAN;
-    case MUS::WIZARD_CASTLE:
-        return expansion ? MIDI0010 : MIDI_ORIGINAL_WIZARD;
     case MUS::LAVA:
         return MIDI0011;
     case MUS::DESERT:

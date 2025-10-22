@@ -1,0 +1,93 @@
+name: CI - fheroes SDL2
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout (with submodules just in case)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ---------------- Ubuntu ----------------
+      - name: Install SDL2 (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential cmake ninja-build pkg-config \
+            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+          pkg-config --cflags --libs sdl2 || true
+
+      # -------- Configure & Build (CMake first, else Make) --------
+      - name: Build (POSIX)
+        if: matrix.os != 'windows-latest'
+        shell: bash
+        run: |
+          set -e
+          if [ -f CMakeLists.txt ]; then
+            echo "CMake project detected."
+            cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+            cmake --build build --config Release -- -v
+          elif [ -f Makefile ] || [ -f makefile ]; then
+            echo "Makefile project detected."
+            make -j"$(getconf _NPROCESSORS_ONLN || echo 2)"
+          else
+            echo "No CMakeLists.txt or Makefile found." >&2
+            exit 1
+          fi
+
+      - name: Build (Windows / MSYS2)
+        if: matrix.os == 'windows-latest'
+        shell: msys2 {0}
+        run: |
+          set -e
+          if [ -f CMakeLists.txt ]; then
+            echo "CMake project detected."
+            cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+            cmake --build build --config Release -- -v
+          elif [ -f Makefile ] || [ -f makefile ]; then
+            echo "Makefile project detected."
+            make -j"$(nproc || echo 2)"
+          else
+            echo "No CMakeLists.txt or Makefile found." >&2
+            exit 1
+          fi
+
+      # -------- Optional: upload build artifacts per OS --------
+      - name: Collect artifacts (POSIX)
+        if: matrix.os != 'windows-latest'
+        run: |
+          mkdir -p _artifacts
+          # Adjust these glob patterns to your actual output names/paths:
+          if [ -d build ]; then
+            cp -r build/* _artifacts/ || true
+          fi
+          # If you build straight into repo root with Makefile, capture binaries:
+          find . -maxdepth 2 -type f -perm -111 -print0 | xargs -0 -I{} cp {} _artifacts/ 2>/dev/null || true
+
+      - name: Collect artifacts (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: msys2 {0}
+        run: |
+          mkdir -p _artifacts
+          if [ -d build ]; then
+            cp -r build/* _artifacts/ || true
+          fi
+          # Grab any .exe/.dll produced at top-level or build/
+          find . -maxdepth 2 -type f \( -name "*.exe" -o -name "*.dll" \) -print0 | xargs -0 -I{} cp {} _artifacts/ 2>/dev/null || true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fheroes-${{ matrix.os }}
+          path: _artifacts
+          if-no-files-found: warn

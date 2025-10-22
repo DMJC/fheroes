@@ -8,7 +8,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -26,33 +26,6 @@ jobs:
             build-essential cmake ninja-build pkg-config \
             libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
           pkg-config --cflags --libs sdl2 || true
-
-      # ---------------- macOS -----------------
-      - name: Install SDL2 (macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          brew update
-          brew install cmake ninja pkg-config sdl2 sdl2_image sdl2_mixer sdl2_ttf
-          pkg-config --cflags --libs sdl2 || true
-
-      # --------------- Windows ----------------
-      - name: Setup MSYS2 (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          msystem: MINGW64
-          install: >-
-            git
-            cmake
-            ninja
-            make
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-pkg-config
-            mingw-w64-x86_64-SDL2
-            mingw-w64-x86_64-SDL2_image
-            mingw-w64-x86_64-SDL2_mixer
-            mingw-w64-x86_64-SDL2_ttf
 
       # -------- Configure & Build (CMake first, else Make) --------
       - name: Build (POSIX)

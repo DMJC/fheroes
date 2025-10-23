@@ -1,0 +1,10 @@
+/home/james/development/fheroes/src/tools/CMakeFiles/82m2wav.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/bin2txt.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/extractor.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/h2dmgr.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/icn2img.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/pal2img.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/til2img.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/xmi2midi.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/edit_cache.dir
+/home/james/development/fheroes/src/tools/CMakeFiles/rebuild_cache.dir

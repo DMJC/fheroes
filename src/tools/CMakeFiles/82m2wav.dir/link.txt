@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic -Wl,--dependency-file=CMakeFiles/82m2wav.dir/link.d CMakeFiles/82m2wav.dir/82m2wav.o -o 82m2wav  -lengine

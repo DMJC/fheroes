@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic -Wl,--dependency-file=CMakeFiles/pal2img.dir/link.d CMakeFiles/pal2img.dir/pal2img.o -o pal2img  -lengine

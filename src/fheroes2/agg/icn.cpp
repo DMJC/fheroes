@@ -888,14 +888,10 @@ int ICN::getCaptainIcnId( const int race )
         return CSTLCAPB;
     case Race::KNGT:
         return CSTLCAPK;
-    case Race::NECR:
-        return CSTLCAPN;
     case Race::SORC:
         return CSTLCAPS;
     case Race::WRLK:
         return CSTLCAPW;
-    case Race::WZRD:
-        return CSTLCAPZ;
     default:
         break;
     }
@@ -910,14 +906,10 @@ int ICN::getBuildingIcnId( const int race )
         return CSTLBARB;
     case Race::KNGT:
         return CSTLKNGT;
-    case Race::NECR:
-        return CSTLNECR;
     case Race::SORC:
         return CSTLSORC;
     case Race::WRLK:
         return CSTLWRLK;
-    case Race::WZRD:
-        return CSTLWZRD;
     default:
         break;
     }
@@ -932,14 +924,10 @@ int ICN::getCastleIcnId( const int race )
         return CASTLEB;
     case Race::KNGT:
         return CASTLEK;
-    case Race::NECR:
-        return CASTLEN;
     case Race::SORC:
         return CASTLES;
     case Race::WRLK:
         return CASTLEW;
-    case Race::WZRD:
-        return CASTLEZ;
     default:
         break;
     }

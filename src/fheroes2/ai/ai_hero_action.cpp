@@ -183,7 +183,6 @@ namespace
             break;
 
         case Race::SORC:
-        case Race::WZRD:
             if ( hero.GetPower() < 5 ) {
                 return Skill::Primary::POWER;
             }
@@ -196,7 +195,6 @@ namespace
             break;
 
         case Race::WRLK:
-        case Race::NECR:
             if ( hero.GetPower() < 5 ) {
                 return Skill::Primary::POWER;
             }
@@ -1333,9 +1331,6 @@ namespace
             }
             if ( army.HasMonster( Monster::SWORDSMAN ) ) {
                 army.UpgradeMonsters( Monster::SWORDSMAN );
-            }
-            if ( army.HasMonster( Monster::IRON_GOLEM ) ) {
-                army.UpgradeMonsters( Monster::IRON_GOLEM );
             }
             break;
         }

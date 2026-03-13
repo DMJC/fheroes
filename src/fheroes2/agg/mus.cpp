@@ -179,10 +179,6 @@ namespace MUS
             return SORCERESS_CASTLE;
         case Race::WRLK:
             return WARLOCK_CASTLE;
-        case Race::WZRD:
-            return WIZARD_CASTLE;
-        case Race::NECR:
-            return NECROMANCER_CASTLE;
         default:
             // Did you add a new race? Add an appropriate music theme for it!
             assert( 0 );

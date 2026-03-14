@@ -580,12 +580,10 @@ void HeroBase::SpellCasted( const Spell & spell )
     _movePoints -= std::min( spell.movePoints(), _movePoints );
 }
 
-bool HeroBase::CanLearnSpell( const Spell & spell ) const
+bool HeroBase::CanLearnSpell( const Spell & /*spell*/ ) const
 {
-    const int wisdom = GetLevelSkill( Skill::Secondary::WISDOM );
-
-    return ( ( 4 < spell.Level() && Skill::Level::EXPERT == wisdom ) || ( 4 == spell.Level() && Skill::Level::ADVANCED <= wisdom )
-             || ( 3 == spell.Level() && Skill::Level::BASIC <= wisdom ) || 3 > spell.Level() );
+    // HoMM1 has no Wisdom secondary skill requirement - all heroes can learn any spell.
+    return true;
 }
 
 OStreamBase & operator<<( OStreamBase & stream, const HeroBase & hero )

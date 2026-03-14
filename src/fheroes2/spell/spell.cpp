@@ -444,10 +444,13 @@ Spell Spell::getRandomSpell( const int level )
 
 std::vector<int32_t> Spell::getAllSpellIdsSuitableForSpellBook( const int spellLevel /* = -1 */, const std::set<int32_t> & spellsToExclude /* = {} */ )
 {
-    if ( spellLevel < -1 || spellLevel == 0 || spellLevel > 4 ) {
-        // HoMM1 has 4 spell levels. Have you added a new spell level? Check your logic!
+    if ( spellLevel < -1 || spellLevel == 0 ) {
         assert( 0 );
+        return {};
+    }
 
+    // HoMM1 only has 4 spell levels; level 5+ has no spells.
+    if ( spellLevel > 4 ) {
         return {};
     }
 

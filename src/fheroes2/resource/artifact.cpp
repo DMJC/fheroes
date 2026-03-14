@@ -330,7 +330,7 @@ void Artifact::SetSpell( const int v )
 
     switch ( v ) {
     case Spell::RANDOM:
-        ext = Spell::getRandomSpell( static_cast<int>( Rand::Get( 1, 5 ) ) ).GetID();
+        ext = Spell::getRandomSpell( static_cast<int>( Rand::Get( 1, 4 ) ) ).GetID();
         break;
     case Spell::RANDOM1:
         ext = Spell::getRandomSpell( 1 ).GetID();
@@ -342,10 +342,9 @@ void Artifact::SetSpell( const int v )
         ext = Spell::getRandomSpell( 3 ).GetID();
         break;
     case Spell::RANDOM4:
-        ext = Spell::getRandomSpell( 4 ).GetID();
-        break;
     case Spell::RANDOM5:
-        ext = Spell::getRandomSpell( 5 ).GetID();
+        // HoMM1 only has 4 spell levels; treat level 5 as level 4
+        ext = Spell::getRandomSpell( 4 ).GetID();
         break;
     default:
         ext = v;

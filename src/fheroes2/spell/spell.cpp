@@ -224,6 +224,7 @@ double Spell::getStrategicValue( const double armyStrength, const uint32_t curre
 
 int Spell::Level() const
 {
+    // HoMM1 has 4 spell levels. Only HoMM1 spells are available; HoMM2-only spells return 0 (unavailable).
     switch ( id ) {
     case BLESS:
     case BLOODLUST:
@@ -246,64 +247,26 @@ int Spell::Level() const
     case DISRUPTINGRAY:
     case DRAGONSLAYER:
     case LIGHTNINGBOLT:
-    case STEELSKIN:
 
-    case HAUNT:
-    case SUMMONBOAT:
     case VIEWARTIFACTS:
-    case VISIONS:
         return 2;
 
-    case ANIMATEDEAD:
-    case ANTIMAGIC:
     case COLDRING:
     case DEATHWAVE:
     case EARTHQUAKE:
     case FIREBALL:
-    case HOLYWORD:
-    case MASSBLESS:
-    case MASSCURSE:
-    case MASSDISPEL:
-    case MASSHASTE:
-    case PARALYZE:
-    case TELEPORT:
+    case RESURRECT:
 
-    case IDENTIFYHERO:
     case VIEWHEROES:
     case VIEWTOWNS:
         return 3;
 
-    case BERSERKER:
-    case CHAINLIGHTNING:
+    case ARMAGEDDON:
     case ELEMENTALSTORM:
-    case FIREBLAST:
-    case HOLYSHOUT:
-    case MASSCURE:
-    case MASSSHIELD:
-    case MASSSLOW:
     case METEORSHOWER:
-    case RESURRECT:
 
-    case SETEGUARDIAN:
-    case SETAGUARDIAN:
-    case SETFGUARDIAN:
-    case SETWGUARDIAN:
-    case TOWNGATE:
     case VIEWALL:
         return 4;
-
-    case ARMAGEDDON:
-    case HYPNOTIZE:
-    case MIRRORIMAGE:
-    case RESURRECTTRUE:
-    case SUMMONEELEMENT:
-    case SUMMONAELEMENT:
-    case SUMMONFELEMENT:
-    case SUMMONWELEMENT:
-
-    case DIMENSIONDOOR:
-    case TOWNPORTAL:
-        return 5;
 
     default:
         break;
@@ -437,7 +400,7 @@ uint32_t Spell::ExtraValue() const
     return spells[id].extraValue;
 }
 
-uint32_t Spell::weightForRace( const int race ) const
+uint32_t Spell::weightForRace( const int /*race*/ ) const
 {
     switch ( id ) {
     case Spell::HOLYWORD:
@@ -470,7 +433,7 @@ uint32_t Spell::weightForRace( const int race ) const
 
 Spell Spell::getRandomSpell( const int level )
 {
-    assert( level >= 1 && level <= 5 );
+    assert( level >= 1 && level <= 4 );
 
     const std::vector<int32_t> validSpells = getAllSpellIdsSuitableForSpellBook( level );
 
@@ -481,8 +444,8 @@ Spell Spell::getRandomSpell( const int level )
 
 std::vector<int32_t> Spell::getAllSpellIdsSuitableForSpellBook( const int spellLevel /* = -1 */, const std::set<int32_t> & spellsToExclude /* = {} */ )
 {
-    if ( spellLevel < -1 || spellLevel == 0 || spellLevel > 5 ) {
-        // Have you add a new spell level? Check your logic!
+    if ( spellLevel < -1 || spellLevel == 0 || spellLevel > 4 ) {
+        // HoMM1 has 4 spell levels. Have you added a new spell level? Check your logic!
         assert( 0 );
 
         return {};

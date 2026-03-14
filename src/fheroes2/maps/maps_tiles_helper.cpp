@@ -1480,8 +1480,8 @@ namespace Maps
                 break;
             }
 
-            // Random spell of level 5.
-            setSpellOnTile( tile, Spell::getRandomSpell( 5 ).GetID() );
+            // HoMM1 only has 4 spell levels; use level 4.
+            setSpellOnTile( tile, Spell::getRandomSpell( 4 ).GetID() );
             break;
         }
 

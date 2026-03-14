@@ -657,7 +657,7 @@ namespace fheroes2
         return nullptr;
     }
 
-    BuildingType getUpgradeForBuilding( const int race, const BuildingType buildingId )
+    BuildingType getUpgradeForBuilding( const int /*race*/, const BuildingType buildingId )
     {
         switch ( buildingId ) {
         case BUILD_TENT:
@@ -901,7 +901,6 @@ namespace fheroes2
             priorities.emplace_back( DWELLING_MONSTER3 );
             priorities.emplace_back( DWELLING_MONSTER4 );
             priorities.emplace_back( BUILD_WELL );
-            priorities.emplace_back( BUILD_SHIPYARD );
             priorities.emplace_back( BUILD_STATUE );
             break;
         case Race::BARB:
@@ -929,7 +928,6 @@ namespace fheroes2
             priorities.emplace_back( DWELLING_MONSTER5 );
             priorities.emplace_back( BUILD_WELL );
             priorities.emplace_back( BUILD_STATUE );
-            priorities.emplace_back( BUILD_SHIPYARD );
             break;
         case Race::SORC:
             priorities.emplace_back( BUILD_SPEC );
@@ -946,7 +944,6 @@ namespace fheroes2
             priorities.emplace_back( BUILD_RIGHTTURRET );
             priorities.emplace_back( BUILD_MOAT );
             priorities.emplace_back( DWELLING_MONSTER3 );
-            priorities.emplace_back( BUILD_SHIPYARD );
             priorities.emplace_back( BUILD_MARKETPLACE );
             priorities.emplace_back( DWELLING_MONSTER2 );
             priorities.emplace_back( BUILD_THIEVESGUILD );
@@ -967,7 +964,6 @@ namespace fheroes2
             priorities.emplace_back( BUILD_RIGHTTURRET );
             priorities.emplace_back( BUILD_MOAT );
             priorities.emplace_back( BUILD_CAPTAIN );
-            priorities.emplace_back( BUILD_SHIPYARD );
             priorities.emplace_back( BUILD_MAGEGUILD1 );
             priorities.emplace_back( BUILD_MAGEGUILD2 );
             priorities.emplace_back( BUILD_MAGEGUILD3 );

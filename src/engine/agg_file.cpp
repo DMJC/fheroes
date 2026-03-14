@@ -27,21 +27,15 @@
 
 namespace fheroes2
 {
-    bool AGGFile::open( const std::string & fileName )
+    // HoMM2 AGG FAT entry: hash(u32) + offset(u32) + size(u32)        — names stored at end of file
+    // HoMM1 AGG FAT entry: name(13 bytes) + offset(u32) + size(u32) + size2(u32) — names inline
+    static constexpr size_t _homm1FilenameSize = 13; // 8.3 ASCIIZ, no extra padding
+    static constexpr size_t _homm1FileRecordSize = _homm1FilenameSize + sizeof( uint32_t ) * 3;
+    static constexpr size_t _homm2FileRecordSize = sizeof( uint32_t ) * 3;
+
+    bool AGGFile::_openHoMM2( const size_t count, const size_t size )
     {
-        if ( !_stream.open( fileName, "rb" ) ) {
-            return false;
-        }
-
-        const size_t size = _stream.size();
-        const size_t count = _stream.getLE16();
-        const size_t fileRecordSize = sizeof( uint32_t ) * 3;
-
-        if ( count * ( fileRecordSize + _maxFilenameSize ) >= size ) {
-            return false;
-        }
-
-        ROStreamBuf fileEntries = _stream.getStreamBuf( count * fileRecordSize );
+        ROStreamBuf fileEntries = _stream.getStreamBuf( count * _homm2FileRecordSize );
         const size_t nameEntriesSize = _maxFilenameSize * count;
         _stream.seek( size - nameEntriesSize );
         ROStreamBuf nameEntries = _stream.getStreamBuf( nameEntriesSize );
@@ -51,7 +45,6 @@ namespace fheroes2
 
             // Check 32-bit filename hash.
             if ( fileEntries.getLE32() != calculateAggFilenameHash( name ) ) {
-                // Hash check failed. AGG file is corrupted.
                 _files.clear();
                 return false;
             }
@@ -67,6 +60,56 @@ namespace fheroes2
         }
 
         return !_stream.fail();
+    }
+
+    bool AGGFile::_openHoMM1( const size_t count, const size_t size )
+    {
+        if ( count * _homm1FileRecordSize >= size ) {
+            return false;
+        }
+
+        ROStreamBuf fileEntries = _stream.getStreamBuf( count * _homm1FileRecordSize );
+
+        for ( size_t i = 0; i < count; ++i ) {
+            std::string name = fileEntries.getString( _homm1FilenameSize );
+            const uint32_t fileOffset = fileEntries.getLE32();
+            const uint32_t fileSize = fileEntries.getLE32();
+            fileEntries.getLE32(); // size2 — always equals fileSize, discard
+
+            if ( !name.empty() ) {
+                _files.try_emplace( std::move( name ), std::make_pair( fileSize, fileOffset ) );
+            }
+        }
+
+        if ( _files.size() != count ) {
+            _files.clear();
+            return false;
+        }
+
+        return !_stream.fail();
+    }
+
+    bool AGGFile::open( const std::string & fileName )
+    {
+        if ( !_stream.open( fileName, "rb" ) ) {
+            return false;
+        }
+
+        const size_t size = _stream.size();
+        const size_t count = _stream.getLE16();
+
+        // Try HoMM2 format first (FAT has hash+offset+size, names at end of file).
+        if ( count * ( _homm2FileRecordSize + _maxFilenameSize ) < size ) {
+            const size_t fatStart = _stream.tell();
+            if ( _openHoMM2( count, size ) ) {
+                return true;
+            }
+            // Hash validation failed — not HoMM2. Fall through to HoMM1.
+            _stream.seek( fatStart );
+        }
+
+        // Try HoMM1 format (FAT has inline name+offset+size+size2).
+        return _openHoMM1( count, size );
     }
 
     std::vector<uint8_t> AGGFile::read( const std::string & fileName )

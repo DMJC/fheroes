@@ -169,52 +169,9 @@ uint32_t Spell::minMovePoints() const
     return spells[id].minMovePoints;
 }
 
-uint32_t Spell::spellPoints( const HeroBase * hero ) const
+uint32_t Spell::spellPoints( const HeroBase * /*hero*/ ) const
 {
-    if ( hero == nullptr ) {
-        return spells[id].spellPoints;
-    }
-
-    fheroes2::ArtifactBonusType type = fheroes2::ArtifactBonusType::NONE;
-    switch ( id ) {
-    case BLESS:
-    case MASSBLESS:
-        type = fheroes2::ArtifactBonusType::BLESS_SPELL_COST_REDUCTION_PERCENT;
-        break;
-    case SUMMONEELEMENT:
-    case SUMMONAELEMENT:
-    case SUMMONFELEMENT:
-    case SUMMONWELEMENT:
-        type = fheroes2::ArtifactBonusType::SUMMONING_SPELL_COST_REDUCTION_PERCENT;
-        break;
-    case CURSE:
-    case MASSCURSE:
-        type = fheroes2::ArtifactBonusType::CURSE_SPELL_COST_REDUCTION_PERCENT;
-        break;
-    default:
-        if ( isMindInfluence() ) {
-            type = fheroes2::ArtifactBonusType::MIND_INFLUENCE_SPELL_COST_REDUCTION_PERCENT;
-        }
-        break;
-    }
-
-    if ( type == fheroes2::ArtifactBonusType::NONE ) {
-        return spells[id].spellPoints;
-    }
-
-    int32_t spellCost = spells[id].spellPoints;
-
-    const std::vector<int32_t> spellReductionPercentage = hero->GetBagArtifacts().getTotalArtifactMultipliedPercent( type );
-    for ( const int32_t value : spellReductionPercentage ) {
-        assert( value >= 0 && value <= 100 );
-        spellCost = spellCost * ( 100 - value ) / 100;
-    }
-
-    if ( spellCost < 1 ) {
-        return 1;
-    }
-
-    return static_cast<uint32_t>( spellCost );
+    return spells[id].spellPoints;
 }
 
 double Spell::getStrategicValue( const double armyStrength, const uint32_t currentSpellPoints, const int spellPower ) const
@@ -485,17 +442,11 @@ uint32_t Spell::weightForRace( const int race ) const
     switch ( id ) {
     case Spell::HOLYWORD:
     case Spell::HOLYSHOUT:
-        if ( race == Race::NECR ) {
-            return 0;
-        }
         break;
 
     case Spell::DEATHRIPPLE:
     case Spell::DEATHWAVE:
-        if ( race != Race::NECR ) {
-            return 0;
-        }
-        break;
+        return 0;
 
     case Spell::SUMMONEELEMENT:
     case Spell::SUMMONAELEMENT:

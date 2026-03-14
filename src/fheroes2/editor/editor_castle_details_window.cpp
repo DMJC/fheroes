@@ -330,7 +330,7 @@ namespace
 
         fheroes2::Copy( backgroundSprite, 0, 0, display, dialogRoi.x, dialogRoi.y, dialogRoi.width, dialogRoi.height - statusBarHeight );
 
-        const bool hasLibraryCapability = ( race == Race::WZRD ) || ( race == Race::RAND );
+        const bool hasLibraryCapability = ( race == Race::RAND );
 
         // Guild image.
         fheroes2::renderMageGuildBuilding( race, 5, dialogRoi.getPosition() );
@@ -731,8 +731,7 @@ namespace Editor
                                                            BuildingData( DWELLING_MONSTER5, race, metadataBuildings, metadataRestrictedBuildings ),
                                                            BuildingData( DWELLING_MONSTER6, race, metadataBuildings, metadataRestrictedBuildings ),
                                                            BuildingData( BUILD_MAGEGUILD1, race, metadataBuildings, metadataRestrictedBuildings ),
-                                                           BuildingData( race == Race::NECR ? BUILD_SHRINE : BUILD_TAVERN, race, metadataBuildings,
-                                                                         metadataRestrictedBuildings ),
+                                                           BuildingData( BUILD_TAVERN, race, metadataBuildings, metadataRestrictedBuildings ),
                                                            BuildingData( BUILD_THIEVESGUILD, race, metadataBuildings, metadataRestrictedBuildings ),
                                                            BuildingData( BUILD_SHIPYARD, race, metadataBuildings, metadataRestrictedBuildings ),
                                                            BuildingData( BUILD_STATUE, race, metadataBuildings, metadataRestrictedBuildings ),

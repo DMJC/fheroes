@@ -23,7 +23,7 @@ cmake_policy(SET CMP0074 NEW)
 
 file(STRINGS ${CMAKE_SOURCE_DIR}/version.txt FHEROES2_VERSION LIMIT_COUNT 1 REGEX "^[0-9]+\.[0-9]+\.[0-9]+$")
 
-project(fheroes2 VERSION ${FHEROES2_VERSION} LANGUAGES C CXX)
+project(fheroes VERSION ${FHEROES2_VERSION} LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -94,7 +94,7 @@ if(MACOS_APP_BUNDLE)
 		ALL
 		COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app/Contents/Resources/maps
 		COMMAND cp *.fh2m ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app/Contents/Resources/maps
-		DEPENDS fheroes2
+		DEPENDS fheroes
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/maps
 		)
 	add_custom_target(
@@ -102,7 +102,7 @@ if(MACOS_APP_BUNDLE)
 		ALL
 		COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app/Contents/Resources/h2d
 		COMMAND cp *.h2d ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app/Contents/Resources/h2d
-		DEPENDS fheroes2
+		DEPENDS fheroes
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/files/data
 		)
 	add_custom_target(
@@ -117,7 +117,7 @@ if(MACOS_APP_BUNDLE)
 		run_dylibbundler
 		ALL
 		COMMAND dylibbundler -od -b -x ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app/Contents/MacOS/${PROJECT_NAME} -d ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app/Contents/libs
-		DEPENDS fheroes2 app_bundle_fh2m_maps app_bundle_h2d_files app_bundle_translations
+		DEPENDS fheroes app_bundle_fh2m_maps app_bundle_h2d_files app_bundle_translations
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		)
 endif(MACOS_APP_BUNDLE)

@@ -882,9 +882,8 @@ int Skill::getLuckModifiers( int level, std::string * strs )
 uint32_t Skill::GetNecromancyBonus( const HeroBase & hero )
 {
     const uint32_t shrineCount = world.GetKingdom( hero.GetColor() ).GetCountNecromancyShrineBuild();
-    const uint32_t artifactEffect = hero.GetBagArtifacts().isArtifactBonusPresent( fheroes2::ArtifactBonusType::NECROMANCY_SKILL ) ? 1 : 0;
     // cap bonus at 7
-    return std::min<uint32_t>( 7U, shrineCount + artifactEffect );
+    return std::min<uint32_t>( 7U, shrineCount );
 }
 
 uint32_t Skill::GetNecromancyPercent( const HeroBase & hero )

@@ -40,39 +40,23 @@ namespace
 
     const size_t highscoreMaximumEntries = 10;
 
-    const std::array<Monster::MonsterType, 66> monstersInRanking = { Monster::PEASANT,       Monster::GOBLIN,
-                                                                     Monster::SPRITE,        Monster::HALFLING,
-                                                                     Monster::CENTAUR,       Monster::ROGUE,
-                                                                     Monster::SKELETON,      Monster::ORC,
-                                                                     Monster::ZOMBIE,        Monster::ARCHER,
-                                                                     Monster::RANGER,        Monster::BOAR,
-                                                                     Monster::DWARF,         Monster::MUTANT_ZOMBIE,
-                                                                     Monster::ORC_CHIEF,     Monster::ELF,
-                                                                     Monster::GARGOYLE,      Monster::PIKEMAN,
-                                                                     Monster::GRAND_ELF,     Monster::BATTLE_DWARF,
-                                                                     Monster::NOMAD,         Monster::VETERAN_PIKEMAN,
-                                                                     Monster::WOLF,          Monster::MUMMY,
-                                                                     Monster::IRON_GOLEM,    Monster::ROYAL_MUMMY,
-                                                                     Monster::OGRE,          Monster::GRIFFIN,
-                                                                     Monster::SWORDSMAN,     Monster::DRUID,
-                                                                     Monster::STEEL_GOLEM,   Monster::MASTER_SWORDSMAN,
-                                                                     Monster::AIR_ELEMENT,   Monster::GREATER_DRUID,
+    const std::array<Monster::MonsterType, 33> monstersInRanking = { Monster::PEASANT,       Monster::GOBLIN,
+                                                                     Monster::SPRITE,        Monster::CENTAUR,
+                                                                     Monster::ROGUE,         Monster::ORC,
+                                                                     Monster::ARCHER,        Monster::DWARF,
+                                                                     Monster::ELF,           Monster::GARGOYLE,
+                                                                     Monster::PIKEMAN,       Monster::NOMAD,
+                                                                     Monster::WOLF,          Monster::OGRE,
+                                                                     Monster::GRIFFIN,       Monster::SWORDSMAN,
+                                                                     Monster::DRUID,         Monster::AIR_ELEMENT,
                                                                      Monster::FIRE_ELEMENT,  Monster::GHOST,
-                                                                     Monster::VAMPIRE,       Monster::WATER_ELEMENT,
-                                                                     Monster::EARTH_ELEMENT, Monster::ROC,
+                                                                     Monster::WATER_ELEMENT, Monster::EARTH_ELEMENT,
                                                                      Monster::MINOTAUR,      Monster::CAVALRY,
-                                                                     Monster::TROLL,         Monster::MAGE,
-                                                                     Monster::MEDUSA,        Monster::LICH,
-                                                                     Monster::OGRE_LORD,     Monster::MINOTAUR_KING,
-                                                                     Monster::CHAMPION,      Monster::WAR_TROLL,
-                                                                     Monster::VAMPIRE_LORD,  Monster::ARCHMAGE,
-                                                                     Monster::POWER_LICH,    Monster::UNICORN,
+                                                                     Monster::TROLL,         Monster::MEDUSA,
+                                                                     Monster::GENIE,         Monster::UNICORN,
                                                                      Monster::HYDRA,         Monster::PALADIN,
-                                                                     Monster::GENIE,         Monster::CRUSADER,
-                                                                     Monster::CYCLOPS,       Monster::GIANT,
-                                                                     Monster::PHOENIX,       Monster::BONE_DRAGON,
-                                                                     Monster::GREEN_DRAGON,  Monster::RED_DRAGON,
-                                                                     Monster::TITAN,         Monster::BLACK_DRAGON };
+                                                                     Monster::CYCLOPS,       Monster::PHOENIX,
+                                                                     Monster::GREEN_DRAGON };
 
     int32_t saveHighscoreEntry( fheroes2::HighscoreData && data, std::vector<fheroes2::HighscoreData> & entries, const bool isCampaign )
     {
@@ -244,11 +228,11 @@ namespace fheroes2
                     step = 4;
                 }
                 // 132 to 227
-                else if ( monster == Monster::GREATER_DRUID ) {
+                else if ( monster == Monster::DRUID ) {
                     step = 3;
                 }
                 // >= 228
-                else if ( monster == Monster::BLACK_DRAGON ) {
+                else if ( monster == Monster::GREEN_DRAGON ) {
                     step = 1;
                 }
 
@@ -292,11 +276,11 @@ namespace fheroes2
                 const Monster::MonsterType monster = *iter;
 
                 // 0 to 300
-                if ( monster == Monster::BLACK_DRAGON ) {
+                if ( monster == Monster::GREEN_DRAGON ) {
                     step = 300;
                 }
                 // 301 to 1000
-                else if ( monster == Monster::TITAN ) {
+                else if ( monster == Monster::PHOENIX ) {
                     step = 20;
                 }
                 // 1001 to 2000
@@ -304,7 +288,7 @@ namespace fheroes2
                     step = 100;
                 }
                 // 2001 to 5800
-                else if ( monster == Monster::BATTLE_DWARF ) {
+                else if ( monster == Monster::DWARF ) {
                     step = 200;
                 }
                 // >= 5801

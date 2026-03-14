@@ -370,13 +370,6 @@ namespace
             case Race::WRLK:
                 icnId = ICN::WRLK32;
                 break;
-            case Race::WZRD:
-                icnId = ICN::WZRD32;
-                break;
-            case Race::NECR:
-                icnId = ICN::NECR32;
-                break;
-
             default:
                 // Did you add a new race? Add logic above!
                 assert( 0 );

@@ -908,17 +908,12 @@ namespace Campaign
     {
         switch ( monsterId ) {
         case Monster::DWARF:
-        case Monster::BATTLE_DWARF:
             return _( "The dwarves recognize their allies and gladly join your forces." );
         case Monster::OGRE:
-        case Monster::OGRE_LORD:
             return _( "The ogres recognize you as the Dwarfbane and lumber over to join you." );
         case Monster::GREEN_DRAGON:
-        case Monster::RED_DRAGON:
-        case Monster::BLACK_DRAGON:
             return _( "The dragons, snarling and growling, agree to join forces with you, their 'Ally'." );
         case Monster::ELF:
-        case Monster::GRAND_ELF:
             return _(
                 "As you approach the group of elves, their leader calls them all to attention. He shouts to them, \"Who of you is brave enough to join this fearless ally of ours?\" The group explodes with cheers as they run to join your ranks." );
         default:
@@ -933,18 +928,13 @@ namespace Campaign
     {
         switch ( monsterId ) {
         case Monster::DWARF:
-        case Monster::BATTLE_DWARF:
             return _( "The dwarves hail you, \"Any friend of Roland is a friend of ours. You may pass.\"" );
         case Monster::OGRE:
-        case Monster::OGRE_LORD:
             return _( "The ogres give you a grunt of recognition, \"Archibald's allies may pass.\"" );
         case Monster::GREEN_DRAGON:
-        case Monster::RED_DRAGON:
-        case Monster::BLACK_DRAGON:
             return _(
                 "The dragons see you and call out. \"Our alliance with Archibald compels us to join you. Unfortunately you have no room. A pity!\" They quickly scatter." );
         case Monster::ELF:
-        case Monster::GRAND_ELF:
             return _(
                 "The elves stand at attention as you approach. Their leader calls to you and says, \"Let us not impede your progress, ally! Move on, and may victory be yours.\"" );
         default:
@@ -959,7 +949,6 @@ namespace Campaign
     {
         switch ( monsterId ) {
         case Monster::DWARF:
-        case Monster::BATTLE_DWARF:
             return _( "\"The Dwarfbane!!!!, run for your lives.\"" );
         default:
             break;

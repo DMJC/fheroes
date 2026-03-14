@@ -56,11 +56,7 @@ namespace fheroes2
             guildIcn = ICN::MAGEGLDW;
             break;
         case Race::RAND:
-        case Race::WZRD:
-            guildIcn = ICN::MAGEGLDZ;
-            break;
-        case Race::NECR:
-            guildIcn = ICN::MAGEGLDN;
+            guildIcn = ICN::MAGEGLDK;
             break;
         default:
             assert( 0 );

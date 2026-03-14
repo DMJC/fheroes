@@ -314,18 +314,10 @@ int HeroBase::GetMoraleModificator( std::string * strs ) const
 
     if ( strs == nullptr ) {
         result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::MORALE );
-        if ( Modes( Heroes::SHIPMASTER ) ) {
-            result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::SEA_BATTLE_MORALE_BOOST );
-        }
-
         result -= _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactCurseType::MORALE );
     }
     else {
         result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::MORALE, *strs );
-        if ( Modes( Heroes::SHIPMASTER ) ) {
-            result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::SEA_BATTLE_MORALE_BOOST, *strs );
-        }
-
         result -= _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactCurseType::MORALE, *strs );
     }
 
@@ -341,15 +333,9 @@ int HeroBase::GetLuckModificator( std::string * strs ) const
 
     if ( strs == nullptr ) {
         result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::LUCK );
-        if ( Modes( Heroes::SHIPMASTER ) ) {
-            result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::SEA_BATTLE_LUCK_BOOST );
-        }
     }
     else {
         result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::LUCK, *strs );
-        if ( Modes( Heroes::SHIPMASTER ) ) {
-            result += _bagArtifacts.getTotalArtifactEffectValue( fheroes2::ArtifactBonusType::SEA_BATTLE_LUCK_BOOST, *strs );
-        }
     }
 
     return result;

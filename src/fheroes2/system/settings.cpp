@@ -390,7 +390,7 @@ bool Settings::Save( const std::string_view fileName ) const
     }
 
     StreamFile fileStream;
-    if ( !fileStream.open( System::concatPath( System::GetConfigDirectory( "fheroes2" ), fileName ), "w" ) ) {
+    if ( !fileStream.open( System::concatPath( System::GetConfigDirectory( "fheroes" ), fileName ), "w" ) ) {
         return false;
     }
 
@@ -676,13 +676,13 @@ const std::vector<std::string> & Settings::GetRootDirs()
 #endif
 
         // User config directory.
-        std::string configPath = System::GetConfigDirectory( "fheroes2" );
+        std::string configPath = System::GetConfigDirectory( "fheroes" );
         if ( std::find( result.begin(), result.end(), configPath ) == result.end() ) {
             result.emplace_back( std::move( configPath ) );
         }
 
         // User data directory.
-        std::string dataPath = System::GetDataDirectory( "fheroes2" );
+        std::string dataPath = System::GetDataDirectory( "fheroes" );
         if ( std::find( result.begin(), result.end(), dataPath ) == result.end() ) {
             result.emplace_back( std::move( dataPath ) );
         }

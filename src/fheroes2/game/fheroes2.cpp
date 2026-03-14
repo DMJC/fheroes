@@ -110,14 +110,14 @@ namespace
 
     void InitConfigDir()
     {
-        const std::string configDir = System::GetConfigDirectory( "fheroes2" );
+        const std::string configDir = System::GetConfigDirectory( "fheroes" );
 
         System::MakeDirectory( configDir );
     }
 
     void InitDataDir()
     {
-        const std::string dataDir = System::GetDataDirectory( "fheroes2" );
+        const std::string dataDir = System::GetDataDirectory( "fheroes" );
 
         if ( dataDir.empty() ) {
             return;
@@ -259,11 +259,6 @@ namespace
             return _aggInitializer->getOriginalAGGFilePath();
         }
 
-        const std::string & getExpansionAGGFilePath() const
-        {
-            return _aggInitializer->getExpansionAGGFilePath();
-        }
-
     private:
         std::unique_ptr<AGG::AGGInitializer> _aggInitializer;
         std::unique_ptr<fheroes2::h2d::H2DInitializer> _h2dInitializer;
@@ -348,8 +343,7 @@ int main( int argc, char ** argv )
         }
 #endif
 
-        const AudioManager::AudioInitializer audioInitializer( dataInitializer.getOriginalAGGFilePath(), dataInitializer.getExpansionAGGFilePath(), midiSoundFonts,
-                                                               timidityCfgPath );
+        const AudioManager::AudioInitializer audioInitializer( dataInitializer.getOriginalAGGFilePath(), midiSoundFonts, timidityCfgPath );
 
         // Load palette.
         fheroes2::setGamePalette( AGG::getDataFromAggFile( "KB.PAL", false ) );

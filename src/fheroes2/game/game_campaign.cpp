@@ -524,14 +524,11 @@ namespace
                 return;
             }
             switch ( hero->GetRace() ) {
-            case Race::NECR:
-                replaceArmy( hero->GetArmy(), { { Monster::SKELETON, 50 }, { Monster::ROYAL_MUMMY, 18 }, { Monster::VAMPIRE_LORD, 8 } } );
-                break;
             case Race::WRLK:
                 replaceArmy( hero->GetArmy(), { { Monster::CENTAUR, 40 }, { Monster::GARGOYLE, 24 }, { Monster::GRIFFIN, 18 } } );
                 break;
             case Race::BARB:
-                replaceArmy( hero->GetArmy(), { { Monster::ORC_CHIEF, 12 }, { Monster::OGRE, 18 }, { Monster::GOBLIN, 40 } } );
+                replaceArmy( hero->GetArmy(), { { Monster::ORC, 12 }, { Monster::OGRE, 18 }, { Monster::GOBLIN, 40 } } );
                 break;
             default:
                 assert( 0 ); // bonus changed?

@@ -355,11 +355,11 @@ bool World::LoadMapMP2( const std::string & filename, const bool isOriginalMp2Fi
             break;
         case 0x04:
         case 0x84:
-            vec_castles.AddCastle( std::make_unique<Castle>( posX, posY, Race::WZRD ) );
+            vec_castles.AddCastle( std::make_unique<Castle>( posX, posY, Race::WRLK ) );
             break;
         case 0x05:
         case 0x85:
-            vec_castles.AddCastle( std::make_unique<Castle>( posX, posY, Race::NECR ) );
+            vec_castles.AddCastle( std::make_unique<Castle>( posX, posY, Race::BARB ) );
             break;
         case 0x06:
         case 0x86:
@@ -549,10 +549,10 @@ bool World::LoadMapMP2( const std::string & filename, const bool isOriginalMp2Fi
                         raceType = Race::WRLK;
                         break;
                     case 4:
-                        raceType = Race::WZRD;
+                        raceType = Race::WRLK;
                         break;
                     case 5:
-                        raceType = Race::NECR;
+                        raceType = Race::BARB;
                         break;
                     default:
                         DEBUG_LOG( DBG_GAME, DBG_WARN, "Invalid MP2 file format: unknown race ID for Jail hero " << static_cast<int>( raceId ) )

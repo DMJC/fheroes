@@ -98,21 +98,9 @@ namespace
         gettext_noop( "Arie" ), gettext_noop( "Alamar" ), gettext_noop( "Vesper" ), gettext_noop( "Crodo" ), gettext_noop( "Barok" ), gettext_noop( "Kastore" ),
         gettext_noop( "Agar" ), gettext_noop( "Falagar" ), gettext_noop( "Wrathmont" ),
 
-        // Wizard heroes from The Succession Wars.
-        gettext_noop( "Myra" ), gettext_noop( "Flint" ), gettext_noop( "Dawn" ), gettext_noop( "Halon" ), gettext_noop( "Myrini" ), gettext_noop( "Wilfrey" ),
-        gettext_noop( "Sarakin" ), gettext_noop( "Kalindra" ), gettext_noop( "Mandigal" ),
-
-        // Necromancer heroes from The Succession Wars.
-        gettext_noop( "Zom" ), gettext_noop( "Darlana" ), gettext_noop( "Zam" ), gettext_noop( "Ranloo" ), gettext_noop( "Charity" ), gettext_noop( "Rialdo" ),
-        gettext_noop( "Roxana" ), gettext_noop( "Sandro" ), gettext_noop( "Celia" ),
-
         // The Succession Wars campaign heroes.
         gettext_noop( "Roland" ), gettext_noop( "Lord Corlagon" ), gettext_noop( "Sister Eliza" ), gettext_noop( "Archibald" ), gettext_noop( "Lord Halton" ),
         gettext_noop( "Brother Brax" ),
-
-        // The Price of Loyalty expansion heroes.
-        gettext_noop( "Solmyr" ), gettext_noop( "Dainwin" ), gettext_noop( "Mog" ), gettext_noop( "Uncle Ivan" ), gettext_noop( "Joseph" ), gettext_noop( "Gallavant" ),
-        gettext_noop( "Elderian" ), gettext_noop( "Ceallach" ), gettext_noop( "Drakonia" ), gettext_noop( "Martine" ), gettext_noop( "Jarkonas" ),
 
         // Debug hero. Should not be used anywhere outside the development!
         "Debug Hero" };
@@ -132,7 +120,7 @@ namespace
             break;
         }
 
-        return { Heroes::LORDKILBURN, Heroes::CELIA };
+        return { Heroes::LORDKILBURN, Heroes::WRATHMONT };
     }
 
     int getObjectMoraleModifiers( const std::set<MP2::MapObjectType> & objectTypes, std::string * output )
@@ -2188,16 +2176,6 @@ void AllHeroes::Init()
         }
     }
 
-    // Wizard heroes (formerly Race::WZRD) assigned to Warlock
-    for ( int hid = Heroes::MYRA; hid <= Heroes::MANDIGAL; ++hid ) {
-        _heroes.emplace_back( std::make_unique<Heroes>( hid, Race::WRLK ) );
-    }
-
-    // Necromancer heroes (formerly Race::NECR) assigned to Barbarian
-    for ( int hid = Heroes::ZOM; hid <= Heroes::CELIA; ++hid ) {
-        _heroes.emplace_back( std::make_unique<Heroes>( hid, Race::BARB ) );
-    }
-
     // SW campaign
     _heroes.emplace_back( std::make_unique<Heroes>( Heroes::ROLAND, Race::WRLK, 5000 ) );
     _heroes.emplace_back( std::make_unique<Heroes>( Heroes::CORLAGON, Race::KNGT, 5000 ) );
@@ -2205,28 +2183,6 @@ void AllHeroes::Init()
     _heroes.emplace_back( std::make_unique<Heroes>( Heroes::ARCHIBALD, Race::WRLK, 5000 ) );
     _heroes.emplace_back( std::make_unique<Heroes>( Heroes::HALTON, Race::KNGT, 5000 ) );
     _heroes.emplace_back( std::make_unique<Heroes>( Heroes::BRAX, Race::BARB, 5000 ) );
-
-    // PoL
-    const GameVersion version = Settings::Get().getCurrentMapInfo().version;
-    if ( version == GameVersion::PRICE_OF_LOYALTY || version == GameVersion::RESURRECTION ) {
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::SOLMYR, Race::WRLK, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::DAINWIN, Race::WRLK, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::MOG, Race::BARB, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::UNCLEIVAN, Race::BARB, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::JOSEPH, Race::WRLK, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::GALLAVANT, Race::KNGT, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::ELDERIAN, Race::WRLK, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::CEALLACH, Race::KNGT, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::DRAKONIA, Race::WRLK, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::MARTINE, Race::SORC, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::JARKONAS, Race::BARB, 5000 ) );
-    }
-    else {
-        // for non-PoL maps, just add unknown heroes instead in place of the PoL-specific ones
-        for ( int i = Heroes::SOLMYR; i <= Heroes::JARKONAS; ++i ) {
-            _heroes.emplace_back( std::make_unique<Heroes>( Heroes::UNKNOWN, Race::KNGT ) );
-        }
-    }
 
     if ( IS_DEVEL() ) {
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::DEBUG_HERO, Race::WRLK ) );

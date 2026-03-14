@@ -125,17 +125,6 @@ namespace
         COUT( "Press " << Game::getHotKeyNameByEventId( Game::HotKeyEvent::CAMPAIGN_ARCHIBALD ) << " to choose Archibald Campaign." )
     }
 
-    void outputPriceOfLoyaltyCampaignInTextSupportMode()
-    {
-        START_TEXT_SUPPORT_MODE
-
-        COUT( "Select your campaign\n" )
-
-        COUT( "Press " << Game::getHotKeyNameByEventId( Game::HotKeyEvent::CAMPAIGN_PRICE_OF_LOYALTY ) << " to choose The Price of Loyalty Campaign." )
-        COUT( "Press " << Game::getHotKeyNameByEventId( Game::HotKeyEvent::CAMPAIGN_VOYAGE_HOME ) << " to choose Voyage Home Campaign." )
-        COUT( "Press " << Game::getHotKeyNameByEventId( Game::HotKeyEvent::CAMPAIGN_WIZARDS_ISLE ) << " to choose Wizard's Isle Campaign." )
-        COUT( "Press " << Game::getHotKeyNameByEventId( Game::HotKeyEvent::CAMPAIGN_DESCENDANTS ) << " to choose Descendants Campaign." )
-    }
 
     void showMissingVideoFilesWindow()
     {
@@ -283,134 +272,6 @@ fheroes2::GameMode Game::NewSuccessionWarsCampaign()
     return fheroes2::GameMode::SELECT_CAMPAIGN_SCENARIO;
 }
 
-fheroes2::GameMode Game::NewPriceOfLoyaltyCampaign()
-{
-    // TODO: Properly choose the campaign instead of this hackish way
-    Campaign::CampaignSaveData & campaignSaveData = Campaign::CampaignSaveData::Get();
-    campaignSaveData.reset();
-    campaignSaveData.setCurrentScenarioInfo( { Campaign::PRICE_OF_LOYALTY_CAMPAIGN, 0 } );
-
-    std::array<std::unique_ptr<SMKVideoSequence>, 4> videos{ getVideo( "IVYPOL.SMK" ), getVideo( "IVYVOY.SMK" ), getVideo( "IVYWIZ.SMK" ), getVideo( "IVYDES.SMK" ) };
-
-    if ( !videos[0] ) {
-        // File doesn't exist. Fallback to PoL campaign.
-        showMissingVideoFilesWindow();
-        return fheroes2::GameMode::SELECT_CAMPAIGN_SCENARIO;
-    }
-
-    // Fade-out display before playing video.
-    fheroes2::fadeOutDisplay();
-
-    outputPriceOfLoyaltyCampaignInTextSupportMode();
-
-    const fheroes2::ScreenPaletteRestorer screenRestorer;
-
-    const CursorRestorer cursorRestorer( true, Cursor::POINTER );
-
-    std::vector<uint8_t> palette = videos[0]->getCurrentPalette();
-    screenRestorer.changePalette( palette.data() );
-
-    Cursor::Get().setVideoPlaybackCursor();
-
-    fheroes2::Display & display = fheroes2::Display::instance();
-    const fheroes2::Point roiOffset( ( display.width() - display.DEFAULT_WIDTH ) / 2, ( display.height() - display.DEFAULT_HEIGHT ) / 2 );
-
-    const fheroes2::Sprite & background = fheroes2::AGG::GetICN( ICN::X_IVY, 1 );
-    fheroes2::Blit( background, 0, 0, display, roiOffset.x, roiOffset.y, background.width(), background.height() );
-
-    const fheroes2::Sprite & campaignChoice = fheroes2::AGG::GetICN( ICN::X_IVY, 0 );
-    fheroes2::Blit( campaignChoice, 0, 0, display, roiOffset.x + campaignChoice.x(), roiOffset.y + campaignChoice.y(), campaignChoice.width(), campaignChoice.height() );
-
-    display.render();
-
-    const std::array<fheroes2::Rect, 4> activeCampaignArea{ fheroes2::Rect( roiOffset.x + 192, roiOffset.y + 23, 248, 163 ),
-                                                            fheroes2::Rect( roiOffset.x + 19, roiOffset.y + 120, 166, 193 ),
-                                                            fheroes2::Rect( roiOffset.x + 450, roiOffset.y + 120, 166, 193 ),
-                                                            fheroes2::Rect( roiOffset.x + 192, roiOffset.y + 240, 248, 163 ) };
-
-    const std::array<fheroes2::Rect, 4> renderCampaignArea{ fheroes2::Rect( roiOffset.x + 214, roiOffset.y + 47, 248, 163 ),
-                                                            fheroes2::Rect( roiOffset.x + 41, roiOffset.y + 140, 166, 193 ),
-                                                            fheroes2::Rect( roiOffset.x + 472, roiOffset.y + 131, 166, 193 ),
-                                                            fheroes2::Rect( roiOffset.x + 214, roiOffset.y + 273, 248, 163 ) };
-
-    size_t highlightCampaignId = videos.size();
-
-    fheroes2::GameMode gameChoice = fheroes2::GameMode::NEW_GAME;
-    uint64_t customDelay = 0;
-
-    // Immediately indicate that the delay has passed to render first frame immediately.
-    Game::passCustomAnimationDelay( customDelay );
-    // Make sure that the first run is passed immediately.
-    assert( !Game::isCustomDelayNeeded( customDelay ) );
-
-    LocalEvent & le = LocalEvent::Get();
-    while ( le.HandleEvents( highlightCampaignId < videos.size() ? Game::isCustomDelayNeeded( customDelay ) : true ) ) {
-        if ( le.MouseClickLeft( activeCampaignArea[0] ) || HotKeyPressEvent( HotKeyEvent::CAMPAIGN_PRICE_OF_LOYALTY ) ) {
-            campaignSaveData.setCurrentScenarioInfo( { Campaign::PRICE_OF_LOYALTY_CAMPAIGN, 0 } );
-            gameChoice = fheroes2::GameMode::SELECT_CAMPAIGN_SCENARIO;
-            break;
-        }
-        if ( le.MouseClickLeft( activeCampaignArea[1] ) || HotKeyPressEvent( HotKeyEvent::CAMPAIGN_VOYAGE_HOME ) ) {
-            campaignSaveData.setCurrentScenarioInfo( { Campaign::VOYAGE_HOME_CAMPAIGN, 0 } );
-            gameChoice = fheroes2::GameMode::SELECT_CAMPAIGN_SCENARIO;
-            break;
-        }
-        if ( le.MouseClickLeft( activeCampaignArea[2] ) || HotKeyPressEvent( HotKeyEvent::CAMPAIGN_WIZARDS_ISLE ) ) {
-            campaignSaveData.setCurrentScenarioInfo( { Campaign::WIZARDS_ISLE_CAMPAIGN, 0 } );
-            gameChoice = fheroes2::GameMode::SELECT_CAMPAIGN_SCENARIO;
-            break;
-        }
-        if ( le.MouseClickLeft( activeCampaignArea[3] ) || HotKeyPressEvent( HotKeyEvent::CAMPAIGN_DESCENDANTS ) ) {
-            campaignSaveData.setCurrentScenarioInfo( { Campaign::DESCENDANTS_CAMPAIGN, 0 } );
-            gameChoice = fheroes2::GameMode::SELECT_CAMPAIGN_SCENARIO;
-            break;
-        }
-
-        const size_t beforeCampaignId = highlightCampaignId;
-
-        highlightCampaignId = videos.size();
-
-        for ( size_t i = 0; i < activeCampaignArea.size(); ++i ) {
-            if ( le.isMouseCursorPosInArea( activeCampaignArea[i] ) && videos[i] ) {
-                highlightCampaignId = i;
-                customDelay = static_cast<uint64_t>( std::lround( videos[highlightCampaignId]->microsecondsPerFrame() / 1000 ) );
-                break;
-            }
-        }
-
-        if ( highlightCampaignId != beforeCampaignId ) {
-            fheroes2::Blit( background, 0, 0, display, roiOffset.x, roiOffset.y, background.width(), background.height() );
-            fheroes2::Blit( campaignChoice, 0, 0, display, roiOffset.x + campaignChoice.x(), roiOffset.y + campaignChoice.y(), campaignChoice.width(),
-                            campaignChoice.height() );
-            if ( highlightCampaignId >= videos.size() ) {
-                display.render();
-            }
-        }
-
-        if ( highlightCampaignId < videos.size() && Game::validateCustomAnimationDelay( customDelay ) ) {
-            fheroes2::Rect frameRoi( renderCampaignArea[highlightCampaignId].x, renderCampaignArea[highlightCampaignId].y, 0, 0 );
-            videos[highlightCampaignId]->getNextFrame( display, frameRoi.x, frameRoi.y, frameRoi.width, frameRoi.height, palette );
-
-            fheroes2::Blit( background, frameRoi.x - roiOffset.x, frameRoi.y - roiOffset.y, display, frameRoi.x, frameRoi.y, frameRoi.width, frameRoi.height );
-
-            display.render( frameRoi );
-
-            if ( videos[highlightCampaignId]->frameCount() <= videos[highlightCampaignId]->getCurrentFrameId() ) {
-                videos[highlightCampaignId]->resetFrame();
-            }
-        }
-    }
-
-    // Update the frame but do not render it.
-    display.fill( 0 );
-    display.updateNextRenderRoi( { 0, 0, display.width(), display.height() } );
-
-    // Set the fade-in for the Campaign scenario info.
-    setDisplayFadeIn();
-
-    return gameChoice;
-}
-
 fheroes2::GameMode Game::NewGame( const bool isProbablyDemoVersion )
 {
     outputNewMenuInTextSupportMode();
@@ -480,18 +341,7 @@ fheroes2::GameMode Game::NewGame( const bool isProbablyDemoVersion )
     }
 
     fheroes2::Button buttonSuccessionWars;
-    fheroes2::Button buttonPriceOfLoyalty;
     buttonSuccessionWars.disable();
-    buttonPriceOfLoyalty.disable();
-
-    const bool isPriceOfLoyaltyPresent = isPriceOfLoyaltyCampaignPresent();
-
-    if ( isPriceOfLoyaltyPresent ) {
-        buttonSuccessionWars.setICNInfo( menuButtonsIcnIndex, 24, 25 );
-        buttonPriceOfLoyalty.setICNInfo( menuButtonsIcnIndex, 26, 27 );
-        buttonSuccessionWars.setPosition( mainModeButtons.button( 0 ).area().x, mainModeButtons.button( 0 ).area().y );
-        buttonPriceOfLoyalty.setPosition( mainModeButtons.button( 1 ).area().x, mainModeButtons.button( 1 ).area().y );
-    }
 
     fheroes2::validateFadeInAndRender();
 
@@ -513,21 +363,7 @@ fheroes2::GameMode Game::NewGame( const bool isProbablyDemoVersion )
                 return fheroes2::GameMode::NEW_STANDARD;
             }
             if ( buttonCampaignGame.isEnabled() && ( HotKeyPressEvent( HotKeyEvent::MAIN_MENU_CAMPAIGN ) || le.MouseClickLeft( buttonCampaignGame.area() ) ) ) {
-                if ( !isPriceOfLoyaltyCampaignPresent() ) {
-                    return fheroes2::GameMode::NEW_SUCCESSION_WARS_CAMPAIGN;
-                }
-                mainModeButtons.disable();
-                emptyDialog.restore();
-                buttonSuccessionWars.enable();
-                buttonPriceOfLoyalty.enable();
-                buttonSuccessionWars.draw();
-                buttonPriceOfLoyalty.draw();
-                buttonSuccessionWars.drawShadow( display );
-                buttonPriceOfLoyalty.drawShadow( display );
-
-                outputNewCampaignSelectionInTextSupportMode();
-
-                display.render( emptyDialog.rect() );
+                return fheroes2::GameMode::NEW_SUCCESSION_WARS_CAMPAIGN;
             }
             if ( HotKeyPressEvent( HotKeyEvent::MAIN_MENU_SETTINGS ) || le.MouseClickLeft( buttonSettings.area() ) ) {
                 fheroes2::openGameSettings();
@@ -595,22 +431,14 @@ fheroes2::GameMode Game::NewGame( const bool isProbablyDemoVersion )
         }
         else if ( buttonSuccessionWars.isEnabled() ) {
             buttonSuccessionWars.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( buttonSuccessionWars.area() ) );
-            buttonPriceOfLoyalty.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( buttonPriceOfLoyalty.area() ) );
 
             if ( le.MouseClickLeft( buttonSuccessionWars.area() ) || HotKeyPressEvent( HotKeyEvent::MAIN_MENU_NEW_ORIGINAL_CAMPAIGN ) ) {
                 return fheroes2::GameMode::NEW_SUCCESSION_WARS_CAMPAIGN;
-            }
-            if ( le.MouseClickLeft( buttonPriceOfLoyalty.area() ) || HotKeyPressEvent( HotKeyEvent::MAIN_MENU_NEW_EXPANSION_CAMPAIGN ) ) {
-                return fheroes2::GameMode::NEW_PRICE_OF_LOYALTY_CAMPAIGN;
             }
 
             if ( le.isMouseRightButtonPressedInArea( buttonSuccessionWars.area() ) ) {
                 fheroes2::showStandardTextMessage( _( "Original Campaign" ),
                                                    _( "Either Roland's or Archibald's campaign from the original Heroes of Might and Magic II." ), Dialog::ZERO );
-            }
-            else if ( le.isMouseRightButtonPressedInArea( buttonPriceOfLoyalty.area() ) ) {
-                fheroes2::showStandardTextMessage( _( "Expansion Campaign" ), _( "One of the four new campaigns from the Price of Loyalty expansion set." ),
-                                                   Dialog::ZERO );
             }
         }
         else {

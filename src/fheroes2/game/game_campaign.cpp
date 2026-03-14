@@ -105,14 +105,6 @@ namespace
             else {
                 return { { 0, 1 }, { 2, 1 }, { 4, 0 }, { 4, 2 }, { 6, 1 }, { 8, 1 }, { 9, 0 }, { 10, 1 }, { 12, 0 }, { 12, 2 }, { 14, 1 }, { 6, 0 } };
             }
-        case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-            return { { 0, 0 }, { 2, 0 }, { 4, 1 }, { 4, 0 }, { 6, 1 }, { 7, 0 }, { 9, 1 }, { 10, 0 } };
-        case Campaign::DESCENDANTS_CAMPAIGN:
-            return { { 0, 1 }, { 2, 1 }, { 4, 0 }, { 4, 2 }, { 6, 1 }, { 8, 2 }, { 8, 0 }, { 10, 1 } };
-        case Campaign::WIZARDS_ISLE_CAMPAIGN:
-            return { { 0, 0 }, { 2, 0 }, { 4, 1 }, { 6, 0 } };
-        case Campaign::VOYAGE_HOME_CAMPAIGN:
-            return { { 0, 0 }, { 2, 0 }, { 4, 0 }, { 4, 1 } };
         default:
             // Implementing a new campaign? Add a new case!
             assert( 0 );
@@ -149,26 +141,6 @@ namespace
             iconStatusOffset = 10;
             selectedIconIdx = isBetrayalScenario( scenarioInfoId ) ? 14 : 17;
             return;
-        case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-            iconsId = ICN::X_CMPEXT;
-            iconStatusOffset = 0;
-            selectedIconIdx = 4;
-            return;
-        case Campaign::DESCENDANTS_CAMPAIGN:
-            iconsId = ICN::X_CMPEXT;
-            iconStatusOffset = 0;
-            selectedIconIdx = 7;
-            return;
-        case Campaign::WIZARDS_ISLE_CAMPAIGN:
-            iconsId = ICN::X_CMPEXT;
-            iconStatusOffset = 0;
-            selectedIconIdx = 10;
-            return;
-        case Campaign::VOYAGE_HOME_CAMPAIGN:
-            iconsId = ICN::X_CMPEXT;
-            iconStatusOffset = 0;
-            selectedIconIdx = 13;
-            return;
         default:
             // Implementing a new campaign? Add a new case!
             assert( 0 );
@@ -199,23 +171,6 @@ namespace
         fheroes2::Point offset = iconOffsets[scenarioInfo.scenarioId];
         offset.x *= deltaX;
         offset.y *= deltaY;
-
-        // Price of loyalty's track doesn't respect the standard offset between icons.
-        if ( scenarioInfo.campaignId == Campaign::CampaignID::PRICE_OF_LOYALTY_CAMPAIGN && scenarioInfo.scenarioId >= 5 ) {
-            switch ( scenarioInfo.scenarioId ) {
-            case 5:
-                offset.x -= 2;
-                break;
-            case 6:
-                offset.x -= 1;
-                break;
-            case 7:
-                offset.x -= 4;
-                break;
-            default:
-                break;
-            }
-        }
 
         offset.x -= 2;
         offset.y -= 2;
@@ -320,18 +275,6 @@ namespace
             else {
                 campaignTrack = ICN::CTRACK03;
             }
-            break;
-        case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-            campaignTrack = ICN::X_TRACK1;
-            break;
-        case Campaign::DESCENDANTS_CAMPAIGN:
-            campaignTrack = ICN::X_TRACK2;
-            break;
-        case Campaign::WIZARDS_ISLE_CAMPAIGN:
-            campaignTrack = ICN::X_TRACK3;
-            break;
-        case Campaign::VOYAGE_HOME_CAMPAIGN:
-            campaignTrack = ICN::X_TRACK4;
             break;
         default:
             // Implementing a new campaign? Add a new case!
@@ -550,9 +493,7 @@ namespace
             static const std::map<std::pair<int, int>, int> targetHeroes = { // Final Justice
                                                                              { { Campaign::ROLAND_CAMPAIGN, 9 }, Heroes::ROLAND },
                                                                              // Apocalypse
-                                                                             { { Campaign::ARCHIBALD_CAMPAIGN, 10 }, Heroes::ARCHIBALD },
-                                                                             // Blood is Thicker
-                                                                             { { Campaign::VOYAGE_HOME_CAMPAIGN, 3 }, Heroes::GALLAVANT } };
+                                                                             { { Campaign::ARCHIBALD_CAMPAIGN, 10 }, Heroes::ARCHIBALD } };
 
             const auto iter = targetHeroes.find( { scenarioInfoId.campaignId, scenarioInfoId.scenarioId } );
             if ( iter != targetHeroes.end() ) {
@@ -574,11 +515,7 @@ namespace
 
         {
             static const std::map<std::pair<int, int>, int> targetRaces = { // Defender
-                                                                            { { Campaign::ROLAND_CAMPAIGN, 5 }, Race::SORC },
-                                                                            // The Wayward Son
-                                                                            { { Campaign::DESCENDANTS_CAMPAIGN, 2 }, Race::SORC },
-                                                                            // The Epic Battle
-                                                                            { { Campaign::DESCENDANTS_CAMPAIGN, 7 }, Race::SORC } };
+                                                                            { { Campaign::ROLAND_CAMPAIGN, 5 }, Race::SORC } };
 
             const auto iter = targetRaces.find( { scenarioInfoId.campaignId, scenarioInfoId.scenarioId } );
             if ( iter != targetRaces.end() ) {
@@ -832,11 +769,6 @@ namespace
             return ICN::GOOD_CAMPAIGN_BUTTONS;
         case Campaign::ARCHIBALD_CAMPAIGN:
             return ICN::EVIL_CAMPAIGN_BUTTONS;
-        case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-        case Campaign::DESCENDANTS_CAMPAIGN:
-        case Campaign::WIZARDS_ISLE_CAMPAIGN:
-        case Campaign::VOYAGE_HOME_CAMPAIGN:
-            return ICN::POL_CAMPAIGN_BUTTONS;
         default:
             // Implementing a new campaign? Add a new case!
             assert( 0 );
@@ -846,38 +778,16 @@ namespace
 
     void drawCampaignNameHeader( const int campaignId, fheroes2::Image & output, const fheroes2::Point & offset )
     {
-        // Add extra image header if supported
-        uint32_t campaignNameHeader = ICN::UNKNOWN;
-
-        switch ( campaignId ) {
-        case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-            campaignNameHeader = 15;
-            break;
-        case Campaign::DESCENDANTS_CAMPAIGN:
-            campaignNameHeader = 16;
-            break;
-        case Campaign::WIZARDS_ISLE_CAMPAIGN:
-            campaignNameHeader = 17;
-            break;
-        case Campaign::VOYAGE_HOME_CAMPAIGN:
-            campaignNameHeader = 18;
-            break;
-        default:
-            return;
-        }
-
-        const fheroes2::Sprite & header = fheroes2::AGG::GetICN( ICN::X_CMPEXT, campaignNameHeader );
-        fheroes2::Blit( header, output, offset.x + 24, offset.y + 25 );
+        // No extra header for HoMM1 campaigns
+        (void)campaignId;
+        (void)output;
+        (void)offset;
     }
 
     void playCampaignMusic( const int campaignId )
     {
         switch ( campaignId ) {
         case Campaign::ROLAND_CAMPAIGN:
-        case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-        case Campaign::DESCENDANTS_CAMPAIGN:
-        case Campaign::WIZARDS_ISLE_CAMPAIGN:
-        case Campaign::VOYAGE_HOME_CAMPAIGN:
             AudioManager::PlayMusicAsync( MUS::ROLAND_CAMPAIGN_SCREEN, Music::PlaybackMode::REWIND_AND_PLAY_INFINITE );
             break;
         case Campaign::ARCHIBALD_CAMPAIGN:
@@ -1135,15 +1045,7 @@ bool Game::isSuccessionWarsCampaignPresent()
 
 bool Game::isPriceOfLoyaltyCampaignPresent()
 {
-    // We need to check game resources as well.
-    if ( fheroes2::AGG::GetICN( ICN::X_LOADCM, 0 ).empty() || fheroes2::AGG::GetICN( ICN::X_IVY, 0 ).empty() ) {
-        return false;
-    }
-
-    return Campaign::CampaignData::getCampaignData( Campaign::PRICE_OF_LOYALTY_CAMPAIGN ).isAllCampaignMapsPresent()
-           && Campaign::CampaignData::getCampaignData( Campaign::VOYAGE_HOME_CAMPAIGN ).isAllCampaignMapsPresent()
-           && Campaign::CampaignData::getCampaignData( Campaign::WIZARDS_ISLE_CAMPAIGN ).isAllCampaignMapsPresent()
-           && Campaign::CampaignData::getCampaignData( Campaign::DESCENDANTS_CAMPAIGN ).isAllCampaignMapsPresent();
+    return false; // PoL campaigns removed in HoMM1 conversion
 }
 
 fheroes2::GameMode Game::CompleteCampaignScenario( const bool isLoadingSaveFile )
@@ -1308,13 +1210,6 @@ fheroes2::GameMode Game::SelectCampaignScenario( const fheroes2::GameMode prevMo
     case Campaign::ARCHIBALD_CAMPAIGN:
         backgroundIconID = ICN::CAMPBKGE;
         break;
-        // PoL campaigns use the same background, but different headers. TODO: Implement the headers
-    case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-    case Campaign::DESCENDANTS_CAMPAIGN:
-    case Campaign::WIZARDS_ISLE_CAMPAIGN:
-    case Campaign::VOYAGE_HOME_CAMPAIGN:
-        backgroundIconID = ICN::X_CMPBKG;
-        break;
     default:
         // Implementing a new campaign? Add a new case!
         assert( 0 );
@@ -1443,12 +1338,6 @@ fheroes2::GameMode Game::SelectCampaignScenario( const fheroes2::GameMode prevMo
     case Campaign::ARCHIBALD_CAMPAIGN:
     case Campaign::ROLAND_CAMPAIGN:
         scenarioTitleArea = { top.x + 198, top.y + 84, 200, 25 };
-        break;
-    case Campaign::DESCENDANTS_CAMPAIGN:
-    case Campaign::PRICE_OF_LOYALTY_CAMPAIGN:
-    case Campaign::VOYAGE_HOME_CAMPAIGN:
-    case Campaign::WIZARDS_ISLE_CAMPAIGN:
-        scenarioTitleArea = { top.x + 198, top.y + 84, 200, 22 };
         break;
     default:
         // Implementing a new campaign? Add a new case!

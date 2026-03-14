@@ -139,9 +139,6 @@ void Game::mainGameLoop( bool isFirstGameRun, bool isProbablyDemoVersion )
         case fheroes2::GameMode::NEW_SUCCESSION_WARS_CAMPAIGN:
             result = Game::NewSuccessionWarsCampaign();
             break;
-        case fheroes2::GameMode::NEW_PRICE_OF_LOYALTY_CAMPAIGN:
-            result = Game::NewPriceOfLoyaltyCampaign();
-            break;
         case fheroes2::GameMode::NEW_BATTLE_ONLY:
             result = Game::NewBattleOnly();
             break;

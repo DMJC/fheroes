@@ -800,42 +800,6 @@ int ICN::getHeroPortraitIcnId( const int heroId )
         return ICN::PORT0034;
     case Heroes::WRATHMONT:
         return ICN::PORT0035;
-    case Heroes::MYRA:
-        return ICN::PORT0036;
-    case Heroes::FLINT:
-        return ICN::PORT0037;
-    case Heroes::DAWN:
-        return ICN::PORT0038;
-    case Heroes::HALON:
-        return ICN::PORT0039;
-    case Heroes::MYRINI:
-        return ICN::PORT0040;
-    case Heroes::WILFREY:
-        return ICN::PORT0041;
-    case Heroes::SARAKIN:
-        return ICN::PORT0042;
-    case Heroes::KALINDRA:
-        return ICN::PORT0043;
-    case Heroes::MANDIGAL:
-        return ICN::PORT0044;
-    case Heroes::ZOM:
-        return ICN::PORT0045;
-    case Heroes::DARLANA:
-        return ICN::PORT0046;
-    case Heroes::ZAM:
-        return ICN::PORT0047;
-    case Heroes::RANLOO:
-        return ICN::PORT0048;
-    case Heroes::CHARITY:
-        return ICN::PORT0049;
-    case Heroes::RIALDO:
-        return ICN::PORT0050;
-    case Heroes::ROXANA:
-        return ICN::PORT0051;
-    case Heroes::SANDRO:
-        return ICN::PORT0052;
-    case Heroes::CELIA:
-        return ICN::PORT0053;
     case Heroes::ROLAND:
         return ICN::PORT0054;
     case Heroes::CORLAGON:
@@ -848,28 +812,6 @@ int ICN::getHeroPortraitIcnId( const int heroId )
         return ICN::PORT0058;
     case Heroes::BRAX:
         return ICN::PORT0059;
-    case Heroes::SOLMYR:
-        return ICN::PORT0060;
-    case Heroes::DAINWIN:
-        return ICN::PORT0061;
-    case Heroes::MOG:
-        return ICN::PORT0062;
-    case Heroes::UNCLEIVAN:
-        return ICN::PORT0063;
-    case Heroes::JOSEPH:
-        return ICN::PORT0064;
-    case Heroes::GALLAVANT:
-        return ICN::PORT0065;
-    case Heroes::ELDERIAN:
-        return ICN::PORT0066;
-    case Heroes::CEALLACH:
-        return ICN::PORT0067;
-    case Heroes::DRAKONIA:
-        return ICN::PORT0068;
-    case Heroes::MARTINE:
-        return ICN::PORT0069;
-    case Heroes::JARKONAS:
-        return ICN::PORT0070;
     case Heroes::DEBUG_HERO:
         return ICN::PORT0059;
     default:

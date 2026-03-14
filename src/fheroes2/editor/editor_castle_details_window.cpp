@@ -336,7 +336,7 @@ namespace
         fheroes2::renderMageGuildBuilding( race, 5, dialogRoi.getPosition() );
 
         // Show spells.
-        std::array<std::unique_ptr<fheroes2::SpellsInOneRow>, 5> spellRows;
+        std::array<std::unique_ptr<fheroes2::SpellsInOneRow>, 4> spellRows;
         for ( int32_t levelIndex = 0; levelIndex < static_cast<int32_t>( spellRows.size() ); ++levelIndex ) {
             // REMEMBER! The level of spells as a parameter is in [1, 5] interval, but as an index is in [0, 4] interval.
             const int32_t spellsCount = MageGuild::getMaxSpellsCount( levelIndex + 1, hasLibraryCapability );
@@ -532,8 +532,10 @@ namespace
                                 const Spell spell( spellId );
                                 const int32_t spellLevel = spell.Level();
 
-                                // Banned spells must be always valid ones.
-                                assert( spellLevel >= 1 && spellLevel <= 5 );
+                                // Only handle HoMM1 spell levels (1-4).
+                                if ( spellLevel < 1 || spellLevel > static_cast<int32_t>( spellRows.size() ) ) {
+                                    continue;
+                                }
 
                                 const auto & spellRow = spellRows[spellLevel - 1];
 
@@ -579,7 +581,7 @@ namespace
             buttonOkay.drawOnState( eventHandler.isMouseLeftButtonPressedAndHeldInArea( buttonOkay.area() ) );
             buttonBannedSpells.drawOnState( eventHandler.isMouseLeftButtonPressedAndHeldInArea( buttonBannedSpells.area() ) );
 
-            for ( size_t levelIndex = 0; levelIndex < 5; ++levelIndex ) {
+            for ( size_t levelIndex = 0; levelIndex < 4; ++levelIndex ) {
                 if ( spellRows[levelIndex]->queueEventProcessing( true ) ) {
                     if ( eventHandler.MouseClickLeft() ) {
                         spellSelectProcessing( levelIndex );

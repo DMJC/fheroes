@@ -63,7 +63,7 @@ namespace fheroes2
             break;
         }
 
-        assert( guildLevel >= 1 && guildLevel <= 5 );
+        assert( guildLevel >= 1 && guildLevel <= 4 );
         const Sprite & sprite = AGG::GetICN( guildIcn, guildLevel - 1 );
 
         const Rect area = GetActiveROI( sprite );

@@ -45,7 +45,7 @@ namespace fheroes2
         std::vector<uint8_t> read( const std::string & fileName );
 
     private:
-        static const size_t _maxFilenameSize = 15; // HoMM2: 8.3 ASCIIZ file name + 2-bytes padding
+        static const size_t _maxFilenameSize = 15; // 8.3 ASCIIZ filename, null-padded to 15 bytes
 
         bool _openHoMM2( size_t count, size_t size );
         bool _openHoMM1( size_t count, size_t size );

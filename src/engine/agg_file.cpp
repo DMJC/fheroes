@@ -20,6 +20,7 @@
 
 #include "agg_file.h"
 
+#include <algorithm>
 #include <cctype>
 #include <cstdint>
 #include <iterator>
@@ -27,30 +28,54 @@
 
 namespace fheroes2
 {
-    // HoMM2 AGG FAT entry: hash(u32) + offset(u32) + size(u32)        — names stored at end of file
-    // HoMM1 AGG FAT entry: name(13 bytes) + offset(u32) + size(u32) + size2(u32) — names inline
-    static constexpr size_t _homm1FilenameSize = 13; // 8.3 ASCIIZ, no extra padding
-    static constexpr size_t _homm1FileRecordSize = _homm1FilenameSize + sizeof( uint32_t ) * 3;
-    static constexpr size_t _homm2FileRecordSize = sizeof( uint32_t ) * 3;
+    // HoMM1 AGG format (kaitai.io spec):
+    //   num_files  : u2
+    //   entries[]  : num_files × { hash(u2), offset(u4), size(u4), size2(u4) }  = 14 bytes each
+    //   file data
+    //   filenames  : num_files × 15-byte null-padded strings at end of file
+    //   Filenames are stored lowercase; we normalise to uppercase on insert.
+    //
+    // HoMM2 AGG format:
+    //   num_files  : u2
+    //   entries[]  : num_files × { hash(u4), offset(u4), size(u4) }             = 12 bytes each
+    //   file data
+    //   filenames  : num_files × 15-byte null-padded strings at end of file
+    //   Filenames are stored uppercase; hash verified on load.
+
+    static constexpr size_t _homm1EntrySize = sizeof( uint16_t ) + sizeof( uint32_t ) * 3; // 14 bytes
+    static constexpr size_t _homm2EntrySize = sizeof( uint32_t ) * 3;                       // 12 bytes
+
+    static void normalizeToUpper( std::string & s )
+    {
+        for ( char & c : s ) {
+            c = static_cast<char>( std::toupper( static_cast<unsigned char>( c ) ) );
+        }
+    }
 
     bool AGGFile::_openHoMM2( const size_t count, const size_t size )
     {
-        ROStreamBuf fileEntries = _stream.getStreamBuf( count * _homm2FileRecordSize );
         const size_t nameEntriesSize = _maxFilenameSize * count;
+
+        if ( count * ( _homm2EntrySize + _maxFilenameSize ) >= size ) {
+            return false;
+        }
+
+        ROStreamBuf fileEntries = _stream.getStreamBuf( count * _homm2EntrySize );
         _stream.seek( size - nameEntriesSize );
         ROStreamBuf nameEntries = _stream.getStreamBuf( nameEntriesSize );
 
         for ( size_t i = 0; i < count; ++i ) {
             std::string name = nameEntries.getString( _maxFilenameSize );
+            normalizeToUpper( name );
 
-            // Check 32-bit filename hash.
+            // Verify 32-bit filename hash.
             if ( fileEntries.getLE32() != calculateAggFilenameHash( name ) ) {
                 _files.clear();
                 return false;
             }
 
             const uint32_t fileOffset = fileEntries.getLE32();
-            const uint32_t fileSize = fileEntries.getLE32();
+            const uint32_t fileSize   = fileEntries.getLE32();
             _files.try_emplace( std::move( name ), std::make_pair( fileSize, fileOffset ) );
         }
 
@@ -64,25 +89,34 @@ namespace fheroes2
 
     bool AGGFile::_openHoMM1( const size_t count, const size_t size )
     {
-        if ( count * _homm1FileRecordSize >= size ) {
+        const size_t nameEntriesSize = _maxFilenameSize * count;
+
+        if ( count * ( _homm1EntrySize + _maxFilenameSize ) >= size ) {
             return false;
         }
 
-        ROStreamBuf fileEntries = _stream.getStreamBuf( count * _homm1FileRecordSize );
+        // FAT: hash(u2) + offset(u4) + size(u4) + size2(u4) per entry.
+        ROStreamBuf fileEntries = _stream.getStreamBuf( count * _homm1EntrySize );
+
+        // Name table: positionally matched with FAT entries.
+        _stream.seek( size - nameEntriesSize );
+        ROStreamBuf nameEntries = _stream.getStreamBuf( nameEntriesSize );
 
         for ( size_t i = 0; i < count; ++i ) {
-            std::string name = fileEntries.getString( _homm1FilenameSize );
+            std::string name = nameEntries.getString( _maxFilenameSize );
+            normalizeToUpper( name );  // HoMM1 stores names lowercase; normalise to uppercase
+
+            fileEntries.getLE16(); // hash(u2) — skip; positional match is used
             const uint32_t fileOffset = fileEntries.getLE32();
-            const uint32_t fileSize = fileEntries.getLE32();
-            fileEntries.getLE32(); // size2 — always equals fileSize, discard
+            const uint32_t fileSize   = fileEntries.getLE32();
+            fileEntries.getLE32();  // size2 — always equals fileSize, discard
 
             if ( !name.empty() ) {
                 _files.try_emplace( std::move( name ), std::make_pair( fileSize, fileOffset ) );
             }
         }
 
-        if ( _files.size() != count ) {
-            _files.clear();
+        if ( _files.empty() ) {
             return false;
         }
 
@@ -95,20 +129,18 @@ namespace fheroes2
             return false;
         }
 
-        const size_t size = _stream.size();
-        const size_t count = _stream.getLE16();
+        const size_t size     = _stream.size();
+        const size_t count    = _stream.getLE16();
+        const size_t fatStart = _stream.tell();
 
-        // Try HoMM2 format first (FAT has hash+offset+size, names at end of file).
-        if ( count * ( _homm2FileRecordSize + _maxFilenameSize ) < size ) {
-            const size_t fatStart = _stream.tell();
-            if ( _openHoMM2( count, size ) ) {
-                return true;
-            }
-            // Hash validation failed — not HoMM2. Fall through to HoMM1.
-            _stream.seek( fatStart );
+        // Try HoMM2 format first (12-byte entries, 32-bit hash verification).
+        if ( _openHoMM2( count, size ) ) {
+            return true;
         }
 
-        // Try HoMM1 format (FAT has inline name+offset+size+size2).
+        // Fall back to HoMM1 format (14-byte entries, 2-byte hash, positional name match).
+        _stream.seek( fatStart );
+        _files.clear();
         return _openHoMM1( count, size );
     }
 
@@ -131,7 +163,7 @@ namespace fheroes2
     uint32_t calculateAggFilenameHash( const std::string_view str )
     {
         uint32_t hash = 0;
-        uint32_t sum = 0;
+        uint32_t sum  = 0;
 
         for ( auto iter = str.rbegin(); iter != str.rend(); ++iter ) {
             const unsigned char c = static_cast<unsigned char>( std::toupper( static_cast<unsigned char>( *iter ) ) );
@@ -148,12 +180,12 @@ namespace fheroes2
 
 IStreamBase & operator>>( IStreamBase & stream, fheroes2::ICNHeader & icn )
 {
-    icn.offsetX = static_cast<int16_t>( stream.getLE16() );
-    icn.offsetY = static_cast<int16_t>( stream.getLE16() );
-    icn.width = stream.getLE16();
-    icn.height = stream.getLE16();
+    icn.offsetX         = static_cast<int16_t>( stream.getLE16() );
+    icn.offsetY         = static_cast<int16_t>( stream.getLE16() );
+    icn.width           = stream.getLE16();
+    icn.height          = stream.getLE16();
     icn.animationFrames = stream.get();
-    icn.offsetData = stream.getLE32();
+    icn.offsetData      = stream.getLE32();
 
     return stream;
 }

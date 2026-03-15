@@ -30,6 +30,7 @@
 #include <utility>
 #include <vector>
 
+#include "agg.h"
 #include "agg_image.h"
 #include "audio.h"
 #include "audio_manager.h"
@@ -54,6 +55,7 @@
 #include "players.h"
 #include "screen.h"
 #include "settings.h"
+#include "system.h"
 #include "tools.h"
 #include "translations.h"
 #include "ui_button.h"
@@ -129,12 +131,20 @@ namespace
         const auto & info = conf.getCurrentMapInfo();
         fheroes2::Text text{ info.name, fheroes2::FontType::normalWhite(), info.getSupportedLanguage() };
 
-        if ( text.width() > centeredRoi.width ) {
+        if ( maxRoi.width <= 0 ) {
+            return;
+        }
+
+        if ( centeredRoi.width > 0 && text.width() > centeredRoi.width ) {
             text.fitToOneRow( maxRoi.width );
             text.draw( maxRoi.x + ( maxRoi.width - text.width() ), maxRoi.y + 3, text.width(), fheroes2::Display::instance() );
         }
-        else {
+        else if ( centeredRoi.width > 0 ) {
             text.draw( centeredRoi.x, centeredRoi.y + 3, centeredRoi.width, fheroes2::Display::instance() );
+        }
+        else {
+            text.fitToOneRow( maxRoi.width );
+            text.draw( maxRoi.x, maxRoi.y + 3, maxRoi.width, fheroes2::Display::instance() );
         }
     }
 
@@ -170,6 +180,300 @@ namespace
         return { textX, y, text.width(), text.height() };
     }
 
+    // HoMM1-specific scenario selection screen.
+    // Uses NEWGAME.BMP as the right panel background, NEWGAME.ICN for UI elements,
+    // and BTNNEWGM.ICN for OKAY/CANCEL buttons.
+    //
+    // NEWGAME.ICN frame layout (29 frames):
+    //   0       : 251×20  scenario name bar
+    //   1-4     : 65×65   chess pieces (Easy, Normal, Hard, Expert) — unselected
+    //   5-8     : 65×65   chess pieces (Easy, Normal, Hard, Expert) — selected (brighter)
+    //   9       : 65×65   extra variant
+    //   10-13   : 59×44   balance scales (Fool, Easy, Average, Hard) — AI strength icons
+    //   14-17   : 59×44   balance scales — alternate states
+    //   18      : 249×20  scenario list row bar
+    //   19      : 24×20   scroll arrow up
+    //   20      : 24×20   scroll arrow down
+    //   21-22   : 96×25   small buttons (unused here)
+    //   23-24   : 96×25   small buttons (unused here)
+    //   25      : 71×71   color gem / king-of-hill indicator
+    //   26      : 65×65   extra large icon
+    //   27-28   : 44×39   small icons
+    //
+    // BTNNEWGM.ICN frame layout (8 frames, 127×63 each):
+    //   0/1     : OKAY released / pressed
+    //   2/3     : CANCEL released / pressed
+    // Player colors available for selection in HoMM1 (index 0-3 cycles Red→Yellow→Green→Blue).
+    struct H1ColorInfo
+    {
+        const char * name;
+        uint8_t r, g, b;
+    };
+    static constexpr H1ColorInfo h1Colors[] = {
+        { "Red",    200,  30,  30 },
+        { "Yellow", 220, 200,  20 },
+        { "Green",   30, 180,  30 },
+        { "Blue",    30,  80, 220 },
+    };
+
+    fheroes2::GameMode ChooseHoMM1Map( MapsFileInfoList & maps, const int /*humanPlayerCount*/ )
+    {
+        assert( !maps.empty() );
+
+        fheroes2::Display & display = fheroes2::Display::instance();
+
+        // Draw the HEROES.BMP background only — NOT H1PANEL, which contains the main menu
+        // Standard/Campaign buttons that would bleed over our scenario panel.
+        {
+            const fheroes2::Sprite & bg = fheroes2::AGG::GetICN( ICN::HEROES, 0 );
+            display.fill( 0 );
+            if ( !bg.empty() ) {
+                const int32_t bgX = ( display.width() - bg.width() ) / 2;
+                const int32_t bgY = ( display.height() - bg.height() ) / 2;
+                fheroes2::Copy( bg, 0, 0, display, bgX, bgY, bg.width(), bg.height() );
+            }
+        }
+
+        // Right panel: NEWGAME.BMP (322×459) — contains all static art including pre-drawn
+        // chess pieces, balance scales, color gem slot, and king-of-hill area.
+        const fheroes2::Sprite & panel = fheroes2::AGG::GetICN( ICN::H1NEWGAME_BMP, 0 );
+        const int32_t panelW = panel.empty() ? 322 : panel.width();
+        const int32_t panelH = panel.empty() ? 459 : panel.height();
+        const int32_t panelX = display.width() - panelW;
+        const int32_t panelY = ( display.height() - panelH ) / 2;
+
+        // Default selection: AES31000.MAP (first scenario in HoMM1).
+        int selectedMap = 0;
+        for ( int i = 0; i < static_cast<int>( maps.size() ); ++i ) {
+            const std::string base = StringLower( System::GetFileName( maps[i].filename ) );
+            if ( base == "aes31000.map" ) {
+                selectedMap = i;
+                break;
+            }
+        }
+        int scrollOffset = selectedMap;
+        int difficulty   = 1; // 0=Easy, 1=Normal, 2=Hard, 3=Expert
+        int aiStrength   = 2; // 0=Fool, 1=Easy, 2=Average, 3=Hard
+        int colorIndex   = 0; // cycles Red→Yellow→Green→Blue
+        bool kingOfHill  = false;
+
+        // --- Difficulty chess pieces — NEWGAME.BMP has them pre-drawn; we only add the selection border ---
+        constexpr int32_t chessW       = 65;
+        constexpr int32_t chessSpacing = 6;
+        constexpr int32_t chessRowW    = 4 * chessW + 3 * chessSpacing;
+        const int32_t chessStartX = panelX + ( panelW - chessRowW ) / 2;
+        const int32_t chessY      = panelY + 48;
+
+        // --- AI balance scale label positions (scales are pre-rendered in the BMP) ---
+        constexpr int32_t scaleW       = 59;
+        constexpr int32_t scaleH       = 44;
+        constexpr int32_t scaleSpacing = 6;
+        constexpr int32_t nOpponents   = 3;
+        constexpr int32_t scaleRowW    = nOpponents * scaleW + ( nOpponents - 1 ) * scaleSpacing;
+        const int32_t scaleStartX = panelX + ( panelW - scaleRowW ) / 2;
+        const int32_t scaleY      = panelY + 148;
+
+        // --- Color gem and King-of-Hill click areas ---
+        constexpr int32_t gemW = 50;
+        constexpr int32_t gemH = 50;
+        const int32_t gemX = panelX + 40;
+        const int32_t gemY = panelY + 228;
+        const fheroes2::Rect gemRect{ gemX, gemY, gemW, gemH };
+
+        constexpr int32_t kohW = 50;
+        constexpr int32_t kohH = 50;
+        const int32_t kohX = panelX + 168;
+        const int32_t kohY = panelY + 228;
+        const fheroes2::Rect kohRect{ kohX, kohY, kohW, kohH };
+
+        // --- OKAY / CANCEL buttons (BTNNEWGM.ICN frames 0/1 and 2/3, 127×63) ---
+        constexpr int32_t btnW = 127;
+        constexpr int32_t btnH = 63;
+        const int32_t btnY       = panelY + panelH - btnH - 10;
+        const int32_t btnOkX     = panelX + panelW / 2 - btnW - 5;
+        const int32_t btnCancelX = panelX + panelW / 2 + 5;
+
+        fheroes2::Button btnOk    ( btnOkX,     btnY, ICN::H1BTNNEWGM, 0, 1 );
+        fheroes2::Button btnCancel( btnCancelX, btnY, ICN::H1BTNNEWGM, 2, 3 );
+
+        // --- Scenario list area ---
+        constexpr int32_t arrowW    = 24;
+        constexpr int32_t arrowH    = 20;
+        constexpr int32_t itemH     = 16;
+        constexpr int32_t listMarginX = 8;
+        const int32_t listAreaX   = panelX + listMarginX;
+        const int32_t listAreaY   = panelY + 310;
+        const int32_t listAreaW   = panelW - listMarginX * 2 - arrowW - 2;
+        const int32_t listAreaH   = btnY - listAreaY - 4;
+        const int32_t visibleItems = std::max( 1, listAreaH / itemH );
+        const int32_t arrowX      = listAreaX + listAreaW + 2;
+
+        const fheroes2::Rect arrowUpRect  { arrowX, listAreaY,          arrowW, arrowH };
+        const fheroes2::Rect arrowDownRect{ arrowX, listAreaY + arrowH, arrowW, arrowH };
+
+        static const char * aiLabels[]   = { "Fool", "Easy", "Average", "Hard" };
+        static const int    diffValues[] = { Difficulty::EASY, Difficulty::NORMAL, Difficulty::HARD, Difficulty::EXPERT };
+
+        fheroes2::Rect chessRects[4];
+        for ( int i = 0; i < 4; ++i )
+            chessRects[i] = { chessStartX + i * ( chessW + chessSpacing ), chessY, chessW, chessW };
+
+        fheroes2::Rect scaleRects[nOpponents];
+        for ( int i = 0; i < nOpponents; ++i )
+            scaleRects[i] = { scaleStartX + i * ( scaleW + scaleSpacing ), scaleY, scaleW, scaleH };
+
+        const auto redrawAll = [&]() {
+            // Repaint panel background (restores pre-drawn chess pieces, scales, gem, etc.).
+            if ( !panel.empty() )
+                fheroes2::Blit( panel, display, panelX, panelY );
+
+            // --- Difficulty: NEWGAME.BMP has chess pieces pre-drawn; only add red border on selected ---
+            for ( int i = 0; i < 4; ++i ) {
+                if ( i == difficulty ) {
+                    const int32_t cx = chessStartX + i * ( chessW + chessSpacing );
+                    fheroes2::DrawRect( display, { cx - 2, chessY - 2, chessW + 4, chessW + 4 }, fheroes2::GetColorId( 200, 20, 20 ) );
+                }
+            }
+
+            // --- AI strength (scales pre-drawn in BMP; draw label below each scale) ---
+            for ( int i = 0; i < nOpponents; ++i ) {
+                const int32_t sx = scaleStartX + i * ( scaleW + scaleSpacing );
+                fheroes2::Text lbl( aiLabels[aiStrength], fheroes2::FontType::smallWhite() );
+                lbl.draw( sx + ( scaleW - lbl.width() ) / 2, scaleY + scaleH + 4, display );
+            }
+
+            // --- Color gem: overlay a colored filled square over the pre-drawn gem slot ---
+            {
+                const H1ColorInfo & col = h1Colors[colorIndex];
+                const uint8_t colId = fheroes2::GetColorId( col.r, col.g, col.b );
+                fheroes2::Fill( display, gemX + 5, gemY + 5, gemW - 10, gemH - 10, colId );
+                fheroes2::Text colLbl( col.name, fheroes2::FontType::smallWhite() );
+                colLbl.draw( gemX + ( gemW - colLbl.width() ) / 2, gemY + gemH + 2, display );
+            }
+
+            // --- King of Hill: draw a colored indicator box ---
+            {
+                const uint8_t kohColorId = kingOfHill
+                    ? fheroes2::GetColorId( h1Colors[colorIndex].r, h1Colors[colorIndex].g, h1Colors[colorIndex].b )
+                    : fheroes2::GetColorId( 80, 80, 80 );
+                fheroes2::Fill( display, kohX + 5, kohY + 5, kohW - 10, kohH - 10, kohColorId );
+            }
+
+            // --- Scenario list ---
+            // Draw a dark background for the list area.
+            fheroes2::Fill( display, listAreaX, listAreaY, listAreaW, listAreaH, fheroes2::GetColorId( 20, 20, 40 ) );
+
+            const int mapCount = static_cast<int>( maps.size() );
+            for ( int row = 0; row < visibleItems; ++row ) {
+                const int mapIdx = scrollOffset + row;
+                if ( mapIdx >= mapCount )
+                    break;
+                const int32_t rowY = listAreaY + row * itemH;
+                // Highlight selected row.
+                if ( mapIdx == selectedMap ) {
+                    fheroes2::Fill( display, listAreaX, rowY, listAreaW, itemH, fheroes2::GetColorId( 60, 60, 120 ) );
+                }
+                fheroes2::Text rowText( maps[mapIdx].name, fheroes2::FontType::smallWhite() );
+                rowText.fitToOneRow( listAreaW - 2 );
+                rowText.draw( listAreaX + 2, rowY + 2, display );
+            }
+
+            // Scroll arrows.
+            const fheroes2::Sprite & arrowUp   = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, 19 );
+            const fheroes2::Sprite & arrowDown = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, 20 );
+            if ( !arrowUp.empty() )
+                fheroes2::Blit( arrowUp,   display, arrowX, listAreaY );
+            if ( !arrowDown.empty() )
+                fheroes2::Blit( arrowDown, display, arrowX, listAreaY + arrowH );
+
+            btnOk.draw();
+            btnCancel.draw();
+        };
+
+        redrawAll();
+        fheroes2::validateFadeInAndRender();
+
+        Settings & conf = Settings::Get();
+        LocalEvent & le = LocalEvent::Get();
+
+        while ( le.HandleEvents() ) {
+            btnOk.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( btnOk.area() ) );
+            btnCancel.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( btnCancel.area() ) );
+
+            bool changed = false;
+
+            // Difficulty: click a chess piece position to select.
+            for ( int i = 0; i < 4; ++i ) {
+                if ( le.MouseClickLeft( chessRects[i] ) && difficulty != i ) {
+                    difficulty = i;
+                    changed = true;
+                }
+            }
+
+            // AI strength: click any scale area to cycle.
+            for ( int i = 0; i < nOpponents; ++i ) {
+                if ( le.MouseClickLeft( scaleRects[i] ) ) {
+                    aiStrength = ( aiStrength + 1 ) % 4;
+                    changed = true;
+                }
+            }
+
+            // Color gem: cycle through Red→Yellow→Green→Blue.
+            if ( le.MouseClickLeft( gemRect ) ) {
+                colorIndex = ( colorIndex + 1 ) % 4;
+                changed = true;
+            }
+
+            // King of Hill: toggle.
+            if ( le.MouseClickLeft( kohRect ) ) {
+                kingOfHill = !kingOfHill;
+                changed = true;
+            }
+
+            // Scenario list: click a row to select.
+            for ( int row = 0; row < visibleItems; ++row ) {
+                const int mapIdx = scrollOffset + row;
+                if ( mapIdx >= static_cast<int>( maps.size() ) )
+                    break;
+                const fheroes2::Rect rowRect{ listAreaX, listAreaY + row * itemH, listAreaW, itemH };
+                if ( le.MouseClickLeft( rowRect ) && selectedMap != mapIdx ) {
+                    selectedMap = mapIdx;
+                    changed = true;
+                }
+            }
+
+            // Scroll arrows.
+            if ( le.MouseClickLeft( arrowUpRect ) && scrollOffset > 0 ) {
+                --scrollOffset;
+                changed = true;
+            }
+            if ( le.MouseClickLeft( arrowDownRect )
+                 && scrollOffset + visibleItems < static_cast<int>( maps.size() ) ) {
+                ++scrollOffset;
+                changed = true;
+            }
+
+            if ( changed ) {
+                redrawAll();
+                display.render();
+            }
+
+            if ( le.MouseClickLeft( btnOk.area() ) || Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_OKAY ) ) {
+                conf.setCurrentMapInfo( maps[selectedMap] );
+                conf.SetGameType( Game::TYPE_STANDARD );
+                conf.SetGameDifficulty( diffValues[difficulty] );
+                conf.GetPlayers().SetStartGame();
+                return fheroes2::GameMode::START_GAME;
+            }
+
+            if ( le.MouseClickLeft( btnCancel.area() ) || Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_CANCEL ) ) {
+                return fheroes2::GameMode::MAIN_MENU;
+            }
+        }
+
+        return fheroes2::GameMode::MAIN_MENU;
+    }
+
     fheroes2::GameMode ChooseNewMap( MapsFileInfoList & lists, const int humanPlayerCount )
     {
         assert( !lists.empty() );
@@ -194,10 +498,15 @@ namespace
 
         const fheroes2::Sprite & scenarioBox = fheroes2::AGG::GetICN( isEvilInterface ? ICN::METALLIC_BORDERED_TEXTBOX_EVIL : ICN::METALLIC_BORDERED_TEXTBOX_GOOD, 0 );
 
-        const fheroes2::Rect scenarioBoxRoi( roi.x + ( roi.width - scenarioBox.width() ) / 2, roi.y + 24, scenarioBox.width(), scenarioBox.height() );
+        // If the ICN is missing (e.g. HoMM1 data), fall back to a plain rect spanning the dialog.
+        const fheroes2::Rect scenarioBoxRoi = ( scenarioBox.width() > 0 )
+            ? fheroes2::Rect( roi.x + ( roi.width - scenarioBox.width() ) / 2, roi.y + 24, scenarioBox.width(), scenarioBox.height() )
+            : fheroes2::Rect( roi.x + 4, roi.y + 24, roi.width - 8, 25 );
 
-        fheroes2::Copy( scenarioBox, 0, 0, display, scenarioBoxRoi );
-        fheroes2::addGradientShadow( scenarioBox, display, scenarioBoxRoi.getPosition(), { -5, 5 } );
+        if ( scenarioBox.width() > 0 ) {
+            fheroes2::Copy( scenarioBox, 0, 0, display, scenarioBoxRoi );
+            fheroes2::addGradientShadow( scenarioBox, display, scenarioBoxRoi.getPosition(), { -5, 5 } );
+        }
 
         const fheroes2::Sprite & difficultyCursor = fheroes2::AGG::GetICN( ICN::NGEXTRA, 62 );
 
@@ -276,7 +585,7 @@ namespace
         // We calculate the allowed text width according to the select button's width while ensuring symmetric placement of the map title.
         const int32_t boxBorder = 6;
         const int32_t overallBoxTextAreaWidth = ( scenarioBoxRoi.width - ( 2 * boxBorder ) );
-        const int32_t maxTextAreaWidth = overallBoxTextAreaWidth - buttonSelectWidth;
+        const int32_t maxTextAreaWidth = std::max( 1, overallBoxTextAreaWidth - buttonSelectWidth );
 
         const fheroes2::Rect maxTextRoi{ scenarioBoxRoi.x + boxBorder, scenarioBoxRoi.y + 5, maxTextAreaWidth, 19 };
 
@@ -491,6 +800,18 @@ namespace
             return fheroes2::GameMode::MAIN_MENU;
         }
 
+        if ( mapInfo.version == GameVersion::HOMM1 ) {
+            // Strip "[AGG]" prefix to get the AGG-internal filename
+            const std::string aggKey = mapInfo.filename.substr( 5 ); // remove "[AGG]"
+            if ( world.loadHoMM1Map( AGG::getDataFromAggFile( aggKey, false ) ) ) {
+                return fheroes2::GameMode::START_GAME;
+            }
+
+            fheroes2::drawMainMenuScreen();
+            fheroes2::showStandardTextMessage( _( "Warning" ), _( "The map is corrupted or doesn't exist." ), Dialog::OK );
+            return fheroes2::GameMode::MAIN_MENU;
+        }
+
         assert( mapInfo.version == GameVersion::RESURRECTION );
         if ( world.loadResurrectionMap( mapInfo.filename ) ) {
             return fheroes2::GameMode::START_GAME;
@@ -514,8 +835,13 @@ fheroes2::GameMode Game::SelectScenario( const uint8_t humanPlayerCount )
         return fheroes2::GameMode::MAIN_MENU;
     }
 
+    // Use HoMM1-specific scenario selection if all maps are HoMM1 format.
+    const bool allHoMM1 = std::all_of( maps.begin(), maps.end(), []( const Maps::FileInfo & fi ) {
+        return fi.version == GameVersion::HOMM1;
+    } );
+
     // We must release UI resources for this window before loading a new map. That's why all UI logic is in a separate function.
-    const fheroes2::GameMode result = ChooseNewMap( maps, humanPlayerCount );
+    const fheroes2::GameMode result = allHoMM1 ? ChooseHoMM1Map( maps, humanPlayerCount ) : ChooseNewMap( maps, humanPlayerCount );
     if ( result != fheroes2::GameMode::START_GAME ) {
         return result;
     }

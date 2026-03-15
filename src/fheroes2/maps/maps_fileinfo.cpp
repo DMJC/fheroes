@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cctype>
 #include <cstring>
 #include <functional>
 #include <initializer_list>
@@ -34,6 +35,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "agg.h"
 #include "color.h"
 #include "difficulty.h"
 #include "dir.h"
@@ -194,6 +196,74 @@ void Maps::FileInfo::Reset()
     mainLanguage = fheroes2::SupportedLanguage::English;
 
     translations = {};
+}
+
+bool Maps::FileInfo::readHoMM1MapFromBytes( std::vector<uint8_t> data, std::string virtualPath )
+{
+    Reset();
+
+    // HoMM1 .map header: u16 magic (0x1111), u16 width, u16 height
+    if ( data.size() < 6 ) {
+        return false;
+    }
+
+    const uint16_t magic = static_cast<uint16_t>( data[0] ) | ( static_cast<uint16_t>( data[1] ) << 8 );
+    if ( magic != 0x1111 ) {
+        return false;
+    }
+
+    const uint16_t mapWidth  = static_cast<uint16_t>( data[2] ) | ( static_cast<uint16_t>( data[3] ) << 8 );
+    const uint16_t mapHeight = static_cast<uint16_t>( data[4] ) | ( static_cast<uint16_t>( data[5] ) << 8 );
+
+    if ( mapWidth == 0 || mapHeight == 0 || mapWidth != mapHeight ) {
+        return false;
+    }
+
+    // Expected file size: 6-byte header + mapWidth*mapHeight*6 tile bytes
+    if ( data.size() != 6u + static_cast<size_t>( mapWidth ) * mapHeight * 6u ) {
+        return false;
+    }
+
+    filename = std::move( virtualPath );
+
+    // Derive display name from the virtual path filename
+    const std::string baseName = System::GetFileName( filename );
+    name = baseName;
+    // Strip extension for display
+    const auto dotPos = name.rfind( '.' );
+    if ( dotPos != std::string::npos ) {
+        name = name.substr( 0, dotPos );
+    }
+    // Capitalize first letter, lowercase rest
+    if ( !name.empty() ) {
+        name[0] = static_cast<char>( std::toupper( static_cast<unsigned char>( name[0] ) ) );
+        for ( size_t i = 1; i < name.size(); ++i ) {
+            name[i] = static_cast<char>( std::tolower( static_cast<unsigned char>( name[i] ) ) );
+        }
+    }
+
+    width  = mapWidth;
+    height = mapHeight;
+
+    difficulty = Difficulty::EASY;
+    version    = GameVersion::HOMM1;
+
+    // Allow 1 human player (BLUE) + up to 3 computer players
+    kingdomColors            = PlayerColor::BLUE | PlayerColor::RED | PlayerColor::GREEN | PlayerColor::YELLOW;
+    colorsAvailableForHumans = PlayerColor::BLUE | PlayerColor::RED | PlayerColor::GREEN | PlayerColor::YELLOW;
+    colorsAvailableForComp   = PlayerColor::BLUE | PlayerColor::RED | PlayerColor::GREEN | PlayerColor::YELLOW;
+
+    for ( int i = 0; i < 4; ++i ) {
+        races[i] = Race::KNGT;
+    }
+
+    victoryConditionType = VICTORY_DEFEAT_EVERYONE;
+    allowNormalVictory   = true;
+    lossConditionType    = LOSS_EVERYTHING;
+
+    startWithHeroInFirstCastle = true;
+
+    return true;
 }
 
 bool Maps::FileInfo::readMP2Map( std::string filePath, const bool isForEditor )
@@ -744,6 +814,35 @@ MapsFileInfoList Maps::getAllMapFileInfos( const bool isForEditor, const uint8_t
 
         for ( auto & map : validResurrectionMaps ) {
             validMaps.emplace_back( std::move( map ) );
+        }
+    }
+
+    // Load HoMM1 .MAP files from the AGG archive
+    {
+        const std::vector<std::string> homm1MapNames = AGG::getHoMM1MapNames();
+        for ( const std::string & mapName : homm1MapNames ) {
+            Maps::FileInfo fi;
+            const std::string virtualPath = std::string( "[AGG]" ) + mapName;
+            if ( fi.readHoMM1MapFromBytes( AGG::getDataFromAggFile( mapName, false ), virtualPath ) ) {
+                validMaps.emplace_back( std::move( fi ) );
+            }
+        }
+    }
+
+    // Load HoMM1 .MAP files from the MAPS/ filesystem directory
+    {
+        const ListFiles homm1Files = Settings::FindFiles( "maps", ".map", false );
+        for ( const std::string & filePath : homm1Files ) {
+            StreamFile fs;
+            if ( !fs.open( filePath, "rb" ) ) {
+                continue;
+            }
+            const size_t fileSize = fs.size();
+            std::vector<uint8_t> data = fs.getRaw( fileSize );
+            Maps::FileInfo fi;
+            if ( fi.readHoMM1MapFromBytes( std::move( data ), filePath ) ) {
+                validMaps.emplace_back( std::move( fi ) );
+            }
         }
     }
 

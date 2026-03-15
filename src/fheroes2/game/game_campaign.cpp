@@ -93,20 +93,15 @@ namespace
 
     const int betrayalScenarioId = 4;
 
-    std::vector<fheroes2::Point> getCampaignIconOffsets( const int campaignId, const bool archibaldLowerBetrayalBranch = false )
+    std::vector<fheroes2::Point> getCampaignIconOffsets( const int campaignId )
     {
         switch ( campaignId ) {
-        case Campaign::ROLAND_CAMPAIGN:
-            return { { 0, 1 }, { 2, 1 }, { 3, 0 }, { 4, 1 }, { 6, 1 }, { 8, 1 }, { 10, 2 }, { 10, 0 }, { 12, 1 }, { 14, 1 }, { 6, 2 } };
-        case Campaign::ARCHIBALD_CAMPAIGN:
-            if ( archibaldLowerBetrayalBranch ) {
-                return { { 0, 1 }, { 2, 1 }, { 4, 0 }, { 4, 2 }, { 6, 1 }, { 8, 1 }, { 9, 0 }, { 10, 1 }, { 12, 0 }, { 12, 2 }, { 14, 1 }, { 6, 2 } };
-            }
-            else {
-                return { { 0, 1 }, { 2, 1 }, { 4, 0 }, { 4, 2 }, { 6, 1 }, { 8, 1 }, { 9, 0 }, { 10, 1 }, { 12, 0 }, { 12, 2 }, { 14, 1 }, { 6, 0 } };
-            }
+        case Campaign::IRONFIST_CAMPAIGN:
+        case Campaign::SLAYER_CAMPAIGN:
+        case Campaign::LAMANDA_CAMPAIGN:
+        case Campaign::ALAMAR_CAMPAIGN:
+            return { { 0, 1 }, { 2, 1 }, { 4, 1 }, { 6, 1 }, { 8, 1 }, { 10, 1 }, { 12, 1 }, { 14, 1 }, { 16, 1 } };
         default:
-            // Implementing a new campaign? Add a new case!
             assert( 0 );
             return {};
         }
@@ -131,18 +126,19 @@ namespace
         selectedIconIdx = 0;
 
         switch ( scenarioInfoId.campaignId ) {
-        case Campaign::ROLAND_CAMPAIGN:
+        case Campaign::IRONFIST_CAMPAIGN:
             iconsId = ICN::CAMPXTRG;
             iconStatusOffset = 10;
             selectedIconIdx = isBetrayalScenario( scenarioInfoId ) ? 17 : 14;
             return;
-        case Campaign::ARCHIBALD_CAMPAIGN:
-            iconsId = ICN::CAMPXTRE;
+        case Campaign::SLAYER_CAMPAIGN:
+        case Campaign::LAMANDA_CAMPAIGN:
+        case Campaign::ALAMAR_CAMPAIGN:
+            iconsId = ICN::CAMPXTRG;
             iconStatusOffset = 10;
-            selectedIconIdx = isBetrayalScenario( scenarioInfoId ) ? 14 : 17;
+            selectedIconIdx = 14;
             return;
         default:
-            // Implementing a new campaign? Add a new case!
             assert( 0 );
             return;
         }
@@ -156,12 +152,12 @@ namespace
 
     void addScenarioButton( fheroes2::ButtonGroup & buttonGroup, const int buttonId, const Campaign::ScenarioInfoId & scenarioInfo,
                             const std::vector<Campaign::ScenarioInfoId> & availableMaps, const std::vector<Campaign::ScenarioInfoId> & clearedMaps,
-                            const fheroes2::Point & trackOffset, const bool archibaldLowerBetrayalBranch )
+                            const fheroes2::Point & trackOffset )
     {
         const int deltaY = 42;
         const int deltaX = 37;
 
-        const std::vector<fheroes2::Point> & iconOffsets = getCampaignIconOffsets( scenarioInfo.campaignId, archibaldLowerBetrayalBranch );
+        const std::vector<fheroes2::Point> & iconOffsets = getCampaignIconOffsets( scenarioInfo.campaignId );
 
         assert( scenarioInfo.scenarioId >= 0 && static_cast<size_t>( scenarioInfo.scenarioId ) < iconOffsets.size() );
         if ( scenarioInfo.scenarioId < 0 || static_cast<size_t>( scenarioInfo.scenarioId ) >= iconOffsets.size() ) {
@@ -189,19 +185,9 @@ namespace
         }
         // cleared scenario
         else if ( std::find( clearedMaps.begin(), clearedMaps.end(), scenarioInfo ) != clearedMaps.end() ) {
-            if ( isBetrayalScenario( scenarioInfo ) ) {
-                assert( static_cast<size_t>( betrayalScenarioId ) < iconOffsets.size() );
-                offset = iconOffsets[betrayalScenarioId];
-                offset.x *= deltaX;
-                offset.y *= deltaY;
-
-                offset.x -= 2;
-                offset.y -= 2;
-            }
-
             DrawCampaignScenarioIcon( iconsId, iconStatusOffset + SCENARIO_ICON_CLEARED, trackOffset, offset.x, offset.y );
         }
-        else if ( !isBetrayalScenario( scenarioInfo ) ) {
+        else {
             DrawCampaignScenarioIcon( iconsId, iconStatusOffset + SCENARIO_ICON_UNAVAILABLE, trackOffset, offset.x, offset.y );
         }
     }
@@ -222,104 +208,14 @@ namespace
                 = saveData.isStarting() ? campaignData.getStartingScenarios() : Campaign::CampaignData::getScenariosAfter( saveData.getLastCompletedScenarioInfoID() );
         }
 
-        bool isBetrayalScenarioNext = false;
-        for ( const Campaign::ScenarioInfoId & scenarioInfo : availableMaps ) {
-            if ( isBetrayalScenario( scenarioInfo ) ) {
-                isBetrayalScenarioNext = true;
-                break;
-            }
-        }
-
-        bool isBetrayalScenarioCompleted = false;
-        if ( !isBetrayalScenarioNext ) {
-            for ( const Campaign::ScenarioInfoId & scenarioInfo : clearedMaps ) {
-                if ( isBetrayalScenario( scenarioInfo ) ) {
-                    isBetrayalScenarioCompleted = true;
-                    break;
-                }
-            }
-        }
-
-        int campaignTrack = ICN::UNKNOWN;
-
-        bool archibaldLowerBetrayalBranch = false;
-
-        switch ( campaignData.getCampaignID() ) {
-        case Campaign::ROLAND_CAMPAIGN:
-            if ( isBetrayalScenarioNext ) {
-                campaignTrack = ICN::CTRACK04;
-            }
-            else if ( isBetrayalScenarioCompleted ) {
-                campaignTrack = ICN::CTRACK02;
-            }
-            else {
-                campaignTrack = ICN::CTRACK00;
-            }
-            break;
-        case Campaign::ARCHIBALD_CAMPAIGN:
-            if ( isBetrayalScenarioNext ) {
-                // Archibald campaign is unique in terms of scenario branching so this is the only way to make it work.
-                assert( !clearedMaps.empty() );
-                if ( clearedMaps.back().scenarioId == 2 ) {
-                    campaignTrack = ICN::CTRACK05;
-                }
-                else {
-                    assert( clearedMaps.back().scenarioId == 3 );
-                    campaignTrack = ICN::CTRACK06;
-                    archibaldLowerBetrayalBranch = true;
-                }
-            }
-            else if ( isBetrayalScenarioCompleted ) {
-                campaignTrack = ICN::CTRACK01;
-            }
-            else {
-                campaignTrack = ICN::CTRACK03;
-            }
-            break;
-        default:
-            // Implementing a new campaign? Add a new case!
-            assert( 0 );
-            return;
-        }
-
-        const fheroes2::Sprite & track = fheroes2::AGG::GetICN( campaignTrack, 0 );
+        const fheroes2::Sprite & track = fheroes2::AGG::GetICN( ICN::CTRACK00, 0 );
         const fheroes2::Point trackOffset( top.x + track.x(), top.y + track.y() );
         fheroes2::Blit( track, fheroes2::Display::instance(), trackOffset.x, trackOffset.y );
 
-        if ( isBetrayalScenarioCompleted ) {
-            assert( campaignData.getCampaignID() == Campaign::ROLAND_CAMPAIGN || campaignData.getCampaignID() == Campaign::ARCHIBALD_CAMPAIGN );
-
-            const bool isRolandCurrentCampaign = ( campaignData.getCampaignID() == Campaign::ROLAND_CAMPAIGN );
-
-            const Campaign::CampaignData & beforeCampaignData
-                = Campaign::CampaignData::getCampaignData( isRolandCurrentCampaign ? Campaign::ARCHIBALD_CAMPAIGN : Campaign::ROLAND_CAMPAIGN );
-            const Campaign::CampaignData & currentCampaignData
-                = Campaign::CampaignData::getCampaignData( isRolandCurrentCampaign ? Campaign::ROLAND_CAMPAIGN : Campaign::ARCHIBALD_CAMPAIGN );
-
-            int scenarioCounter = 0;
-
-            for ( const Campaign::ScenarioData & scenarioData : beforeCampaignData.getAllScenarios() ) {
-                if ( scenarioData.getScenarioID() <= betrayalScenarioId || isBetrayalScenario( scenarioData.getScenarioInfoId() ) ) {
-                    const Campaign::ScenarioInfoId scenarioInfo{ scenarioData.getCampaignId(), scenarioData.getScenarioID() };
-                    addScenarioButton( buttonGroup, scenarioCounter, scenarioInfo, availableMaps, clearedMaps, trackOffset, archibaldLowerBetrayalBranch );
-                    ++scenarioCounter;
-                }
-            }
-
-            for ( const Campaign::ScenarioData & scenarioData : currentCampaignData.getAllScenarios() ) {
-                if ( scenarioData.getScenarioID() > betrayalScenarioId ) {
-                    const Campaign::ScenarioInfoId scenarioInfo{ scenarioData.getCampaignId(), scenarioData.getScenarioID() };
-                    addScenarioButton( buttonGroup, scenarioCounter, scenarioInfo, availableMaps, clearedMaps, trackOffset, archibaldLowerBetrayalBranch );
-                    ++scenarioCounter;
-                }
-            }
-        }
-        else {
-            const std::vector<Campaign::ScenarioData> & scenarios = campaignData.getAllScenarios();
-            for ( size_t i = 0; i < scenarios.size(); ++i ) {
-                const Campaign::ScenarioInfoId scenarioInfo{ scenarios[i].getCampaignId(), scenarios[i].getScenarioID() };
-                addScenarioButton( buttonGroup, static_cast<int>( i ), scenarioInfo, availableMaps, clearedMaps, trackOffset, archibaldLowerBetrayalBranch );
-            }
+        const std::vector<Campaign::ScenarioData> & scenarios = campaignData.getAllScenarios();
+        for ( size_t i = 0; i < scenarios.size(); ++i ) {
+            const Campaign::ScenarioInfoId scenarioInfo{ scenarios[i].getCampaignId(), scenarios[i].getScenarioID() };
+            addScenarioButton( buttonGroup, static_cast<int>( i ), scenarioInfo, availableMaps, clearedMaps, trackOffset );
         }
     }
 
@@ -332,11 +228,7 @@ namespace
         mapName.fitToOneRow( 200 );
         mapName.draw( top.x + 197 + ( 200 - mapName.width() ) / 2, top.y + 99 - mapName.height() / 2, display );
 
-        int scenarioId = scenario.getScenarioID() + 1;
-        if ( isBetrayalScenario( scenario.getScenarioInfoId() ) ) {
-            assert( scenario.getCampaignId() == Campaign::ARCHIBALD_CAMPAIGN || scenario.getCampaignId() == Campaign::ROLAND_CAMPAIGN );
-            scenarioId = betrayalScenarioId + 1;
-        }
+        const int scenarioId = scenario.getScenarioID() + 1;
 
         const fheroes2::Text campaignMapId( std::to_string( scenarioId ), fheroes2::FontType::normalWhite() );
         campaignMapId.draw( top.x + 172 - campaignMapId.width() / 2, top.y + 99 - campaignMapId.height() / 2, display );
@@ -461,7 +353,7 @@ namespace
     void setHeroAndArmyBonus( Heroes * hero, const Campaign::ScenarioInfoId & scenarioInfoId )
     {
         switch ( scenarioInfoId.campaignId ) {
-        case Campaign::ARCHIBALD_CAMPAIGN: {
+        case Campaign::SLAYER_CAMPAIGN: {
             if ( scenarioInfoId.scenarioId != 6 ) {
                 assert( 0 ); // no other scenario has this bonus
                 return;
@@ -487,53 +379,8 @@ namespace
         }
     }
 
-    Heroes * getHeroToApplyBonusOrAwards( const Campaign::ScenarioInfoId & scenarioInfoId, const Kingdom & kingdom )
+    Heroes * getHeroToApplyBonusOrAwards( const Campaign::ScenarioInfoId & /*scenarioInfoId*/, const Kingdom & kingdom )
     {
-        {
-            static const std::map<std::pair<int, int>, int> targetHeroes = { // Final Justice
-                                                                             { { Campaign::ROLAND_CAMPAIGN, 9 }, Heroes::ROLAND },
-                                                                             // Apocalypse
-                                                                             { { Campaign::ARCHIBALD_CAMPAIGN, 10 }, Heroes::ARCHIBALD } };
-
-            const auto iter = targetHeroes.find( { scenarioInfoId.campaignId, scenarioInfoId.scenarioId } );
-            if ( iter != targetHeroes.end() ) {
-                // The "special" kingdom heroes may have the ID of another hero, but a custom name and portrait,
-                // so the search should be performed by the portrait ID
-                for ( Heroes * hero : kingdom.GetHeroes() ) {
-                    assert( hero != nullptr );
-
-                    if ( hero->getPortraitId() == iter->second ) {
-                        return hero;
-                    }
-                }
-
-                DEBUG_LOG( DBG_GAME, DBG_WARN,
-                           "the hero to whom bonuses or awards should be applied has not been found"
-                               << ", campaign id: " << scenarioInfoId.campaignId << ", scenario id: " << scenarioInfoId.scenarioId )
-            }
-        }
-
-        {
-            static const std::map<std::pair<int, int>, int> targetRaces = { // Defender
-                                                                            { { Campaign::ROLAND_CAMPAIGN, 5 }, Race::SORC } };
-
-            const auto iter = targetRaces.find( { scenarioInfoId.campaignId, scenarioInfoId.scenarioId } );
-            if ( iter != targetRaces.end() ) {
-                for ( Heroes * hero : kingdom.GetHeroes() ) {
-                    assert( hero != nullptr );
-
-                    if ( hero->GetRace() == iter->second ) {
-                        return hero;
-                    }
-                }
-
-                DEBUG_LOG( DBG_GAME, DBG_WARN,
-                           "the hero to whom bonuses or awards should be applied has not been found"
-                               << ", campaign id: " << scenarioInfoId.campaignId << ", scenario id: " << scenarioInfoId.scenarioId )
-            }
-        }
-
-        // By default, bonuses and awards are applied to the best hero of the kingdom
         return kingdom.GetBestHero();
     }
 
@@ -765,12 +612,13 @@ namespace
     int getCampaignButtonId( const int campaignId )
     {
         switch ( campaignId ) {
-        case Campaign::ROLAND_CAMPAIGN:
+        case Campaign::IRONFIST_CAMPAIGN:
             return ICN::GOOD_CAMPAIGN_BUTTONS;
-        case Campaign::ARCHIBALD_CAMPAIGN:
-            return ICN::EVIL_CAMPAIGN_BUTTONS;
+        case Campaign::SLAYER_CAMPAIGN:
+        case Campaign::LAMANDA_CAMPAIGN:
+        case Campaign::ALAMAR_CAMPAIGN:
+            return ICN::GOOD_CAMPAIGN_BUTTONS;
         default:
-            // Implementing a new campaign? Add a new case!
             assert( 0 );
             return ICN::UNKNOWN;
         }
@@ -787,14 +635,15 @@ namespace
     void playCampaignMusic( const int campaignId )
     {
         switch ( campaignId ) {
-        case Campaign::ROLAND_CAMPAIGN:
-            AudioManager::PlayMusicAsync( MUS::ROLAND_CAMPAIGN_SCREEN, Music::PlaybackMode::REWIND_AND_PLAY_INFINITE );
+        case Campaign::IRONFIST_CAMPAIGN:
+            AudioManager::PlayMusicAsync( MUS::IRONFIST_CAMPAIGN_SCREEN, Music::PlaybackMode::REWIND_AND_PLAY_INFINITE );
             break;
-        case Campaign::ARCHIBALD_CAMPAIGN:
-            AudioManager::PlayMusicAsync( MUS::ARCHIBALD_CAMPAIGN_SCREEN, Music::PlaybackMode::REWIND_AND_PLAY_INFINITE );
+        case Campaign::SLAYER_CAMPAIGN:
+        case Campaign::LAMANDA_CAMPAIGN:
+        case Campaign::ALAMAR_CAMPAIGN:
+            AudioManager::PlayMusicAsync( MUS::IRONFIST_CAMPAIGN_SCREEN, Music::PlaybackMode::REWIND_AND_PLAY_INFINITE );
             break;
         default:
-            // Implementing a new campaign? Add a new case!
             assert( 0 );
             break;
         }
@@ -1039,8 +888,8 @@ namespace
 
 bool Game::isSuccessionWarsCampaignPresent()
 {
-    return Campaign::CampaignData::getCampaignData( Campaign::ROLAND_CAMPAIGN ).isAllCampaignMapsPresent()
-           && Campaign::CampaignData::getCampaignData( Campaign::ARCHIBALD_CAMPAIGN ).isAllCampaignMapsPresent();
+    return Campaign::CampaignData::getCampaignData( Campaign::IRONFIST_CAMPAIGN ).isAllCampaignMapsPresent()
+           && Campaign::CampaignData::getCampaignData( Campaign::SLAYER_CAMPAIGN ).isAllCampaignMapsPresent();
 }
 
 bool Game::isPriceOfLoyaltyCampaignPresent()
@@ -1191,7 +1040,7 @@ fheroes2::GameMode Game::SelectCampaignScenario( const fheroes2::GameMode prevMo
     const std::vector<Campaign::ScenarioData> & scenarios = campaignData.getAllScenarios();
     const Campaign::ScenarioData & scenario = scenarios[currentScenarioInfoId.scenarioId];
 
-    const fheroes2::GameInterfaceTypeRestorer gameInterfaceRestorer( chosenCampaignID == Campaign::ROLAND_CAMPAIGN ? InterfaceType::GOOD : InterfaceType::EVIL );
+    const fheroes2::GameInterfaceTypeRestorer gameInterfaceRestorer( InterfaceType::GOOD );
 
     if ( !allowToRestart ) {
         playCurrentScenarioVideo();
@@ -1204,14 +1053,15 @@ fheroes2::GameMode Game::SelectCampaignScenario( const fheroes2::GameMode prevMo
     int backgroundIconID = ICN::UNKNOWN;
 
     switch ( chosenCampaignID ) {
-    case Campaign::ROLAND_CAMPAIGN:
+    case Campaign::IRONFIST_CAMPAIGN:
         backgroundIconID = ICN::CAMPBKGG;
         break;
-    case Campaign::ARCHIBALD_CAMPAIGN:
-        backgroundIconID = ICN::CAMPBKGE;
+    case Campaign::SLAYER_CAMPAIGN:
+    case Campaign::LAMANDA_CAMPAIGN:
+    case Campaign::ALAMAR_CAMPAIGN:
+        backgroundIconID = ICN::CAMPBKGG;
         break;
     default:
-        // Implementing a new campaign? Add a new case!
         assert( 0 );
         break;
     }
@@ -1335,12 +1185,13 @@ fheroes2::GameMode Game::SelectCampaignScenario( const fheroes2::GameMode prevMo
 
     fheroes2::Rect scenarioTitleArea;
     switch ( chosenCampaignID ) {
-    case Campaign::ARCHIBALD_CAMPAIGN:
-    case Campaign::ROLAND_CAMPAIGN:
+    case Campaign::SLAYER_CAMPAIGN:
+    case Campaign::IRONFIST_CAMPAIGN:
+    case Campaign::LAMANDA_CAMPAIGN:
+    case Campaign::ALAMAR_CAMPAIGN:
         scenarioTitleArea = { top.x + 198, top.y + 84, 200, 25 };
         break;
     default:
-        // Implementing a new campaign? Add a new case!
         assert( 0 );
         break;
     }
@@ -1526,7 +1377,7 @@ fheroes2::GameMode Game::SelectCampaignScenario( const fheroes2::GameMode prevMo
 
             conf.SetGameType( Game::TYPE_CAMPAIGN );
 
-            const bool isSWCampaign = ( chosenCampaignID == Campaign::ROLAND_CAMPAIGN ) || ( chosenCampaignID == Campaign::ARCHIBALD_CAMPAIGN );
+            const bool isSWCampaign = ( chosenCampaignID == Campaign::IRONFIST_CAMPAIGN ) || ( chosenCampaignID == Campaign::SLAYER_CAMPAIGN );
 
             if ( !world.LoadMapMP2( mapInfo.filename, isSWCampaign ) ) {
                 fheroes2::showStandardTextMessage( _( "Campaign Scenario loading failure" ), _( "Please make sure that campaign files are correct and present." ),

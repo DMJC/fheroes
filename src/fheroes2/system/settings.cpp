@@ -164,9 +164,16 @@ bool Settings::Read( const std::string & filePath )
     }
 
     // game language
+    // HoMM2-specific auto-detected languages (de/fr/pl/ru/it/cs) are ignored since we run
+    // HoMM1 data; the font-based CRC32 detection no longer applies.
     sval = config.StrParams( "lang" );
     if ( !sval.empty() ) {
-        _gameLanguage = sval;
+        static const std::initializer_list<std::string> homm2DetectedLanguages = { "de", "fr", "pl", "ru", "it", "cs" };
+        const bool isHoMM2Language = std::find( homm2DetectedLanguages.begin(), homm2DetectedLanguages.end(), sval )
+                                     != homm2DetectedLanguages.end();
+        if ( !isHoMM2Language ) {
+            _gameLanguage = sval;
+        }
     }
 
     // music source

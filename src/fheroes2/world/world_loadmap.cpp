@@ -1739,3 +1739,37 @@ bool World::setHeroIdsForMapConditions()
 
     return true;
 }
+
+bool World::loadHoMM1Map( const std::vector<uint8_t> & data )
+{
+    Reset();
+    Defaults();
+
+    if ( data.size() < 6 ) {
+        return false;
+    }
+
+    const uint16_t mapWidth  = static_cast<uint16_t>( data[2] ) | ( static_cast<uint16_t>( data[3] ) << 8 );
+    const uint16_t mapHeight = static_cast<uint16_t>( data[4] ) | ( static_cast<uint16_t>( data[5] ) << 8 );
+
+    if ( mapWidth == 0 || mapHeight == 0 || mapWidth != mapHeight ) {
+        ERROR_LOG( "HoMM1 map: invalid dimensions " << mapWidth << " x " << mapHeight )
+        return false;
+    }
+
+    width  = static_cast<int32_t>( mapWidth );
+    height = static_cast<int32_t>( mapHeight );
+
+    const int32_t worldSize = width * height;
+
+    vec_tiles.resize( worldSize );
+
+    // Initialize all tiles with their indices
+    for ( int32_t i = 0; i < worldSize; ++i ) {
+        vec_tiles[i].setIndex( i );
+    }
+
+    PostLoad( false, false );
+
+    return true;
+}

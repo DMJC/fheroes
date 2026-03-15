@@ -242,9 +242,9 @@ namespace Campaign
     std::optional<int> getCurrentScenarioDifficultyLevel()
     {
         static const std::map<std::pair<int, int>, int> adjustedDifficultyLevels = { // Roland
-                                                                                     { { ROLAND_CAMPAIGN, 1 }, Difficulty::EASY },
+                                                                                     { { IRONFIST_CAMPAIGN, 1 }, Difficulty::EASY },
                                                                                      // Archibald
-                                                                                     { { ARCHIBALD_CAMPAIGN, 1 }, Difficulty::EASY } };
+                                                                                     { { SLAYER_CAMPAIGN, 1 }, Difficulty::EASY } };
 
         const CampaignSaveData & campaignData = CampaignSaveData::Get();
 

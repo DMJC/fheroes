@@ -41,6 +41,11 @@ std::vector<uint8_t> AGG::getDataFromAggFile( const std::string & key, const boo
     return heroes_agg.read( key );
 }
 
+std::vector<std::string> AGG::getHoMM1MapNames()
+{
+    return heroes_agg.getFileNamesWithExtension( ".MAP" );
+}
+
 AGG::AGGInitializer::AGGInitializer()
 {
     if ( init() ) {

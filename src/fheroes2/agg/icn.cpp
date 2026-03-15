@@ -45,7 +45,7 @@ namespace ICN
     // Make sure that each item ID has exactly the same location ID!
     const std::array<ICNMapItem, LAST_VALID_FILE_ICN> icnMap
         = { { { UNKNOWN, "UNKNOWN" },       { ADVBORDE, "ADVBORDE.ICN" }, { ADVBORD, "ADVBORD.ICN" },   { ADVBTNS, "ADVBTNS.ICN" },   { ADVEBTNS, "ADVEBTNS.ICN" },
-              { ADVMCO, "ADVMCO.ICN" },     { AELEM, "AELEM.ICN" },       { APANBKGE, "APANBKGE.ICN" }, { APANBKG, "APANBKG.ICN" },   { APANELE, "APANELE.ICN" },
+              { ADVMCO, "ADVMICE.ICN" },     { AELEM, "AELEM.ICN" },       { APANBKGE, "APANBKGE.ICN" }, { APANBKG, "APANBKG.ICN" },   { APANELE, "APANELE.ICN" },
               { APANEL, "APANEL.ICN" },     { ARCHER2, "ARCHER2.ICN" },   { ARCHER, "ARCHER.ICN" },     { ARCH_MSL, "ARCH_MSL.ICN" }, { ART32, "ART32.ICN" },
               { ARTFX, "ARTFX.ICN" },       { ARTIFACT, "ARTIFACT.ICN" }, { BARB32, "BARB32.ICN" },     { B_BFLG32, "B-BFLG32.ICN" }, { BERZERK, "BERZERK.ICN" },
               { B_FLAG32, "B-FLAG32.ICN" }, { BIGBAR, "BIGBAR.ICN" },     { BLDGXTRA, "BLDGXTRA.ICN" }, { BLESS, "BLESS.ICN" },       { BLIND, "BLIND.ICN" },
@@ -99,7 +99,7 @@ namespace ICN
               { FRNG0012, "FRNG0012.ICN" }, { FRNG0013, "FRNG0013.ICN" }, { FROTH, "FROTH.ICN" },       { GARGOYLE, "GARGOYLE.ICN" }, { G_BFLG32, "G-BFLG32.ICN" },
               { GENIE, "GENIE.ICN" },       { G_FLAG32, "G-FLAG32.ICN" }, { GHOST, "GHOST.ICN" },       { GOBLIN, "GOBLIN.ICN" },     { GOLEM2, "GOLEM2.ICN" },
               { GOLEM, "GOLEM.ICN" },       { GRIFFIN, "GRIFFIN.ICN" },   { GROUND12, "GROUND12.ICN" }, { GROUND4, "GROUND4.ICN" },   { GROUND6, "GROUND6.ICN" },
-              { HALFLING, "HALFLING.ICN" }, { HALFLMSL, "HALFLMSL.ICN" }, { HASTE, "HASTE.ICN" },       { HEROBKG, "HEROBKG.ICN" },   { HEROES, "HEROES.ICN" },
+              { HALFLING, "HALFLING.ICN" }, { HALFLMSL, "HALFLMSL.ICN" }, { HASTE, "HASTE.ICN" },       { HEROBKG, "HEROBKG.ICN" },   { HEROES, "HEROES.BMP" },
               { HEROEXTE, "HEROEXTE.ICN" }, { HEROEXTG, "HEROEXTG.ICN" }, { HEROFL00, "HEROFL00.ICN" }, { HEROFL01, "HEROFL01.ICN" }, { HEROFL02, "HEROFL02.ICN" },
               { HEROFL03, "HEROFL03.ICN" }, { HEROFL04, "HEROFL04.ICN" }, { HEROFL05, "HEROFL05.ICN" }, { HEROFL06, "HEROFL06.ICN" }, { HEROLOGE, "HEROLOGE.ICN" },
               { HEROLOGO, "HEROLOGO.ICN" }, { HISCORE, "HISCORE.ICN" },   { HOURGLAS, "HOURGLAS.ICN" }, { HSBKG, "HSBKG.ICN" },       { HSBTNS, "HSBTNS.ICN" },
@@ -218,7 +218,9 @@ namespace ICN
               { X_LOADCM, "X_LOADCM.ICN" }, { X_CMPBKG, "X_CMPBKG.ICN" }, { X_CMPBTN, "X_CMPBTN.ICN" }, { X_CMPEXT, "X_CMPEXT.ICN" }, { X_TRACK1, "X_TRACK1.ICN" },
               { X_TRACK2, "X_TRACK2.ICN" }, { X_TRACK3, "X_TRACK3.ICN" }, { X_TRACK4, "X_TRACK4.ICN" }, { X_LOC1, "X_LOC1.ICN" },     { X_LOC2, "X_LOC2.ICN" },
               { X_LOC3, "X_LOC3.ICN" },     { XPRIMARY, "XPRIMARY.ICN" }, { Y_BFLG32, "Y-BFLG32.ICN" }, { Y_FLAG32, "Y-FLAG32.ICN" }, { YINYANG, "YINYANG.ICN" },
-              { ZOMBIE2, "ZOMBIE2.ICN" },   { ZOMBIE, "ZOMBIE.ICN" } } };
+              { ZOMBIE2, "ZOMBIE2.ICN" },   { ZOMBIE, "ZOMBIE.ICN" },     { H1BTNS, "BTNMAIN.ICN" },    { H1PANEL, "REDBACK.BMP" },   { H1BTNCAMP, "BTNCMPGN.ICN" },
+              { H1NEWGAME_BMP, "NEWGAME.BMP" }, { H1NEWGAME_ICN, "NEWGAME.ICN" }, { H1BTNNEWGM, "BTNNEWGM.ICN" },
+              { H1HISCORE_BMP, "HISCORE.BMP" }, { H1HISCORE_ICN, "HISCORE.ICN" } } };
 }
 
 const char * ICN::getIcnFileName( const int icnId )

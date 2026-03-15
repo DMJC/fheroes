@@ -56,7 +56,7 @@ ifdef FHEROES2_MACOS_APP_BUNDLE
 	    -e "s/\$${MACOSX_BUNDLE_SHORT_VERSION_STRING}/$(PROJECT_VERSION)/" src/resources/Info.plist.in > fheroes2.app/Contents/Info.plist
 	dylibbundler -od -b -x fheroes2.app/Contents/MacOS/fheroes2 -d fheroes2.app/Contents/libs
 else
-	cp src/dist/fheroes2/fheroes2 .
+	cp src/dist/fheroes/fheroes .
 endif
 
 clean:

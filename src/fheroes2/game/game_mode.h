@@ -34,6 +34,7 @@ namespace fheroes2
         CREDITS,
         NEW_STANDARD,
         NEW_SUCCESSION_WARS_CAMPAIGN,
+        NEW_HOMM1_CAMPAIGN,
         NEW_BATTLE_ONLY,
         LOAD_STANDARD,
         LOAD_CAMPAIGN,

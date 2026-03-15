@@ -21,9 +21,9 @@
 cmake_minimum_required(VERSION 3.24)
 cmake_policy(SET CMP0074 NEW)
 
-file(STRINGS ${CMAKE_SOURCE_DIR}/version.txt FHEROES2_VERSION LIMIT_COUNT 1 REGEX "^[0-9]+\.[0-9]+\.[0-9]+$")
+file(STRINGS ${CMAKE_SOURCE_DIR}/version.txt FHEROES_VERSION LIMIT_COUNT 1 REGEX "^[0-9]+\.[0-9]+\.[0-9]+$")
 
-project(fheroes VERSION ${FHEROES2_VERSION} LANGUAGES C CXX)
+project(fheroes VERSION ${FHEROES_VERSION} LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -43,10 +43,10 @@ option(ENABLE_TOOLS "Enable the build of additional tools" OFF)
 cmake_dependent_option(MACOS_APP_BUNDLE "Create a Mac app bundle" OFF "APPLE" OFF)
 
 # Should not be available if we are creating a Mac app bundle
-cmake_dependent_option(GET_HOMM2_DEMO "Fetch and install the HoMM II demo data" OFF "NOT MACOS_APP_BUNDLE" OFF)
+cmake_dependent_option(GET_homm_DEMO "Fetch and install the HoMM II demo data" OFF "NOT MACOS_APP_BUNDLE" OFF)
 
 set(USE_SDL_VERSION SDL2 CACHE STRING "Version of the SDL library used")
-set(FHEROES2_DATA ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} CACHE STRING "Path to the fheroes2 data directory (relative to CMAKE_INSTALL_PREFIX)")
+set(FHEROES_DATA ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} CACHE STRING "Path to the fheroes2 data directory (relative to CMAKE_INSTALL_PREFIX)")
 
 # For ComboBox in CMake GUI
 set_property(CACHE USE_SDL_VERSION PROPERTY STRINGS SDL2)
@@ -128,13 +128,13 @@ endif(MACOS_APP_BUNDLE)
 if(NOT MACOS_APP_BUNDLE)
 	install(
 		DIRECTORY files/data/
-		DESTINATION ${FHEROES2_DATA}/files/data
+		DESTINATION ${FHEROES_DATA}/files/data
 		FILES_MATCHING
 		PATTERN *.h2d
 		)
 	install(
 		DIRECTORY maps/
-		DESTINATION ${FHEROES2_DATA}/maps
+		DESTINATION ${FHEROES_DATA}/maps
 		FILES_MATCHING
 		PATTERN *.fh2m
 		)
@@ -143,7 +143,7 @@ if(NOT MACOS_APP_BUNDLE)
 		DESTINATION ${CMAKE_INSTALL_DOCDIR}
 		)
 
-	if(GET_HOMM2_DEMO)
+	if(GET_homm_DEMO)
 		include(FetchContent)
 
 		set(FETCHCONTENT_QUIET OFF)
@@ -160,17 +160,17 @@ if(NOT MACOS_APP_BUNDLE)
 
 		install(
 			DIRECTORY ${demodata_SOURCE_DIR}/DATA/
-			DESTINATION ${FHEROES2_DATA}/data
+			DESTINATION ${FHEROES_DATA}/data
 			FILES_MATCHING
 			PATTERN *.*
 			)
 		install(
 			DIRECTORY ${demodata_SOURCE_DIR}/MAPS/
-			DESTINATION ${FHEROES2_DATA}/maps
+			DESTINATION ${FHEROES_DATA}/maps
 			FILES_MATCHING
 			PATTERN *.*
 			)
-	endif(GET_HOMM2_DEMO)
+	endif(GET_homm_DEMO)
 
 	if(WIN32)
 		install(
@@ -178,17 +178,17 @@ if(NOT MACOS_APP_BUNDLE)
 			DESTINATION ${CMAKE_INSTALL_DOCDIR}/demo
 			)
 		install(
-			FILES script/homm2/extract_homm2_resources.bat script/homm2/extract_homm2_resources.ps1
-			DESTINATION ${CMAKE_INSTALL_DOCDIR}/homm2
+			FILES script/homm/extract_homm_resources.bat script/homm/extract_homm_resources.ps1
+			DESTINATION ${CMAKE_INSTALL_DOCDIR}/homm
 			)
 		install(
-			FILES script/homm2/resource_extraction_toolset.bat script/homm2/resource_extraction_toolset.ps1
-			DESTINATION ${CMAKE_INSTALL_DOCDIR}/homm2
+			FILES script/homm/resource_extraction_toolset.bat script/homm/resource_extraction_toolset.ps1
+			DESTINATION ${CMAKE_INSTALL_DOCDIR}/homm
 			)
 	else(WIN32)
 		install(
 			DIRECTORY files/lang/
-			DESTINATION ${FHEROES2_DATA}/files/lang
+			DESTINATION ${FHEROES_DATA}/files/lang
 			FILES_MATCHING
 			PATTERN *.mo
 			)
@@ -198,20 +198,20 @@ if(NOT MACOS_APP_BUNDLE)
 			DESTINATION ${CMAKE_INSTALL_DOCDIR}/demo
 			)
 		install(
-			FILES script/homm2/extract_homm2_resources.sh
+			FILES script/homm/extract_homm_resources.sh
 			PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ
-			DESTINATION ${CMAKE_INSTALL_DOCDIR}/homm2
+			DESTINATION ${CMAKE_INSTALL_DOCDIR}/homm
 			)
 		install(
-			FILES script/packaging/common/fheroes2.metainfo.xml
+			FILES script/packaging/common/fheroes.metainfo.xml
 			DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo
 			)
 		install(
-			FILES src/resources/fheroes2.png
+			FILES src/resources/fheroes.png
 			DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/128x128/apps
 			)
 		install(
-			FILES script/packaging/common/fheroes2.desktop
+			FILES script/packaging/common/fheroes.desktop
 			DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
 			)
 	endif(WIN32)

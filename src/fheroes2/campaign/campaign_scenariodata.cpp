@@ -39,127 +39,6 @@
 
 namespace
 {
-    std::vector<Campaign::ScenarioBonusData> getRolandCampaignBonusData( const int scenarioID )
-    {
-        std::vector<Campaign::ScenarioBonusData> bonus;
-
-        switch ( scenarioID ) {
-        case 0:
-            bonus.emplace_back( Campaign::ScenarioBonusData::RESOURCES, Resource::GOLD, 2000 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::THUNDER_MACE, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::ARMORED_GAUNTLETS, 1 );
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::SORC, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::KNGT, 1 );
-            break;
-        case 5:
-            bonus.emplace_back( Campaign::ScenarioBonusData::SPELL, Spell::MIRRORIMAGE, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::SPELL, Spell::SUMMONEELEMENT, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::SPELL, Spell::RESURRECT, 1 );
-            break;
-        case 6:
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::BLACK_PEARL, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::DRAGON_SWORD, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::DIVINE_BREASTPLATE, 1 );
-            break;
-        case 7:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::SORC, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::KNGT, 1 );
-            break;
-        case 8:
-            bonus.emplace_back( Campaign::ScenarioBonusData::RESOURCES, Resource::CRYSTAL, 20 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::RESOURCES, Resource::GEMS, 20 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::RESOURCES, Resource::MERCURY, 20 );
-            break;
-        case 9:
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::TAX_LIEN, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::HIDEOUS_MASK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::FIZBIN_MISFORTUNE, 1 );
-            break;
-        case 10:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            break;
-        default:
-            assert( 0 );
-            break;
-        }
-
-        return bonus;
-    }
-
-    std::vector<Campaign::ScenarioBonusData> getArchibaldCampaignBonusData( const int scenarioID )
-    {
-        std::vector<Campaign::ScenarioBonusData> bonus;
-
-        switch ( scenarioID ) {
-        case 0:
-            bonus.emplace_back( Campaign::ScenarioBonusData::RESOURCES, Resource::GOLD, 2000 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::MAGE_RING, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::MINOR_SCROLL, 1 );
-            break;
-        case 1:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            break;
-        case 2:
-            bonus.emplace_back( Campaign::ScenarioBonusData::RESOURCES, Resource::GOLD, 2000 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::SPELL, Spell::MASSCURSE, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::DEFENDER_HELM, 1 );
-            break;
-        case 3:
-        case 4:
-        case 5:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            break;
-        case 6:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE_AND_ARMY, Race::BARB, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE_AND_ARMY, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE_AND_ARMY, Race::BARB, 1 );
-            break;
-        case 7:
-            bonus.emplace_back( Campaign::ScenarioBonusData::SKILL_SECONDARY, Skill::Secondary::LOGISTICS, Skill::Level::BASIC );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::POWER_AXE, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::WHITE_PEARL, 1 );
-            break;
-        case 8:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::BARB, 1 );
-            break;
-        case 9:
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::BLACK_PEARL, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::DRAGON_SWORD, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::DIVINE_BREASTPLATE, 1 );
-            break;
-        case 10:
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::TAX_LIEN, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::HIDEOUS_MASK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::ARTIFACT, Artifact::FIZBIN_MISFORTUNE, 1 );
-            break;
-        case 11:
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::WRLK, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::SORC, 1 );
-            bonus.emplace_back( Campaign::ScenarioBonusData::STARTING_RACE, Race::KNGT, 1 );
-            break;
-        default:
-            assert( 0 );
-            break;
-        }
-
-        return bonus;
-    }
-
     const char * getSpellCampaignName( const int32_t spellId )
     {
         switch ( spellId ) {
@@ -435,6 +314,20 @@ namespace
             return {};
         }
     }
+
+    // HoMM1: each scenario has exactly one bonus — the campaign's fixed starting race.
+    std::vector<Campaign::ScenarioBonusData> getHoMM1CampaignBonusData( const int campaignId )
+    {
+        int race = Race::KNGT;
+        switch ( campaignId ) {
+        case Campaign::IRONFIST_CAMPAIGN:    race = Race::KNGT; break;
+        case Campaign::SLAYER_CAMPAIGN: race = Race::BARB; break;
+        case Campaign::LAMANDA_CAMPAIGN:   race = Race::SORC; break;
+        case Campaign::ALAMAR_CAMPAIGN:    race = Race::WRLK; break;
+        default: break;
+        }
+        return { { Campaign::ScenarioBonusData::STARTING_RACE, race, 1 } };
+    }
 }
 
 namespace Campaign
@@ -563,17 +456,17 @@ namespace Campaign
     {
         assert( scenarioInfo.scenarioId >= 0 );
         switch ( scenarioInfo.campaignId ) {
-        case Campaign::ROLAND_CAMPAIGN:
-            return getRolandCampaignBonusData( scenarioInfo.scenarioId );
-        case Campaign::ARCHIBALD_CAMPAIGN:
-            return getArchibaldCampaignBonusData( scenarioInfo.scenarioId );
+        case Campaign::IRONFIST_CAMPAIGN:
+        case Campaign::SLAYER_CAMPAIGN:
+        case Campaign::LAMANDA_CAMPAIGN:
+        case Campaign::ALAMAR_CAMPAIGN:
+            return getHoMM1CampaignBonusData( scenarioInfo.campaignId );
         default:
             // Did you add a new campaign? Add the corresponding case above.
             assert( 0 );
             break;
         }
 
-        // shouldn't be here unless we get an unsupported campaign
         return std::vector<Campaign::ScenarioBonusData>();
     }
 
@@ -627,10 +520,14 @@ namespace Campaign
     const char * getCampaignName( const int campaignId )
     {
         switch ( campaignId ) {
-        case Campaign::ROLAND_CAMPAIGN:
-            return _( "Roland" );
-        case Campaign::ARCHIBALD_CAMPAIGN:
-            return _( "Archibald" );
+        case Campaign::IRONFIST_CAMPAIGN:
+            return _( "Lord Ironfist" );
+        case Campaign::SLAYER_CAMPAIGN:
+            return _( "Lord Slayer" );
+        case Campaign::LAMANDA_CAMPAIGN:
+            return _( "Queen Lamanda" );
+        case Campaign::ALAMAR_CAMPAIGN:
+            return _( "Lord Alamar" );
         default:
             // Did you add a new campaign? Add the corresponding case above.
             assert( 0 );

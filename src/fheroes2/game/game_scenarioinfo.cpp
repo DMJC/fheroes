@@ -204,17 +204,6 @@ namespace
     //   0/1     : OKAY released / pressed
     //   2/3     : CANCEL released / pressed
     // Player colors available for selection in HoMM1 (index 0-3 cycles Red→Yellow→Green→Blue).
-    struct H1ColorInfo
-    {
-        const char * name;
-        uint8_t r, g, b;
-    };
-    static constexpr H1ColorInfo h1Colors[] = {
-        { "Red",    200,  30,  30 },
-        { "Yellow", 220, 200,  20 },
-        { "Green",   30, 180,  30 },
-        { "Blue",    30,  80, 220 },
-    };
 
     fheroes2::GameMode ChooseHoMM1Map( MapsFileInfoList & maps, const int /*humanPlayerCount*/ )
     {
@@ -222,25 +211,25 @@ namespace
 
         fheroes2::Display & display = fheroes2::Display::instance();
 
-        // Draw the HEROES.BMP background only — NOT H1PANEL, which contains the main menu
-        // Standard/Campaign buttons that would bleed over our scenario panel.
-        {
-            const fheroes2::Sprite & bg = fheroes2::AGG::GetICN( ICN::HEROES, 0 );
-            display.fill( 0 );
-            if ( !bg.empty() ) {
-                const int32_t bgX = ( display.width() - bg.width() ) / 2;
-                const int32_t bgY = ( display.height() - bg.height() ) / 2;
-                fheroes2::Copy( bg, 0, 0, display, bgX, bgY, bg.width(), bg.height() );
-            }
+        // Draw the HEROES.BMP background centered on screen.
+        const fheroes2::Sprite & bg = fheroes2::AGG::GetICN( ICN::HEROES, 0 );
+        const int32_t bgX = bg.empty() ? 0 : ( display.width() - bg.width() ) / 2;
+        const int32_t bgY = bg.empty() ? 0 : ( display.height() - bg.height() ) / 2;
+
+        display.fill( 0 );
+        if ( !bg.empty() ) {
+            fheroes2::Copy( bg, 0, 0, display, bgX, bgY, bg.width(), bg.height() );
         }
 
         // Right panel: NEWGAME.BMP (322×459) — contains all static art including pre-drawn
-        // chess pieces, balance scales, color gem slot, and king-of-hill area.
+        // chess pieces, balance scales, color gem slot, and king-of-hill indicator.
         const fheroes2::Sprite & panel = fheroes2::AGG::GetICN( ICN::H1NEWGAME_BMP, 0 );
         const int32_t panelW = panel.empty() ? 322 : panel.width();
         const int32_t panelH = panel.empty() ? 459 : panel.height();
-        const int32_t panelX = display.width() - panelW;
-        const int32_t panelY = ( display.height() - panelH ) / 2;
+        // Panel sits flush against the right edge of the background.
+        const int32_t bgRight = bg.empty() ? display.width() : bgX + bg.width();
+        const int32_t panelX  = bgRight - panelW;
+        const int32_t panelY  = ( display.height() - panelH ) / 2;
 
         // Default selection: AES31000.MAP (first scenario in HoMM1).
         int selectedMap = 0;
@@ -251,158 +240,191 @@ namespace
                 break;
             }
         }
-        int scrollOffset = selectedMap;
-        int difficulty   = 1; // 0=Easy, 1=Normal, 2=Hard, 3=Expert
-        int aiStrength   = 2; // 0=Fool, 1=Easy, 2=Average, 3=Hard
-        int colorIndex   = 0; // cycles Red→Yellow→Green→Blue
-        bool kingOfHill  = false;
+        int difficulty  = 1; // 0=Easy, 1=Normal, 2=Hard, 3=Expert
+        int aiStrength[3] = { 2, 2, 2 }; // per-opponent: 0=Disable, 1=Dumb, 2=Average, 3=Smart, 4=Genius
+        int colorIndex  = 0; // cycles Red→Yellow→Green→Blue
+        bool kingOfHill = false;
 
-        // --- Difficulty chess pieces — NEWGAME.BMP has them pre-drawn; we only add the selection border ---
+        // -----------------------------------------------------------------------
+        // Positions are derived from NEWGAME.BIN (all offsets relative to panel).
+        // -----------------------------------------------------------------------
+
+        // Difficulty chess pieces: x=22/93/164/235, y=39, 65×65.
+        constexpr int32_t chessOffX[4] = { 22, 93, 164, 235 };
+        constexpr int32_t chessUnselY  = 39;
         constexpr int32_t chessW       = 65;
-        constexpr int32_t chessSpacing = 6;
-        constexpr int32_t chessRowW    = 4 * chessW + 3 * chessSpacing;
-        const int32_t chessStartX = panelX + ( panelW - chessRowW ) / 2;
-        const int32_t chessY      = panelY + 48;
-
-        // --- AI balance scale label positions (scales are pre-rendered in the BMP) ---
-        constexpr int32_t scaleW       = 59;
-        constexpr int32_t scaleH       = 44;
-        constexpr int32_t scaleSpacing = 6;
-        constexpr int32_t nOpponents   = 3;
-        constexpr int32_t scaleRowW    = nOpponents * scaleW + ( nOpponents - 1 ) * scaleSpacing;
-        const int32_t scaleStartX = panelX + ( panelW - scaleRowW ) / 2;
-        const int32_t scaleY      = panelY + 148;
-
-        // --- Color gem and King-of-Hill click areas ---
-        constexpr int32_t gemW = 50;
-        constexpr int32_t gemH = 50;
-        const int32_t gemX = panelX + 40;
-        const int32_t gemY = panelY + 228;
-        const fheroes2::Rect gemRect{ gemX, gemY, gemW, gemH };
-
-        constexpr int32_t kohW = 50;
-        constexpr int32_t kohH = 50;
-        const int32_t kohX = panelX + 168;
-        const int32_t kohY = panelY + 228;
-        const fheroes2::Rect kohRect{ kohX, kohY, kohW, kohH };
-
-        // --- OKAY / CANCEL buttons (BTNNEWGM.ICN frames 0/1 and 2/3, 127×63) ---
-        constexpr int32_t btnW = 127;
-        constexpr int32_t btnH = 63;
-        const int32_t btnY       = panelY + panelH - btnH - 10;
-        const int32_t btnOkX     = panelX + panelW / 2 - btnW - 5;
-        const int32_t btnCancelX = panelX + panelW / 2 + 5;
-
-        fheroes2::Button btnOk    ( btnOkX,     btnY, ICN::H1BTNNEWGM, 0, 1 );
-        fheroes2::Button btnCancel( btnCancelX, btnY, ICN::H1BTNNEWGM, 2, 3 );
-
-        // --- Scenario list area ---
-        constexpr int32_t arrowW    = 24;
-        constexpr int32_t arrowH    = 20;
-        constexpr int32_t itemH     = 16;
-        constexpr int32_t listMarginX = 8;
-        const int32_t listAreaX   = panelX + listMarginX;
-        const int32_t listAreaY   = panelY + 310;
-        const int32_t listAreaW   = panelW - listMarginX * 2 - arrowW - 2;
-        const int32_t listAreaH   = btnY - listAreaY - 4;
-        const int32_t visibleItems = std::max( 1, listAreaH / itemH );
-        const int32_t arrowX      = listAreaX + listAreaW + 2;
-
-        const fheroes2::Rect arrowUpRect  { arrowX, listAreaY,          arrowW, arrowH };
-        const fheroes2::Rect arrowDownRect{ arrowX, listAreaY + arrowH, arrowW, arrowH };
-
-        static const char * aiLabels[]   = { "Fool", "Easy", "Average", "Hard" };
-        static const int    diffValues[] = { Difficulty::EASY, Difficulty::NORMAL, Difficulty::HARD, Difficulty::EXPERT };
+        constexpr int32_t chessH       = 65;
 
         fheroes2::Rect chessRects[4];
         for ( int i = 0; i < 4; ++i )
-            chessRects[i] = { chessStartX + i * ( chessW + chessSpacing ), chessY, chessW, chessW };
+            chessRects[i] = { panelX + chessOffX[i], panelY + chessUnselY, chessW, chessH };
 
-        fheroes2::Rect scaleRects[nOpponents];
-        for ( int i = 0; i < nOpponents; ++i )
-            scaleRects[i] = { scaleStartX + i * ( scaleW + scaleSpacing ), scaleY, scaleW, scaleH };
+        // Balance scales (AI strength): x=55/127/199, y=149, 65×65.
+        constexpr int32_t scaleOffX[3] = { 55, 127, 199 };
+        constexpr int32_t scaleY       = 149;
+        constexpr int32_t scaleW       = 65;
+        constexpr int32_t scaleH       = 65;
+
+        fheroes2::Rect scaleRects[3];
+        for ( int i = 0; i < 3; ++i )
+            scaleRects[i] = { panelX + scaleOffX[i], panelY + scaleY, scaleW, scaleH };
+
+        // Color gem: x=51, y=270, 59×44.
+        constexpr int32_t gemOffX = 51;
+        constexpr int32_t gemOffY = 270;
+        constexpr int32_t gemW    = 59;
+        constexpr int32_t gemH    = 44;
+        const fheroes2::Rect gemRect{ panelX + gemOffX, panelY + gemOffY, gemW, gemH };
+
+        // King-of-Hill indicator: x=210, y=272, 44×39.
+        constexpr int32_t kohOffX = 210;
+        constexpr int32_t kohOffY = 272;
+        constexpr int32_t kohW    = 44;
+        constexpr int32_t kohH    = 39;
+        const fheroes2::Rect kohRect{ panelX + kohOffX, panelY + kohOffY, kohW, kohH };
+
+        // Scenario bar: x=24, y=354, 249×20.
+        // Two stacked scroll arrows (each 24×20) at x=273: up at y=354, down at y=374.
+        constexpr int32_t barOffX   = 24;
+        constexpr int32_t barOffY   = 354;
+        constexpr int32_t barW      = 249;
+        constexpr int32_t barH      = 20;
+        constexpr int32_t arrowOffX = 273;
+        constexpr int32_t arrowW    = 24;
+        constexpr int32_t arrowH    = 20;
+        const fheroes2::Rect scenBarRect  { panelX + barOffX,   panelY + barOffY,           barW,   barH   };
+        const fheroes2::Rect arrowUpRect  { panelX + arrowOffX, panelY + barOffY,            arrowW, arrowH };
+        const fheroes2::Rect arrowDownRect{ panelX + arrowOffX, panelY + barOffY + arrowH,   arrowW, arrowH };
+
+        // OKAY / CANCEL click areas (pre-drawn in BMP): x=24/201, y=412, 96×25.
+        constexpr int32_t btnOffY    = 412;
+        constexpr int32_t btnW       = 96;
+        constexpr int32_t btnH       = 25;
+        constexpr int32_t btnOkOffX  = 24;
+        constexpr int32_t btnCxOffX  = 201;
+        const fheroes2::Rect okRect    { panelX + btnOkOffX, panelY + btnOffY, btnW, btnH };
+        const fheroes2::Rect cancelRect{ panelX + btnCxOffX, panelY + btnOffY, btnW, btnH };
+
+        // AI options: 0=Disable, 1=Dumb, 2=Average, 3=Smart, 4=Genius
+        // ICN frames (0-based): disable=5, dumb=6, average=7, smart=8, genius=9
+        static const char * const aiLabels[]   = { "Disabled", "Dumb", "Average", "Smart", "Genius" };
+        constexpr int             aiFrames[]   = { 5, 6, 7, 8, 9 };
+
+        // Difficulty ICN frames (0-based): Easy=1, Normal=2, Hard=3, Expert=4
+        constexpr int diffICNFrames[] = { 1, 2, 3, 4 };
+        static const int diffValues[] = { Difficulty::EASY, Difficulty::NORMAL, Difficulty::HARD, Difficulty::EXPERT };
+
+        // Color ICN frames (0-based): Blue=11, Green=13, Red=15, Yellow=17
+        // h1Colors order: Red(0), Yellow(1), Green(2), Blue(3)
+        constexpr int colorFrames[] = { 15, 17, 13, 11 };
 
         const auto redrawAll = [&]() {
-            // Repaint panel background (restores pre-drawn chess pieces, scales, gem, etc.).
+            // Repaint the background then the panel (restores all pre-drawn art).
+            display.fill( 0 );
+            if ( !bg.empty() )
+                fheroes2::Copy( bg, 0, 0, display, bgX, bgY, bg.width(), bg.height() );
             if ( !panel.empty() )
                 fheroes2::Blit( panel, display, panelX, panelY );
 
-            // --- Difficulty: NEWGAME.BMP has chess pieces pre-drawn; only add red border on selected ---
+            // --- Section labels ---
+            {
+                // "Choose Game Difficulty:" centered at panel y+21.
+                fheroes2::Text lbl( _( "Choose Game Difficulty:" ), fheroes2::FontType::normalWhite() );
+                lbl.draw( panelX, panelY + 21, panelW, display );
+
+                // "Customize Opponents:" centered at panel y+131.
+                lbl.set( _( "Customize Opponents:" ), fheroes2::FontType::normalWhite() );
+                lbl.draw( panelX, panelY + 131, panelW, display );
+
+                // "Choose Color:" left half; "King of the Hill:" right half - both at y+253.
+                lbl.set( _( "Choose Color:" ), fheroes2::FontType::normalWhite() );
+                lbl.draw( panelX, panelY + 253, panelW / 2, display );
+
+                lbl.set( _( "King of the Hill:" ), fheroes2::FontType::normalWhite() );
+                lbl.draw( panelX + panelW / 2, panelY + 253, panelW / 2, display );
+
+                // "Choose Scenario:" centered at panel y+337.
+                lbl.set( _( "Choose Scenario:" ), fheroes2::FontType::normalWhite() );
+                lbl.draw( panelX, panelY + 337, panelW, display );
+
+                // Difficulty rating at panel y+383.
+                std::string ratingStr( _( "Difficulty Rating: %{rating}%" ) );
+                StringReplace( ratingStr, "%{rating}", diffValues[difficulty] );
+                lbl.set( ratingStr, fheroes2::FontType::normalWhite() );
+                lbl.draw( panelX, panelY + 383, panelW, display );
+            }
+
+            // --- Difficulty icons (ICN frames 1-4: Easy/Normal/Hard/Expert) ---
+            // Draw all four icons; selected one gets a yellow highlight border.
             for ( int i = 0; i < 4; ++i ) {
-                if ( i == difficulty ) {
-                    const int32_t cx = chessStartX + i * ( chessW + chessSpacing );
-                    fheroes2::DrawRect( display, { cx - 2, chessY - 2, chessW + 4, chessW + 4 }, fheroes2::GetColorId( 200, 20, 20 ) );
+                const fheroes2::Sprite & icon = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, diffICNFrames[i] );
+                if ( !icon.empty() ) {
+                    const int32_t ix = panelX + chessOffX[i] + ( chessW - icon.width() ) / 2;
+                    const int32_t iy = panelY + chessUnselY + ( chessH - icon.height() ) / 2;
+                    fheroes2::Blit( icon, display, ix, iy );
+                    if ( i == difficulty ) {
+                        fheroes2::DrawRect( display, { ix - 2, iy - 2, icon.width() + 4, icon.height() + 4 },
+                                            fheroes2::GetColorId( 220, 200, 20 ) );
+                    }
                 }
             }
 
-            // --- AI strength (scales pre-drawn in BMP; draw label below each scale) ---
-            for ( int i = 0; i < nOpponents; ++i ) {
-                const int32_t sx = scaleStartX + i * ( scaleW + scaleSpacing );
-                fheroes2::Text lbl( aiLabels[aiStrength], fheroes2::FontType::smallWhite() );
-                lbl.draw( sx + ( scaleW - lbl.width() ) / 2, scaleY + scaleH + 4, display );
-            }
-
-            // --- Color gem: overlay a colored filled square over the pre-drawn gem slot ---
-            {
-                const H1ColorInfo & col = h1Colors[colorIndex];
-                const uint8_t colId = fheroes2::GetColorId( col.r, col.g, col.b );
-                fheroes2::Fill( display, gemX + 5, gemY + 5, gemW - 10, gemH - 10, colId );
-                fheroes2::Text colLbl( col.name, fheroes2::FontType::smallWhite() );
-                colLbl.draw( gemX + ( gemW - colLbl.width() ) / 2, gemY + gemH + 2, display );
-            }
-
-            // --- King of Hill: draw a colored indicator box ---
-            {
-                const uint8_t kohColorId = kingOfHill
-                    ? fheroes2::GetColorId( h1Colors[colorIndex].r, h1Colors[colorIndex].g, h1Colors[colorIndex].b )
-                    : fheroes2::GetColorId( 80, 80, 80 );
-                fheroes2::Fill( display, kohX + 5, kohY + 5, kohW - 10, kohH - 10, kohColorId );
-            }
-
-            // --- Scenario list ---
-            // Draw a dark background for the list area.
-            fheroes2::Fill( display, listAreaX, listAreaY, listAreaW, listAreaH, fheroes2::GetColorId( 20, 20, 40 ) );
-
-            const int mapCount = static_cast<int>( maps.size() );
-            for ( int row = 0; row < visibleItems; ++row ) {
-                const int mapIdx = scrollOffset + row;
-                if ( mapIdx >= mapCount )
-                    break;
-                const int32_t rowY = listAreaY + row * itemH;
-                // Highlight selected row.
-                if ( mapIdx == selectedMap ) {
-                    fheroes2::Fill( display, listAreaX, rowY, listAreaW, itemH, fheroes2::GetColorId( 60, 60, 120 ) );
+            // --- AI strength icons (ICN frames 5-9: Disable/Dumb/Average/Smart/Genius) ---
+            // Each slot is independent: left=AI1, middle=AI2, right=AI3.
+            for ( int i = 0; i < 3; ++i ) {
+                const fheroes2::Sprite & icon = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, aiFrames[aiStrength[i]] );
+                if ( !icon.empty() ) {
+                    const int32_t ix = panelX + scaleOffX[i] + ( scaleW - icon.width() ) / 2;
+                    const int32_t iy = panelY + scaleY + ( scaleH - icon.height() ) / 2;
+                    fheroes2::Blit( icon, display, ix, iy );
                 }
-                fheroes2::Text rowText( maps[mapIdx].name, fheroes2::FontType::smallWhite() );
-                rowText.fitToOneRow( listAreaW - 2 );
-                rowText.draw( listAreaX + 2, rowY + 2, display );
+                // Label below each slot.
+                fheroes2::Text lbl( aiLabels[aiStrength[i]], fheroes2::FontType::smallWhite() );
+                lbl.draw( panelX + scaleOffX[i] + ( scaleW - lbl.width() ) / 2, panelY + scaleY + scaleH + 2, display );
             }
 
-            // Scroll arrows.
-            const fheroes2::Sprite & arrowUp   = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, 19 );
-            const fheroes2::Sprite & arrowDown = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, 20 );
-            if ( !arrowUp.empty() )
-                fheroes2::Blit( arrowUp,   display, arrowX, listAreaY );
-            if ( !arrowDown.empty() )
-                fheroes2::Blit( arrowDown, display, arrowX, listAreaY + arrowH );
+            // --- Color icon (ICN frames: Red=15, Yellow=17, Green=13, Blue=11) ---
+            {
+                const fheroes2::Sprite & icon = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, colorFrames[colorIndex] );
+                if ( !icon.empty() ) {
+                    fheroes2::Blit( icon, display, panelX + gemOffX + ( gemW - icon.width() ) / 2,
+                                    panelY + gemOffY + ( gemH - icon.height() ) / 2 );
+                }
+            }
 
-            btnOk.draw();
-            btnCancel.draw();
+            // --- King-of-Hill icon (ICN frame 27=box, 28=checked) ---
+            {
+                const fheroes2::Sprite & icon = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, kingOfHill ? 28 : 27 );
+                if ( !icon.empty() ) {
+                    fheroes2::Blit( icon, display, panelX + kohOffX + ( kohW - icon.width() ) / 2,
+                                    panelY + kohOffY + ( kohH - icon.height() ) / 2 );
+                }
+            }
+
+            // --- Scenario bar: show current scenario name ---
+            {
+                fheroes2::Text mapName( maps[selectedMap].name, fheroes2::FontType::smallWhite() );
+                mapName.fitToOneRow( barW - 4 );
+                mapName.draw( panelX + barOffX + 2, panelY + barOffY + 2, display );
+            }
         };
 
         redrawAll();
-        fheroes2::validateFadeInAndRender();
+
+        if ( Game::validateDisplayFadeIn() ) {
+            fheroes2::fadeInDisplay();
+        }
+        else {
+            display.render();
+        }
 
         Settings & conf = Settings::Get();
         LocalEvent & le = LocalEvent::Get();
 
         while ( le.HandleEvents() ) {
-            btnOk.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( btnOk.area() ) );
-            btnCancel.drawOnState( le.isMouseLeftButtonPressedAndHeldInArea( btnCancel.area() ) );
-
             bool changed = false;
 
-            // Difficulty: click a chess piece position to select.
+            // Difficulty: click a chess piece to select.
             for ( int i = 0; i < 4; ++i ) {
                 if ( le.MouseClickLeft( chessRects[i] ) && difficulty != i ) {
                     difficulty = i;
@@ -410,15 +432,15 @@ namespace
                 }
             }
 
-            // AI strength: click any scale area to cycle.
-            for ( int i = 0; i < nOpponents; ++i ) {
+            // AI strength: each scale slot cycles its own opponent independently.
+            for ( int i = 0; i < 3; ++i ) {
                 if ( le.MouseClickLeft( scaleRects[i] ) ) {
-                    aiStrength = ( aiStrength + 1 ) % 4;
+                    aiStrength[i] = ( aiStrength[i] + 1 ) % 5;
                     changed = true;
                 }
             }
 
-            // Color gem: cycle through Red→Yellow→Green→Blue.
+            // Color gem: cycle through colors.
             if ( le.MouseClickLeft( gemRect ) ) {
                 colorIndex = ( colorIndex + 1 ) % 4;
                 changed = true;
@@ -430,26 +452,15 @@ namespace
                 changed = true;
             }
 
-            // Scenario list: click a row to select.
-            for ( int row = 0; row < visibleItems; ++row ) {
-                const int mapIdx = scrollOffset + row;
-                if ( mapIdx >= static_cast<int>( maps.size() ) )
-                    break;
-                const fheroes2::Rect rowRect{ listAreaX, listAreaY + row * itemH, listAreaW, itemH };
-                if ( le.MouseClickLeft( rowRect ) && selectedMap != mapIdx ) {
-                    selectedMap = mapIdx;
-                    changed = true;
-                }
-            }
-
-            // Scroll arrows.
-            if ( le.MouseClickLeft( arrowUpRect ) && scrollOffset > 0 ) {
-                --scrollOffset;
+            // Up arrow or left-click scenario bar: previous scenario.
+            if ( le.MouseClickLeft( arrowUpRect ) || le.MouseClickLeft( scenBarRect ) ) {
+                selectedMap = ( selectedMap + static_cast<int>( maps.size() ) - 1 ) % static_cast<int>( maps.size() );
                 changed = true;
             }
-            if ( le.MouseClickLeft( arrowDownRect )
-                 && scrollOffset + visibleItems < static_cast<int>( maps.size() ) ) {
-                ++scrollOffset;
+
+            // Down arrow: next scenario.
+            if ( le.MouseClickLeft( arrowDownRect ) ) {
+                selectedMap = ( selectedMap + 1 ) % static_cast<int>( maps.size() );
                 changed = true;
             }
 
@@ -458,7 +469,7 @@ namespace
                 display.render();
             }
 
-            if ( le.MouseClickLeft( btnOk.area() ) || Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_OKAY ) ) {
+            if ( le.MouseClickLeft( okRect ) || Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_OKAY ) ) {
                 conf.setCurrentMapInfo( maps[selectedMap] );
                 conf.SetGameType( Game::TYPE_STANDARD );
                 conf.SetGameDifficulty( diffValues[difficulty] );
@@ -466,7 +477,7 @@ namespace
                 return fheroes2::GameMode::START_GAME;
             }
 
-            if ( le.MouseClickLeft( btnCancel.area() ) || Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_CANCEL ) ) {
+            if ( le.MouseClickLeft( cancelRect ) || Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_CANCEL ) ) {
                 return fheroes2::GameMode::MAIN_MENU;
             }
         }

@@ -860,6 +860,15 @@ namespace
 
             }
 
+            // HoMM1 monochromatic font sprites are decoded with visible pixels at palette index 0 (black).
+            // The color-remapping tables (WHITE_FONT, YELLOW_FONT, etc.) only operate on indices 10-36,
+            // so remap 0 -> 10 (the start of the white range) to make palette-based coloring work.
+            if ( isMonoFont ) {
+                for ( fheroes2::Sprite & s : _icnVsSprite[id] ) {
+                    fheroes2::ReplaceColorId( s, 0, 10 );
+                }
+            }
+
             return true;
         }
 

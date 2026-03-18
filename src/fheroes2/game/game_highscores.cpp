@@ -86,23 +86,31 @@ namespace
     }
 
     // HoMM1 high scores layout (positions within the 640×480 HISCORE.BMP screen).
-    constexpr int32_t h1EntryStartY   = 68;  // y of the first entry row
-    constexpr int32_t h1EntryStepY    = 40;  // vertical spacing between rows
-    constexpr int32_t h1ColNumber     = 20;  // "1." index column
-    constexpr int32_t h1ColPlayer     = 88;  // player name column
-    constexpr int32_t h1ColLand       = 248; // scenario/land column
-    constexpr int32_t h1ColScore      = 388; // score/rating column
-    constexpr int32_t h1ColTitle      = 450; // creature title column
+    // Row numbers 1-10 are already drawn as gold lettering in the BMP — do NOT draw them in font.
+    // The "STANDARD" / "CAMPAIGN" labels are provided by HISCORE.ICN — do NOT draw them in font.
+    constexpr int32_t h1EntryStartY = 68;  // y of the first entry row (aligned to gold lettering in BMP)
+    constexpr int32_t h1EntryStepY  = 40;  // vertical spacing between rows
+    constexpr int32_t h1ColPlayer   = 88;  // player name column
+    constexpr int32_t h1ColLand     = 248; // scenario/land column
+    constexpr int32_t h1ColScore    = 388; // score/rating column
+    constexpr int32_t h1ColTitle    = 450; // creature title column
 
-    // Left-side STANDARD/CAMPAIGN tab click area, right-side EXIT click area.
-    const fheroes2::Rect h1RectStandard{ 0, 300, 30, 180 };
-    const fheroes2::Rect h1RectExit    { 610, 300, 30, 80 };
+    // HISCORE.ICN button layout (28×134 vertical side buttons):
+    //   frames 0/1  — Standard  tab (released / pressed)
+    //   frames 2/3  — Campaign  tab (released / pressed)
+    //   frames 4/5  — Exit      button (released / pressed)
+    constexpr int32_t h1BtnStandardX = 2;    // left edge, Standard tab
+    constexpr int32_t h1BtnStandardY = 172;  // top of Standard tab
+    constexpr int32_t h1BtnCampaignX = 2;    // left edge, Campaign tab (below Standard)
+    constexpr int32_t h1BtnCampaignY = 310;  // top of Campaign tab
+    constexpr int32_t h1BtnExitX     = 610;  // right edge, Exit button
+    constexpr int32_t h1BtnExitY     = 172;  // top of Exit button
 
     void redrawHoMM1HighScoreScreen( const int32_t selectedScoreIndex, const std::vector<fheroes2::HighscoreData> & highScores, const bool isCampaign )
     {
         fheroes2::Display & display = fheroes2::Display::instance();
 
-        // Draw the full-screen HoMM1 high scores background.
+        // Draw the full-screen HoMM1 high scores background (includes gold row numbers and column headers).
         const fheroes2::Sprite & bg = fheroes2::AGG::GetICN( ICN::H1HISCORE_BMP, 0 );
         if ( !bg.empty() ) {
             fheroes2::Copy( bg, 0, 0, display, 0, 0, bg.width(), bg.height() );
@@ -111,14 +119,8 @@ namespace
             display.fill( 0 );
         }
 
-        // Overlay mode label (CAMPAIGN or STANDARD) over the left tab area.
-        {
-            const char * modeLabel = isCampaign ? "CAMPAIGN" : "STANDARD";
-            fheroes2::Text modeText( modeLabel, fheroes2::FontType::smallWhite() );
-            // Vertical tab occupies x≈5-25, y≈300-480; center the text in the tab.
-            modeText.draw( 5, 380, display );
-        }
-
+        // Draw score entries — white text aligned to the gold row numbers in the BMP.
+        // Row numbers and section titles are NOT drawn here (they are in the BMP/ICN art).
         fheroes2::Text text( "", fheroes2::FontType::normalWhite() );
 
         int32_t scoreIndex = 0;
@@ -126,10 +128,6 @@ namespace
             const fheroes2::FontType font
                 = ( scoreIndex == selectedScoreIndex ) ? fheroes2::FontType::normalYellow() : fheroes2::FontType::normalWhite();
             const int32_t rowY = h1EntryStartY + scoreIndex * h1EntryStepY;
-
-            // Row number "1." … "10."
-            text.set( std::to_string( scoreIndex + 1 ) + ".", font );
-            text.draw( h1ColNumber, rowY, display );
 
             // Player name.
             text.set( data.playerName, font );
@@ -150,7 +148,7 @@ namespace
             const Monster monster = isCampaign ? fheroes2::HighScoreDataContainer::getMonsterByDay( data.rating )
                                                : fheroes2::HighScoreDataContainer::getMonsterByRating( data.rating );
             text.set( monster.GetName(), font );
-            text.fitToOneRow( 640 - h1ColTitle - 80 );
+            text.fitToOneRow( 640 - h1ColTitle - 4 );
             text.draw( h1ColTitle, rowY, display );
 
             ++scoreIndex;
@@ -281,25 +279,41 @@ namespace
         const std::vector<fheroes2::HighscoreData> & scores
             = isCampaign ? highScoreDataContainer.getHighScoresCampaign() : highScoreDataContainer.getHighScoresStandard();
 
+        // HISCORE.ICN buttons: Standard (0/1), Campaign (2/3), Exit (4/5).
+        fheroes2::Button btnStandard( h1BtnStandardX, h1BtnStandardY, ICN::H1HISCORE_ICN, 0, 1 );
+        fheroes2::Button btnCampaign( h1BtnCampaignX, h1BtnCampaignY, ICN::H1HISCORE_ICN, 2, 3 );
+        fheroes2::Button btnExit    ( h1BtnExitX,     h1BtnExitY,     ICN::H1HISCORE_ICN, 4, 5 );
+
         redrawHoMM1HighScoreScreen( selectedEntryIndex, scores, isCampaign );
+        btnStandard.draw();
+        btnCampaign.draw();
+        btnExit.draw();
 
         if ( Game::validateDisplayFadeIn() ) {
             fheroes2::fadeInDisplay();
         }
         else {
-            fheroes2::Display::instance().render();
+            display.render();
         }
 
         LocalEvent & le = LocalEvent::Get();
         while ( le.HandleEvents() ) {
-            if ( le.MouseClickLeft( h1RectExit ) || Game::HotKeyCloseWindow() ) {
+            btnStandard.drawOnState( le.isMouseLeftButtonPressedInArea( btnStandard.area() ) );
+            btnCampaign.drawOnState( le.isMouseLeftButtonPressedInArea( btnCampaign.area() ) );
+            btnExit.drawOnState( le.isMouseLeftButtonPressedInArea( btnExit.area() ) );
+
+            if ( le.MouseClickLeft( btnExit.area() ) || Game::HotKeyCloseWindow() ) {
                 fheroes2::fadeOutDisplay();
                 Game::setDisplayFadeIn();
                 return fheroes2::GameMode::MAIN_MENU;
             }
 
-            if ( le.MouseClickLeft( h1RectStandard ) ) {
-                return isCampaign ? fheroes2::GameMode::HIGHSCORES_STANDARD : fheroes2::GameMode::HIGHSCORES_CAMPAIGN;
+            if ( le.MouseClickLeft( btnStandard.area() ) ) {
+                return fheroes2::GameMode::HIGHSCORES_STANDARD;
+            }
+
+            if ( le.MouseClickLeft( btnCampaign.area() ) ) {
+                return fheroes2::GameMode::HIGHSCORES_CAMPAIGN;
             }
         }
 

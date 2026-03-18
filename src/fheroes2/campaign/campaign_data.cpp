@@ -34,6 +34,7 @@
 #include "monster.h"
 #include "resource.h"
 #include "spell.h"
+#include "system.h"
 #include "tools.h"
 #include "translations.h"
 
@@ -97,21 +98,18 @@ namespace
     }
 
 
-    // HoMM1: all 4 campaigns use the same 9 maps in order. The starting race is set via bonus.
-    Campaign::CampaignData getHoMM1CampaignData( const int campaignID )
+    // HoMM1: each campaign plays 8 of the 9 CMP maps, each skipping a different one.
+    // Ironfist: 1 2 3 4 6 7 8 9  (skips CAMP5)
+    // Slayer:   1 2 3 4 5 7 8 9  (skips CAMP6)
+    // Lamanda:  1 2 3 4 5 6 8 9  (skips CAMP7)
+    // Alamar:   1 2 3 4 5 6 7 9  (skips CAMP8)
+    Campaign::CampaignData buildHoMM1Campaign( const int campaignID, const std::array<int, 8> & mapNumbers )
     {
-        constexpr int scenarioCount = 9;
+        constexpr int scenarioCount = 8;
         const std::array<std::string, scenarioCount> scenarioName
             = { gettext_noop( "Campaign Scenario 1" ), gettext_noop( "Campaign Scenario 2" ), gettext_noop( "Campaign Scenario 3" ),
                 gettext_noop( "Campaign Scenario 4" ), gettext_noop( "Campaign Scenario 5" ), gettext_noop( "Campaign Scenario 6" ),
-                gettext_noop( "Campaign Scenario 7" ), gettext_noop( "Campaign Scenario 8" ), gettext_noop( "Campaign Scenario 9" ) };
-        const std::array<std::string, scenarioCount> scenarioDescription = { "", "", "", "", "", "", "", "", "" };
-
-        std::vector<Campaign::ScenarioInfoId> scenarioInfo;
-        scenarioInfo.reserve( scenarioCount );
-        for ( int i = 0; i < scenarioCount; ++i ) {
-            scenarioInfo.emplace_back( campaignID, i );
-        }
+                gettext_noop( "Campaign Scenario 7" ), gettext_noop( "Campaign Scenario 8" ) };
 
         std::vector<Campaign::ScenarioData> scenarioDatas;
         scenarioDatas.reserve( scenarioCount );
@@ -120,8 +118,8 @@ namespace
             if ( i + 1 < scenarioCount ) {
                 nextScenarios.emplace_back( campaignID, i + 1 );
             }
-            const std::string mapFile = "CAMP" + std::to_string( i + 1 ) + ".CMP";
-            scenarioDatas.emplace_back( scenarioInfo[i], std::move( nextScenarios ), mapFile, scenarioName[i], scenarioDescription[i],
+            const std::string mapFile = "CAMP" + std::to_string( mapNumbers[i] ) + ".CMP";
+            scenarioDatas.emplace_back( Campaign::ScenarioInfoId{ campaignID, i }, std::move( nextScenarios ), mapFile, scenarioName[i], "",
                                         emptyPlayback, emptyPlayback );
         }
 
@@ -133,12 +131,22 @@ namespace
 
     Campaign::CampaignData getRolandCampaignData()
     {
-        return getHoMM1CampaignData( Campaign::IRONFIST_CAMPAIGN );
+        return buildHoMM1Campaign( Campaign::IRONFIST_CAMPAIGN, { 1, 2, 3, 4, 6, 7, 8, 9 } );
     }
 
     Campaign::CampaignData getArchibaldCampaignData()
     {
-        return getHoMM1CampaignData( Campaign::SLAYER_CAMPAIGN );
+        return buildHoMM1Campaign( Campaign::SLAYER_CAMPAIGN, { 1, 2, 3, 4, 5, 7, 8, 9 } );
+    }
+
+    Campaign::CampaignData getLamandaCampaignData()
+    {
+        return buildHoMM1Campaign( Campaign::LAMANDA_CAMPAIGN, { 1, 2, 3, 4, 5, 6, 8, 9 } );
+    }
+
+    Campaign::CampaignData getAlamarCampaignData()
+    {
+        return buildHoMM1Campaign( Campaign::ALAMAR_CAMPAIGN, { 1, 2, 3, 4, 5, 6, 7, 9 } );
     }
 
 }
@@ -239,11 +247,11 @@ namespace Campaign
             return campaign;
         }
         case LAMANDA_CAMPAIGN: {
-            static const Campaign::CampaignData campaign( getHoMM1CampaignData( LAMANDA_CAMPAIGN ) );
+            static const Campaign::CampaignData campaign( getLamandaCampaignData() );
             return campaign;
         }
         case ALAMAR_CAMPAIGN: {
-            static const Campaign::CampaignData campaign( getHoMM1CampaignData( ALAMAR_CAMPAIGN ) );
+            static const Campaign::CampaignData campaign( getAlamarCampaignData() );
             return campaign;
         }
         default: {
@@ -260,19 +268,75 @@ namespace Campaign
 
         switch ( scenarioInfoId.campaignId ) {
         case IRONFIST_CAMPAIGN:
-            if ( scenarioInfoId.scenarioId == 9 ) {
-                allAIPlayersInAlliance = true;
-            }
-            break;
         case SLAYER_CAMPAIGN:
-            if ( scenarioInfoId.scenarioId == 5 || scenarioInfoId.scenarioId == 10 ) {
-                allAIPlayersInAlliance = true;
+        case LAMANDA_CAMPAIGN:
+        case ALAMAR_CAMPAIGN: {
+            // Set per-CAMP victory conditions. Parse the CAMP number from the map filename.
+            const std::string baseName = StringLower( System::GetFileName( mapInfo.filename ) );
+            int campNum = 0;
+            // Expected basename format: "campN.cmp" (N = 1-9)
+            if ( baseName.size() == 9 && baseName.substr( 0, 4 ) == "camp" && baseName.substr( 5 ) == ".cmp" ) {
+                const char c = baseName[4];
+                if ( c >= '1' && c <= '9' ) {
+                    campNum = c - '0';
+                }
+            }
+            switch ( campNum ) {
+            case 1:
+                // CAMP1: Capture the Central Town at (41, 43)
+                mapInfo.victoryConditionType       = Maps::FileInfo::VICTORY_CAPTURE_TOWN;
+                mapInfo.victoryConditionParams[0]  = 41;
+                mapInfo.victoryConditionParams[1]  = 43;
+                mapInfo.allowNormalVictory         = true;
+                break;
+            case 3:
+                // CAMP3: Find the Eye of Goros — ultimate artifact (params[0] = 0 means ultimate)
+                mapInfo.victoryConditionType       = Maps::FileInfo::VICTORY_OBTAIN_ARTIFACT;
+                mapInfo.victoryConditionParams[0]  = 0;
+                mapInfo.victoryConditionParams[1]  = 0;
+                mapInfo.allowNormalVictory         = true;
+                break;
+            case 5:
+                // CAMP5: Capture Castle Ironfist at (39, 35)
+                mapInfo.victoryConditionType       = Maps::FileInfo::VICTORY_CAPTURE_TOWN;
+                mapInfo.victoryConditionParams[0]  = 39;
+                mapInfo.victoryConditionParams[1]  = 35;
+                mapInfo.allowNormalVictory         = true;
+                break;
+            case 6:
+                // CAMP6: Capture Castle Slayer at (66, 51)
+                mapInfo.victoryConditionType       = Maps::FileInfo::VICTORY_CAPTURE_TOWN;
+                mapInfo.victoryConditionParams[0]  = 66;
+                mapInfo.victoryConditionParams[1]  = 51;
+                mapInfo.allowNormalVictory         = true;
+                break;
+            case 7:
+                // CAMP7: Capture Castle Lamanda at (61, 70)
+                mapInfo.victoryConditionType       = Maps::FileInfo::VICTORY_CAPTURE_TOWN;
+                mapInfo.victoryConditionParams[0]  = 61;
+                mapInfo.victoryConditionParams[1]  = 70;
+                mapInfo.allowNormalVictory         = true;
+                break;
+            case 8:
+                // CAMP8: Capture Castle Alamar at (14, 38)
+                mapInfo.victoryConditionType       = Maps::FileInfo::VICTORY_CAPTURE_TOWN;
+                mapInfo.victoryConditionParams[0]  = 14;
+                mapInfo.victoryConditionParams[1]  = 38;
+                mapInfo.allowNormalVictory         = true;
+                break;
+            case 9:
+                // CAMP9: Capture the Dragon Citadel at (61, 38)
+                mapInfo.victoryConditionType       = Maps::FileInfo::VICTORY_CAPTURE_TOWN;
+                mapInfo.victoryConditionParams[0]  = 61;
+                mapInfo.victoryConditionParams[1]  = 38;
+                mapInfo.allowNormalVictory         = true;
+                break;
+            default:
+                // CAMP2, CAMP4: Conquer the Map — keep the default VICTORY_DEFEAT_EVERYONE.
+                break;
             }
             break;
-        case LAMANDA_CAMPAIGN:
-        case ALAMAR_CAMPAIGN:
-            // HoMM1 campaigns have no special alliance conditions.
-            break;
+        }
         default:
             assert( 0 );
             return;

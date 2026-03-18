@@ -54,6 +54,7 @@
 #include "player_info.h"
 #include "players.h"
 #include "screen.h"
+#include "serialize.h"
 #include "settings.h"
 #include "system.h"
 #include "tools.h"
@@ -178,6 +179,192 @@ namespace
         const int32_t textX = ( width_ > text.width() ) ? offset.x + ( width_ - text.width() ) / 2 : 0;
 
         return { textX, y, text.width(), text.height() };
+    }
+
+    // Opens the HoMM1 map-file selection dialog (REQUEST.BMP + REQEXTRA.BMP).
+    // Returns the new selected map index; returns currentIndex unchanged if CANCEL is pressed.
+    //
+    // REQUEST.BMP:  320×331 — list panel (title, 10 visible rows, scrollbar, name bar, OK/Cancel)
+    // REQEXTRA.BMP: 320×141 — info panel (SIZE / DIFFICULTY / description)
+    // REQUEST.ICN:  5 frames
+    //   0 : 225×19  name bar
+    //   1/2: 96×25  OKAY  released/pressed
+    //   3/4: 96×25  CANCEL released/pressed
+    int showHoMM1MapSelectDialog( const MapsFileInfoList & maps, int currentIndex )
+    {
+        fheroes2::Display & display = fheroes2::Display::instance();
+
+        const fheroes2::Sprite & reqBmp = fheroes2::AGG::GetICN( ICN::H1REQUEST_BMP,  0 );
+        const fheroes2::Sprite & extBmp = fheroes2::AGG::GetICN( ICN::H1REQEXTRA_BMP, 0 );
+
+        if ( reqBmp.empty() )
+            return currentIndex;
+
+        // Position dialog flush against the right edge, vertically centred.
+        const int32_t reqW  = reqBmp.width();
+        const int32_t reqH  = reqBmp.height();
+        const int32_t extH  = extBmp.empty() ? 0 : extBmp.height();
+        const int32_t reqX  = fheroes2::Display::DEFAULT_WIDTH - reqW;
+        const int32_t reqY  = ( fheroes2::Display::DEFAULT_HEIGHT - reqH - extH ) / 2;
+        const int32_t extY  = reqY + reqH;
+
+        // Layout constants (relative to reqX / reqY).
+        constexpr int32_t kListX   = 8;
+        constexpr int32_t kListY   = 55;
+        constexpr int32_t kListW   = 278;
+        constexpr int32_t kRowH    = 20;
+        constexpr int32_t kVisRows = 10;
+        constexpr int32_t kScrollX = 290; // scrollbar column x
+        constexpr int32_t kScrollH = kRowH * kVisRows;
+        constexpr int32_t kArrowH  = 18;
+        constexpr int32_t kNameBarY = 262;
+        constexpr int32_t kBtnY     = 291;
+        constexpr int32_t kBtnOkX   = 16;
+        constexpr int32_t kBtnCxX   = 208;
+
+        const int mapCount = static_cast<int>( maps.size() );
+
+        // Keep scroll window visible around the current selection.
+        int scrollTop = std::max( 0, currentIndex - kVisRows / 2 );
+        if ( scrollTop + kVisRows > mapCount )
+            scrollTop = std::max( 0, mapCount - kVisRows );
+        int selected = currentIndex;
+
+        // Scroll arrow hit-rects (in screen coordinates).
+        const fheroes2::Rect arrowUpRect{ reqX + kScrollX, reqY + kListY,                            20, kArrowH };
+        const fheroes2::Rect arrowDnRect{ reqX + kScrollX, reqY + kListY + kScrollH - kArrowH,       20, kArrowH };
+        const fheroes2::Rect listAreaRect{ reqX + kListX,  reqY + kListY, kListW + 20, kScrollH };
+
+        fheroes2::Button btnOk    ( reqX + kBtnOkX, reqY + kBtnY, ICN::H1REQUEST_ICN, 1, 2 );
+        fheroes2::Button btnCancel( reqX + kBtnCxX, reqY + kBtnY, ICN::H1REQUEST_ICN, 3, 4 );
+
+        const auto redraw = [&]() {
+            // Background panels.
+            fheroes2::Copy( reqBmp, 0, 0, display, reqX, reqY, reqW, reqH );
+            if ( !extBmp.empty() )
+                fheroes2::Copy( extBmp, 0, 0, display, reqX, extY, extBmp.width(), extBmp.height() );
+
+            // "File to Load:" title, centered in panel.
+            {
+                fheroes2::Text title( _( "File to Load:" ), fheroes2::FontType::normalWhite() );
+                title.draw( reqX, reqY + 22, reqW, display );
+            }
+
+            // List rows.
+            for ( int i = 0; i < kVisRows; ++i ) {
+                const int mi = scrollTop + i;
+                if ( mi >= mapCount )
+                    break;
+                const fheroes2::FontType font = ( mi == selected ) ? fheroes2::FontType::normalYellow() : fheroes2::FontType::normalWhite();
+                const int32_t rowY = reqY + kListY + i * kRowH;
+                fheroes2::Text row( maps[mi].name, font );
+                row.fitToOneRow( kListW );
+                row.draw( reqX + kListX, rowY + ( kRowH - row.height() ) / 2, display );
+            }
+
+            // Scrollbar thumb (drawn when the list is longer than the visible window).
+            if ( mapCount > kVisRows ) {
+                const int32_t trackTop = reqY + kListY + kArrowH;
+                const int32_t trackH   = kScrollH - 2 * kArrowH;
+                const int32_t thumbH   = std::max( 8, trackH * kVisRows / mapCount );
+                const int32_t thumbY   = trackTop + ( trackH - thumbH ) * scrollTop / ( mapCount - kVisRows );
+                fheroes2::Fill( display, reqX + kScrollX + 2, thumbY, 16, thumbH, fheroes2::GetColorId( 180, 150, 80 ) );
+            }
+
+            // Name bar with selected scenario name.
+            {
+                const fheroes2::Sprite & bar = fheroes2::AGG::GetICN( ICN::H1REQUEST_ICN, 0 );
+                if ( !bar.empty() ) {
+                    const int32_t bx = reqX + ( reqW - bar.width() ) / 2;
+                    fheroes2::Blit( bar, display, bx, reqY + kNameBarY );
+                    fheroes2::Text sel( maps[selected].name, fheroes2::FontType::normalWhite() );
+                    sel.fitToOneRow( bar.width() - 4 );
+                    sel.draw( bx + 2, reqY + kNameBarY + ( bar.height() - sel.height() ) / 2, display );
+                }
+            }
+
+            btnOk.draw();
+            btnCancel.draw();
+
+            // REQEXTRA: SIZE / DIFFICULTY / description.
+            if ( !extBmp.empty() ) {
+                const Maps::FileInfo & fi = maps[selected];
+
+                fheroes2::Text lbl( _( "SIZE:" ), fheroes2::FontType::normalYellow() );
+                lbl.draw( reqX + 12, extY + 18, display );
+
+                const char * szStr = ( fi.width <= 36 ) ? "Small" : ( fi.width <= 72 ) ? "Medium" : ( fi.width <= 108 ) ? "Large" : "Extra Large";
+                fheroes2::Text szVal( szStr, fheroes2::FontType::normalWhite() );
+                szVal.draw( reqX + 12, extY + 36, display );
+
+                lbl.set( _( "DIFFICULTY:" ), fheroes2::FontType::normalYellow() );
+                lbl.draw( reqX + 168, extY + 18, display );
+
+                fheroes2::Text dfVal( Difficulty::String( fi.difficulty ), fheroes2::FontType::normalWhite() );
+                dfVal.draw( reqX + 168, extY + 36, display );
+
+                if ( !fi.description.empty() ) {
+                    fheroes2::Text desc( fi.description, fheroes2::FontType::smallWhite() );
+                    desc.draw( reqX + 8, extY + 62, extBmp.width() - 16, display );
+                }
+            }
+        };
+
+        redraw();
+        display.render();
+
+        LocalEvent & le = LocalEvent::Get();
+        while ( le.HandleEvents() ) {
+            btnOk.drawOnState( le.isMouseLeftButtonPressedInArea( btnOk.area() ) );
+            btnCancel.drawOnState( le.isMouseLeftButtonPressedInArea( btnCancel.area() ) );
+
+            bool changed = false;
+
+            // Click on a list entry to select it.
+            for ( int i = 0; i < kVisRows; ++i ) {
+                const int mi = scrollTop + i;
+                if ( mi >= mapCount )
+                    break;
+                const fheroes2::Rect rowRect{ reqX + kListX, reqY + kListY + i * kRowH, kListW, kRowH };
+                if ( le.MouseClickLeft( rowRect ) ) {
+                    selected = mi;
+                    changed  = true;
+                }
+            }
+
+            // Scrollbar arrows.
+            if ( le.MouseClickLeft( arrowUpRect ) && scrollTop > 0 ) {
+                --scrollTop;
+                changed = true;
+            }
+            if ( le.MouseClickLeft( arrowDnRect ) && scrollTop + kVisRows < mapCount ) {
+                ++scrollTop;
+                changed = true;
+            }
+
+            // Mouse wheel anywhere over the list area.
+            if ( le.isMouseWheelUpInArea( listAreaRect ) && scrollTop > 0 ) {
+                --scrollTop;
+                changed = true;
+            }
+            if ( le.isMouseWheelDownInArea( listAreaRect ) && scrollTop + kVisRows < mapCount ) {
+                ++scrollTop;
+                changed = true;
+            }
+
+            if ( changed ) {
+                redraw();
+                display.render();
+            }
+
+            if ( le.MouseClickLeft( btnOk.area() ) || Game::HotKeyPressEvent( Game::HotKeyEvent::DEFAULT_OKAY ) )
+                return selected;
+
+            if ( le.MouseClickLeft( btnCancel.area() ) || Game::HotKeyCloseWindow() )
+                return currentIndex;
+        }
+
+        return currentIndex;
     }
 
     // HoMM1-specific scenario selection screen.
@@ -318,6 +505,8 @@ namespace
         // h1Colors order: Red(0), Yellow(1), Green(2), Blue(3)
         constexpr int colorFrames[] = { 15, 17, 13, 11 };
 
+        bool arrowUpPressed = false;
+
         const auto redrawAll = [&]() {
             // Repaint the background then the panel (restores all pre-drawn art).
             display.fill( 0 );
@@ -401,11 +590,25 @@ namespace
                 }
             }
 
-            // --- Scenario bar: show current scenario name ---
+            // --- Scenario bar: ICN frame 18 background + map name in bold, frame 19/20 arrow ---
             {
-                fheroes2::Text mapName( maps[selectedMap].name, fheroes2::FontType::smallWhite() );
+                // Bar background (frame 18, 0-based).
+                const fheroes2::Sprite & barSprite = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, 18 );
+                if ( !barSprite.empty() ) {
+                    fheroes2::Blit( barSprite, display, panelX + barOffX, panelY + barOffY );
+                }
+                // Map name in normal (bold) white font centered vertically over the bar.
+                fheroes2::Text mapName( maps[selectedMap].name, fheroes2::FontType::normalWhite() );
                 mapName.fitToOneRow( barW - 4 );
-                mapName.draw( panelX + barOffX + 2, panelY + barOffY + 2, display );
+                const int32_t textY = panelY + barOffY + ( barH - mapName.height() ) / 2;
+                mapName.draw( panelX + barOffX + 2, textY, display );
+
+                // Up arrow: frame 19 normal, frame 20 pressed (0-based).
+                const int arrowFrame = arrowUpPressed ? 20 : 19;
+                const fheroes2::Sprite & arrowSprite = fheroes2::AGG::GetICN( ICN::H1NEWGAME_ICN, arrowFrame );
+                if ( !arrowSprite.empty() ) {
+                    fheroes2::Blit( arrowSprite, display, panelX + arrowOffX, panelY + barOffY );
+                }
             }
         };
 
@@ -452,9 +655,23 @@ namespace
                 changed = true;
             }
 
-            // Up arrow or left-click scenario bar: previous scenario.
+            // Up arrow pressed state visual update.
+            {
+                const bool nowPressed = le.isMouseLeftButtonPressedInArea( arrowUpRect );
+                if ( nowPressed != arrowUpPressed ) {
+                    arrowUpPressed = nowPressed;
+                    changed = true;
+                }
+            }
+
+            // Up arrow or name bar click: open map selection dialog.
             if ( le.MouseClickLeft( arrowUpRect ) || le.MouseClickLeft( scenBarRect ) ) {
-                selectedMap = ( selectedMap + static_cast<int>( maps.size() ) - 1 ) % static_cast<int>( maps.size() );
+                arrowUpPressed = false;
+                const int newMap = showHoMM1MapSelectDialog( maps, selectedMap );
+                if ( newMap != selectedMap ) {
+                    selectedMap = newMap;
+                }
+                // Always redraw to restore the NEWGAME panel after the dialog.
                 changed = true;
             }
 
@@ -812,9 +1029,20 @@ namespace
         }
 
         if ( mapInfo.version == GameVersion::HOMM1 ) {
-            // Strip "[AGG]" prefix to get the AGG-internal filename
-            const std::string aggKey = mapInfo.filename.substr( 5 ); // remove "[AGG]"
-            if ( world.loadHoMM1Map( AGG::getDataFromAggFile( aggKey, false ) ) ) {
+            std::vector<uint8_t> mapData;
+            if ( mapInfo.filename.size() >= 5 && mapInfo.filename.compare( 0, 5, "[AGG]" ) == 0 ) {
+                // AGG-embedded map: strip "[AGG]" prefix.
+                mapData = AGG::getDataFromAggFile( mapInfo.filename.substr( 5 ), false );
+            }
+            else {
+                // Filesystem map: read raw bytes from disk.
+                StreamFile fs;
+                if ( fs.open( mapInfo.filename, "rb" ) ) {
+                    mapData = fs.getRaw( fs.size() );
+                }
+            }
+
+            if ( !mapData.empty() && world.loadHoMM1Map( mapData ) ) {
                 return fheroes2::GameMode::START_GAME;
             }
 

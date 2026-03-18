@@ -68,6 +68,7 @@
 #include "race.h"
 #include "resource.h"
 #include "screen.h"
+#include "serialize.h"
 #include "settings.h"
 #include "skill.h"
 #include "tools.h"
@@ -1377,9 +1378,23 @@ fheroes2::GameMode Game::SelectCampaignScenario( const fheroes2::GameMode prevMo
 
             conf.SetGameType( Game::TYPE_CAMPAIGN );
 
-            const bool isSWCampaign = ( chosenCampaignID == Campaign::IRONFIST_CAMPAIGN ) || ( chosenCampaignID == Campaign::SLAYER_CAMPAIGN );
+            const bool isHoMM1Campaign = ( chosenCampaignID == Campaign::IRONFIST_CAMPAIGN ) || ( chosenCampaignID == Campaign::SLAYER_CAMPAIGN )
+                                         || ( chosenCampaignID == Campaign::LAMANDA_CAMPAIGN ) || ( chosenCampaignID == Campaign::ALAMAR_CAMPAIGN );
 
-            if ( !world.LoadMapMP2( mapInfo.filename, isSWCampaign ) ) {
+            bool mapLoaded = false;
+            if ( isHoMM1Campaign ) {
+                StreamFile fs;
+                if ( fs.open( mapInfo.filename, "rb" ) ) {
+                    std::vector<uint8_t> rawData = fs.getRaw( fs.size() );
+                    mapLoaded = world.loadHoMM1Map( rawData );
+                }
+            }
+            else {
+                const bool isSWCampaign = false;
+                mapLoaded = world.LoadMapMP2( mapInfo.filename, isSWCampaign );
+            }
+
+            if ( !mapLoaded ) {
                 fheroes2::showStandardTextMessage( _( "Campaign Scenario loading failure" ), _( "Please make sure that campaign files are correct and present." ),
                                                    Dialog::OK );
 

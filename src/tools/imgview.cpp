@@ -46,6 +46,7 @@
 #include <cstring>
 #include <filesystem>
 #include <iostream>
+#include <initializer_list>
 #include <string>
 #include <vector>
 
@@ -57,6 +58,18 @@
 
 namespace
 {
+    bool hasExtension( const std::string & fileName, const std::initializer_list<const char *> extensions )
+    {
+        for ( const char * extension : extensions ) {
+            const size_t extensionLength = std::strlen( extension );
+            if ( fileName.size() >= extensionLength && fileName.compare( fileName.size() - extensionLength, extensionLength, extension ) == 0 ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Window dimensions.
     constexpr int winW = 800;
     constexpr int winH = 600;
@@ -436,8 +449,14 @@ int main( int argc, char ** argv )
     // Collect all ICN and BMP filenames, sorted.
     std::vector<std::string> fileNames;
     {
+        std::vector<std::string> wlks = agg.getFileNamesWithExtension( "WLK" );
+        std::vector<std::string> stds = agg.getFileNamesWithExtension( "STD" );
+        std::vector<std::string> atks = agg.getFileNamesWithExtension( "ATK" );
         std::vector<std::string> icns = agg.getFileNamesWithExtension( "ICN" );
         std::vector<std::string> bmps = agg.getFileNamesWithExtension( "BMP" );
+        fileNames.insert( fileNames.end(), wlks.begin(), wlks.end() );
+        fileNames.insert( fileNames.end(), stds.begin(), stds.end() );
+        fileNames.insert( fileNames.end(), atks.begin(), atks.end() );
         fileNames.insert( fileNames.end(), icns.begin(), icns.end() );
         fileNames.insert( fileNames.end(), bmps.begin(), bmps.end() );
         std::sort( fileNames.begin(), fileNames.end() );
@@ -506,7 +525,7 @@ int main( int argc, char ** argv )
         const std::string & name = fileNames[static_cast<size_t>( fileIdx )];
         const std::vector<uint8_t> raw = agg.read( name );
 
-        const bool isICN = name.size() >= 4 && name.substr( name.size() - 4 ) == ".ICN";
+        const bool isICN = hasExtension( name, { ".ICN", ".WLK", ".STD", ".ATK" } );
 
         if ( isICN ) {
             frames = decodeICN( raw, name );

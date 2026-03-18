@@ -506,12 +506,31 @@ namespace Campaign
     {
         std::string matchingFilePath;
 
-        if ( Maps::tryGetMatchingFile( _fileName, matchingFilePath ) ) {
-            Maps::FileInfo fi;
+        if ( !Maps::tryGetMatchingFile( _fileName, matchingFilePath ) ) {
+            return {};
+        }
 
-            if ( fi.readMP2Map( std::move( matchingFilePath ), false ) ) {
+        // HoMM1 campaigns use .CMP map files which require the raw-byte loading path.
+        const bool isHoMM1Campaign = ( _scenarioInfo.campaignId == Campaign::IRONFIST_CAMPAIGN )
+                                     || ( _scenarioInfo.campaignId == Campaign::SLAYER_CAMPAIGN )
+                                     || ( _scenarioInfo.campaignId == Campaign::LAMANDA_CAMPAIGN )
+                                     || ( _scenarioInfo.campaignId == Campaign::ALAMAR_CAMPAIGN );
+        if ( isHoMM1Campaign ) {
+            StreamFile fs;
+            if ( !fs.open( matchingFilePath, "rb" ) ) {
+                return {};
+            }
+            std::vector<uint8_t> rawData = fs.getRaw( fs.size() );
+            Maps::FileInfo fi;
+            if ( fi.readHoMM1MapFromBytes( std::move( rawData ), matchingFilePath ) ) {
                 return fi;
             }
+            return {};
+        }
+
+        Maps::FileInfo fi;
+        if ( fi.readMP2Map( std::move( matchingFilePath ), false ) ) {
+            return fi;
         }
 
         return {};

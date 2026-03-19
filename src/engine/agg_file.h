@@ -42,6 +42,7 @@ namespace fheroes2
         }
 
         bool open( const std::string & fileName );
+        std::vector<std::string> getFileNames() const;
         std::vector<uint8_t> read( const std::string & fileName );
         std::vector<std::string> getFileNamesWithExtension( std::string_view ext ) const;
 

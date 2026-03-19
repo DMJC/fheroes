@@ -453,11 +453,13 @@ int main( int argc, char ** argv )
         std::vector<std::string> stds = agg.getFileNamesWithExtension( "STD" );
         std::vector<std::string> atks = agg.getFileNamesWithExtension( "ATK" );
         std::vector<std::string> icns = agg.getFileNamesWithExtension( "ICN" );
+        std::vector<std::string> bkgs = agg.getFileNamesWithExtension( "BKG" );
         std::vector<std::string> bmps = agg.getFileNamesWithExtension( "BMP" );
         fileNames.insert( fileNames.end(), wlks.begin(), wlks.end() );
         fileNames.insert( fileNames.end(), stds.begin(), stds.end() );
         fileNames.insert( fileNames.end(), atks.begin(), atks.end() );
         fileNames.insert( fileNames.end(), icns.begin(), icns.end() );
+        fileNames.insert( fileNames.end(), bkgs.begin(), bkgs.end() );
         fileNames.insert( fileNames.end(), bmps.begin(), bmps.end() );
         std::sort( fileNames.begin(), fileNames.end() );
     }
@@ -525,7 +527,7 @@ int main( int argc, char ** argv )
         const std::string & name = fileNames[static_cast<size_t>( fileIdx )];
         const std::vector<uint8_t> raw = agg.read( name );
 
-        const bool isICN = hasExtension( name, { ".ICN", ".WLK", ".STD", ".ATK" } );
+        const bool isICN = hasExtension( name, { ".ICN", ".BKG", ".WLK", ".STD", ".ATK" } );
 
         if ( isICN ) {
             frames = decodeICN( raw, name );

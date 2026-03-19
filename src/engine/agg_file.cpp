@@ -144,6 +144,18 @@ namespace fheroes2
         return _openHoMM1( count, size );
     }
 
+    std::vector<std::string> AGGFile::getFileNames() const
+    {
+        std::vector<std::string> result;
+        result.reserve( _files.size() );
+
+        for ( const auto & [name, _] : _files ) {
+            result.emplace_back( name );
+        }
+
+        return result;
+    }
+
     std::vector<std::string> AGGFile::getFileNamesWithExtension( std::string_view ext ) const
     {
         std::vector<std::string> result;

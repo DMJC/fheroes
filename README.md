@@ -2,7 +2,7 @@
 
 **fheroes** is a recreation of the Heroes of Might and Magic I game engine.
 
-This open source multiplatform project, written from scratch, is designed to reproduce the original game with significant
+This open source multiplatform project, based on the fheroes2 engine is designed to reproduce the original game with significant
 improvements in gameplay, graphics and logic (including support for high-resolution graphics, improved AI, numerous fixes
 and user interface improvements), breathing new life into one of the most addictive turn-based strategy games.
 

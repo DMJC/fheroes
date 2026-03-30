@@ -1,23 +1,12 @@
-# fheroes2
+# fheroes
 
-**fheroes2** is a recreation of the Heroes of Might and Magic II game engine.
+**fheroes** is a recreation of the Heroes of Might and Magic I game engine.
 
 This open source multiplatform project, written from scratch, is designed to reproduce the original game with significant
 improvements in gameplay, graphics and logic (including support for high-resolution graphics, improved AI, numerous fixes
 and user interface improvements), breathing new life into one of the most addictive turn-based strategy games.
 
-You can find a complete list of all of our changes and enhancements in [**its own wiki page**](https://github.com/ihhub/fheroes2/wiki/Features-and-enhancements-of-the-project).
-
-<p align="center">
-    <img src="docs/images/screenshots/screenshot_world_map.webp" width="820" alt="Screenshot of the world map">
-</p>
-
-<p align="center">
-    <img src="docs/images/screenshots/screenshot_battle.webp" width="410" alt="Screenshot of the battle screen">
-    <img src="docs/images/screenshots/screenshot_castle.webp" width="410" alt="Screenshot of the castle screen">
-</p>
-
-## Download and Install
+<img width="1292" height="1017" alt="image" src="https://github.com/user-attachments/assets/00c07e1b-18b0-4b76-bce7-d1602b2f0742" />
 
 Please follow the [**installation guide**](docs/INSTALL.md) to download and install fheroes2.
 
@@ -32,9 +21,7 @@ free demo version of the game. Please refer to the [**installation guide**](docs
 
 ## License
 
-This project is licensed under the [**GNU General Public License v2.0**](https://github.com/ihhub/fheroes2/blob/master/LICENSE).
-
-Initially, the project was developed on [**sourceforge**](https://sourceforge.net/projects/fheroes2/).
+This project is licensed under the [**GNU General Public License v2.0**](https://github.com/DMJC/fheroes/blob/master/LICENSE).
 
 ## Contribution and Development
 

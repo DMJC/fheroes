@@ -4,7 +4,7 @@
 
 This open source multiplatform project, based on the fheroes2 engine is designed to reproduce the original game with significant
 improvements in gameplay, graphics and logic (including support for high-resolution graphics, improved AI, numerous fixes
-and user interface improvements), breathing new life into one of the most addictive turn-based strategy games.
+and user interface improvements), breathing new life into one of the most addictive turn-based strategy games. This project is not currently affiliated with the fheroes2 project, but we encourage people to check out their engine. This project would not have been possible without their foundation.
 
 <img width="1292" height="1017" alt="image" src="https://github.com/user-attachments/assets/00c07e1b-18b0-4b76-bce7-d1602b2f0742" />
 
@@ -23,29 +23,7 @@ free demo version of the game. Please refer to the [**installation guide**](docs
 
 This project is licensed under the [**GNU General Public License v2.0**](https://github.com/DMJC/fheroes/blob/master/LICENSE).
 
-## Contribution and Development
-
-This repository is a place for everyone. If you want to contribute, please read more to learn [**how you can contribute**](https://github.com/ihhub/fheroes2/wiki/F.A.Q.#q-how-can-i-contribute-to-the-project).
-
-### Developing fheroes2 engine
-
-To build the project from source, please follow [**this guide**](docs/DEVELOPMENT.md).
-
-[![Build Status](https://github.com/ihhub/fheroes2/actions/workflows/push.yml/badge.svg)](https://github.com/ihhub/fheroes2/actions)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ihhub_fheroes2&metric=bugs)](https://sonarcloud.io/dashboard?id=ihhub_fheroes2)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ihhub_fheroes2&metric=code_smells)](https://sonarcloud.io/dashboard?id=ihhub_fheroes2)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=ihhub_fheroes2&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=ihhub_fheroes2)
-
-To assist with the graphical asset efforts of the project, please look at our [**graphical artist guide**](docs/GRAPHICAL_ASSETS.md).
-
-If you would like to help translating the project, please read the [**translation guide**](docs/TRANSLATION.md).
-
-### Developing fheroes2 documentation site
-
-To build the [website](https://ihhub.github.io/fheroes2/) from source, please follow
-[**this guide**](docs/WEBSITE_LOCAL_DEV.md).
-
-## Donation
+## Donation to fheroes2 project
 
 We accept donations via [**Patreon**](https://www.patreon.com/fheroes2), [**PayPal**](https://www.paypal.com/paypalme/fheroes2) or [**Boosty**](https://boosty.to/fheroes2).
 All donations will be used only for the future project development as we do not consider this project as a source of income by any means.
@@ -53,16 +31,3 @@ All donations will be used only for the future project development as we do not 
 [![Patreon Donate](https://img.shields.io/badge/Donate-Patreon-green.svg)](https://www.patreon.com/fheroes2)
 [![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/paypalme/fheroes2)
 [![Boosty Donate](https://img.shields.io/badge/Donate-Boosty-green.svg)](https://boosty.to/fheroes2)
-
-## Contacts
-
-Follow us on social networks: [**Facebook**](https://www.facebook.com/groups/fheroes2) or [**VK**](https://vk.com/fheroes2).
-We also have a [**Discord**](https://discord.gg/xF85vbZ) server to discuss the development of the project.
-
-[![Facebook](https://img.shields.io/badge/Facebook-blue.svg)](https://www.facebook.com/groups/fheroes2)
-[![VK](https://img.shields.io/badge/VK-blue.svg)](https://vk.com/fheroes2)
-[![Discord](https://img.shields.io/discord/733093692860137523.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xF85vbZ)
-
-## Frequently Asked Questions (FAQ)
-
-You can find answers to the most commonly asked questions on our [**F.A.Q. page**](https://github.com/ihhub/fheroes2/wiki/F.A.Q.).
